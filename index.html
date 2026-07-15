@@ -328,7 +328,7 @@
                     </div>
                     <div class="col-md-4">
                         <div class="card p-4 h-100">
-                            <h5 class="fw-bold text-success"><i class="fas fa-arrow-trend-up me-2"></i> Peningkatan Cemerlang <br><span class="cn-text text-muted fs-6 d-inline-block mt-1" style="margin-left: 30px;">成绩进步学生名单</span></h5>
+                            <h5 class="fw-bold text-success"><i class="fas fa-arrow-trend-up me-2"></i> Peningkatan Cemerlang <br><span class="cn-text text-muted fs-6 d-inline-block mt-1" style="margin-left: 30px;">成绩进步 student list</span></h5>
                             <small class="text-muted mb-3 border-bottom pb-2">Top peningkatan jumlah markah keseluruhan</small>
                             <div id="improvementList" class="custom-scrollbar" style="max-height: 250px; overflow-y: auto; padding-right:5px;">
                                 <div class="text-center text-muted mt-4"><i class="fas fa-spinner fa-spin mb-2"></i><br>Memuatkan data...</div>
@@ -377,7 +377,7 @@
                 </div>
             </div>
 
-            <!-- ISI MARKAH (DENGAN BUTANG SIMPAN DRAFT & HANTAR) -->
+            <!-- ISI MARKAH -->
             <div id="inputMarks" class="content-section hidden">
                 <h2 class="fw-bold text-dark mb-1">Pengisian Markah</h2>
                 <span class="cn-text text-muted fs-5 mb-4">分数填写</span>
@@ -471,7 +471,6 @@
                     <div class="bg-light p-3 border-bottom d-flex justify-content-end no-print"><button class="btn btn-danger shadow-sm" onclick="window.print()"><i class="fas fa-print me-2"></i> CETAK PDF</button></div>
                     <div id="printTarget" class="bg-white p-4">
                         
-                        <!-- HEADER KAD PELAPORAN YANG DIKEMASKINI -->
                         <div class="rc-header d-flex align-items-center mb-3 pb-2" style="border-bottom: 2px solid black;">
                             <img src="https://i.postimg.cc/63gD9WdB/LOGO-BARU.jpg" alt="Logo" style="width: 100px !important; max-width: 100px !important; height: auto !important; margin-right: 20px;" onerror="this.style.display='none'">
                             <div>
@@ -480,7 +479,6 @@
                             </div>
                         </div>
                         
-                        <!-- PENGECILAN FONT NAMA & KELAS -->
                         <table class="rc-info-table w-100 mb-2 text-dark"><tr><td width="15%">NAMA:</td><td width="45%" style="border-bottom: 1px dotted #000;" id="rcName" class="text-uppercase text-dark fw-bold"></td><td width="10%">KELAS:</td><td width="30%" style="border-bottom: 1px dotted #000;" id="rcClass" class="text-dark fw-bold"></td></tr></table>
                         <table class="table table-bordered table-sm text-center align-middle mb-2" style="border-color: black;">
                             <thead class="table-dark">
@@ -506,7 +504,6 @@
                             </div>
                         </div>
                         
-                        <!-- RUANGAN TANDATANGAN (FIT 1 PAGE) -->
                         <div class="rc-signature mt-4 pt-2" style="page-break-inside: avoid; break-inside: avoid;">
                             <div class="row text-center text-dark">
                                 <div class="col-4">
@@ -651,7 +648,6 @@
                     <!-- PANEL KIRI (KAWALAN KUNCI & PAPAN PENGUMUMAN) -->
                     <div class="col-md-4 d-flex flex-column gap-3">
                         
-                        <!-- DUA KUNCI KHAS (LOCK SYSTEM) -->
                         <div class="card p-4 border-top border-4 border-danger shadow-sm">
                             <h5 class="fw-bold text-dark mb-3"><i class="fas fa-lock me-2 text-danger"></i> Kawalan Kunci Markah <br><span class="cn-text text-muted fs-6 mt-1">成绩输入锁</span></h5>
                             <p class="text-muted small">Kunci atau buka fungsi pengisian markah guru mengikut sesi pertandingan akademik spesifik.</p>
@@ -823,12 +819,14 @@
 </div>
 
 <script>
-    const URL_EXAM = "https://script.google.com/macros/s/AKfycbw5XBp52ul7FbYXXbZ_XjgRW7wCpIuMAGAcZH3ywYzDjpWwolC7x-bHutGXlPJMbQvoFg/exec"; 
+    const URL_EXAM = "https://script.google.com/macros/s/AKfycbxehwHXwup4NyKDmKdyC1fwMvxODLKQxx3Y7fpHMynWgrw5srnRhdooZnxGkSjMNWpYRg/exec"; 
     const URL_EXAM_2 = "https://script.google.com/macros/s/AKfycbxt7Co492_riho0shJ9g6W12H4v9eVrnko13Fc7EQU_pjnarYq7VuTan5a2oS0ZecVvjA/exec";
     const URL_HEADCOUNT = "https://script.google.com/macros/s/AKfycbw147JTOQkKGkwZwU3upCVa63N34AYvQGX9xlMC0m7GCa2DeEDVbsHvfqUqvMP2Z94n/exec";
-    
-    // TAMPALKAN URL WEB APP PENGUMUMAN BARU ANDA DI SINI
     const URL_ANNOUNCEMENT = "https://script.google.com/macros/s/AKfycbyqM41gt3FQbJNlV8PlOGmibXBNGEcqHgZ_YdCHwLKps-fPHUhJvyjS8HU1ImfogEhc/exec";
+
+    // KELAYAKAN LOG MASUK PORTAL GURU (SJKC CHENG MING)
+    const CRED_USER = "SJKCCM";
+    const CRED_PASS = "XBC@1012";
 
     let myCompareChart = null; 
 
@@ -838,7 +836,7 @@
     const subShort = {
         "BAHASA CINA": "BC", "BAHASA INGGERIS": "BI", "BAHASA MALAYSIA": "BM",
         "MATEMATIK": "MT", "PENDIDIKAN AGAMA ISLAM": "PAI", "PENDIDIKAN MORAL": "PM",
-        "PENDIDIKAN JASMANI DAN KESIHATAN": "PJPK", "PENDIDIKAN MUZIK": "MZ",
+        "PENDIDIKAN JASMANI DAN KESIHATAN": "PJPK", "PENDIDIKAN MUZIK": "PMZ",
         "PENDIDIKAN SENI VISUAL": "PSV", "REKA BENTUK TEKNOLOGI": "RBT",
         "SAINS": "SN", "SEJARAH": "SEJ"
     };
@@ -868,10 +866,45 @@
     };
     
     let db = {};
-    const muslimStudents = ["ARYAND ARRIQINN BIN OCTOVYIANDYI 艾彦", "GRIXTON LEE BIN ABDUL HAYY 李关隼", "MIQAILA AAIRA BINTI MAC ANDEON 艾菈", "MOHAMAD AZIZI BIN AHMAD FADZIL 阿齐治", "MUHAMMAD ISAAC ISKANDAR BIN KAMISIN 艾泽", "NAAILA ADRIAANA FO WEI YI 贺薇怡", "NUR FALISHA KHAYLA BINTI MUHAMMAD KHAIRY 法丽莎", "NURUL ZARA ZAHARA BINTI JEFFREY 扎哈拉", "RAISYA HAZIYAH BINTI MOHAMAD RASYID 拉依莎", "AMNI ANDHIKA YAP 叶迪卡", "DEVONE LEE BINTI ABDUL HAYY 李可欣", "IZZRAF ARFAKSYADZ 伊志拉", "MUHAMMAD ARIF PUTRA 阿利夫", "MUHAMMAD FAREED QARIZH 柯利式", "MUHAMMAD FAZLEESYAH 华利士", "NORMA JANE BINTI ADAM GINDA 罗美娟", "NUR NAYYARA ASSYIFA 娜雅拉", "NUR SHELIENA BINTI ABDUL ALIY 沈丽娜", "AARON LIM FUNG BIN ABDULLAH 林枫", "AFEEF IQHWAN BIN ABDULLAH 艾非宜", "AIEZZANN AZZRYIEL BIN OCTOVYIANDYI 艾沾", "ARSHAN MIKHAIL KANG 江艾善", "HAWA EYRDEENA BINTI HODHORI HA娃", "MUHAMMAD AFNAN BIN ERWAN 周艾南", "MUHAMMAD AISY AZKA BIN ABDUL HAADI 艾习", "MUHAMMAD ARFAN BIN ERWAN 周艾凡", "MUHAMMAD ISKANDAR BIN KAMISIN 伊卡达", "NUR AINN BINTI RAINOH 安拉诺", "NURUL ZARA ZULIKAH BINTI JEFFREY 朱莉卡", "RAQEF HAZREEL BIN MOHD HAFIZI 哈哲立", "SITI FAIQAH ZIHNI BINTI AHMAD FADZIL 娣菲卡", "WAFIYATUL AAISHAH BINTI SUFRIH ISAMUDIN 华菲雅", "ADAM LUTHFI SHAH BIN ABDULLAH 亚当", "AIEDANN ARRSYHAD 艾尔dan", "ANGELY RUTH BINTI ABDULLAH 安琪丽", "AWANGKU AEMAN ALVEE BIN AWANGKU AZWAN 艾曼", "BENIDICT ANAK MAC KELLAR 贝尼迪", "BRANDON AIDEN JOHNNY 谭官君", "CARSON CHIN ZHI HANG 陈子航", "CAYDEN EZEKIEL CAMILUS 凯登", "CHING JIE QI 詹杰錡", "DAYANG RYAMIEZA ALYA BINTI RAMZI 妲央", "DRAYOOENCHIA EDSON 戴永佳", "EMASHA ESTHER REMSLONE 艾美莎", "ESTER ELIVIANA BINTI FREDDLEY 艾丝德", "IVAN VOO JIA MING 邬家民", "JANIELLE JACKSPENCE 洁妮丽", "KEVIN SHEN CHIN PIN 冼志平", "MANDY WONG YI WEN 黄怡文", "NIKA REHAZIEL NIKA DAVEY 尼卡", "NUR ADREANA QASEH BINTI JEFFRY 艾丽娜", "NUR FAIQAH KHALEEDA BINTI MUHAMMAD KHAIRY 奴菲卡", "NURRAIHANAH MIKAYLA BINTI RAHMAT JUWANTO 雷哈娜", "PUTRI MAGFIRAH BINTI MOHD ARIFFIN 麦菲拉", "RYVEAL LEE RODRIGO GUMBEH @ GUMBIH 李维恩", "SCARLET ELEANOR ALDAWIN 丝卡乐", "SHANEVERON WONG 黄雪玟", "SHERMELLY JUDE JAIBIN 雪茗丽", "STEVE WONG JI HONG 王济泓", "ZHEE YON 志勇"],
-    "TAHUN 5": ["ABDUL HABIB HARITH BIN ABDUL SAHIDI 哈比", "ALVARO GAVRIEL WELFRED 亚伟乐", "AMANDA SHEA CYRILL YAP 叶美美", "AMYLIA BINTI KAMISIN 艾美拉", "ARFAN MIKHAIL KANG 江艾凡", "CAYLEB CHRIST MOULI 凯乐", "CLAIRE DANNYSEUS 可丽儿", "DEAN MIFZAL LIEW BIN ABDULLAH 刘迪恩", "EDRY ISAAC CHIA 谢艾德", "ELSA VIANNEY MARY SYLVESTER 艾莎", "FAHYM QUSHAIRY BIN FRANCIS 法杏", "FLORENCE MAXIMILLIAN 符洛仁", "IRFAN ARFAKSYADZ BIN MOHD JAPRI 伊凡", "JACYLEN CHEN 陈美芯", "JAYDEN NELCENT LIEW 刘杰德", "JESVENELLY ASOK 韦妮丽", "MONIE QUEENDY RUDY 莫妮", "MUHAMAD HAFEEZ RAHIM 哈菲兹", "NUR AINDREA NADIYA BINTI JOSAMIN@JASIMIN 安得拉", "NUR QHALLESHA ANAMI BINTI SAHARUL AZRIN 卡俐莎", "NUR SHAINE SEIAN BINTI ABDULLAH 郑雪莉", "NURSYAZWINA SALI BINTI ABDULLAH 莎薇娜", "RYANZACQUELL ALRICH XAVIER 莱恩", "TEY XIN YEE 郑忻颐", "YAP JI CHENG 叶济承"],
-    "TAHUN 6": ["AARON KING WEN SHENG 金文圣", "ADIB ARYAN 叶艾狄", "ALEXSSA MARADONA 艾莉莎", "AMBER ROSE 安蓓儿", "AMNI NURADRIANA HUSNA YAP 叶玉娜", "ANNABELLE MERCO 安贝拉", "ANNAMARIE SOPHIA JIMY 安娜美", "CALVIN LEE YI BIN 李毅彬", "CASSANDRA CHLOE CHRISTOPER 柯珊荙", "CHARLENE MIEA JIMMY 巧琳", "DAVIN LO KETT FUNG 罗国峰", "DEANIELL DEEANN DISIUS 德尼尔", "EALJOY ALBERT 尔齐", "EALVIANIE EVERDIN 尔妮", "ELYN HO SZE XUAN 何芝琁", "FIONNY ARVINA JOHNNY 谭芷霓", "HYERIN NIECHELL YOLEK 何灵", "IMANUEL LIONEL HIMBULAN 李诺尔", "JAYDEN CHIN TZE FENG INT_FA 陈子峰", "JAYVRYAN JUNIOR 杰莱恩", "JAZLYN ONG QIAO XUN 翁巧洵", "MAVERICK CHESTER MARK 马富利", "NEOLITTA SHAYNE SIMPLISIUS 施娴", "NOUFAL ARFAKSYADZ 诺法", "NUR AZZAHRA SOFIEA 苏菲亚", "RYNDLEE RODRIGO 仁迪", "SHARONITTA WONG 黄雪柔", "SHERYLYNIEKA DILLESEN 施尼卡", "VICKLY DEEXLEE HARWANDRI 伟特利", "WYINCHAELL AUDREY ALEXIUS 玟萱"]
-    };
+    const muslimStudents = [
+        "ARYAND ARRIQINN BIN OCTOVYIANDYI 艾彦", "GRIXTON LEE BIN ABDUL HAYY 李关隼", 
+        "MIQAILA AAIRA BINTI MAC ANDEON 艾菈", "MOHAMAD AZIZI BIN AHMAD FADZIL 阿齐治", 
+        "MUHAMMAD ISAAC ISKANDAR BIN KAMISIN 艾泽", "NAAILA ADRIAANA FO WEI YI 贺薇怡", 
+        "NUR FALISHA KHAYLA BINTI MUHAMMAD KHAIRY 法丽莎", "NURUL ZARA ZAHARA BINTI JEFFREY 扎哈拉", 
+        "RAISYA HAZIYAH BINTI MOHAMAD RASYID 拉依莎", "AMNI ANDHIKA YAP 叶迪卡", 
+        "DEVONE LEE BINTI ABDUL HAYY 李可欣", "IZZRAF ARFAKSYADZ 伊志拉", 
+        "MUHAMMAD ARIF PUTRA 阿利夫", "MUHAMMAD FAREED QARIZH 柯利式", 
+        "MUHAMMAD FAZLEESYAH 华利士", "NORMA JANE BINTI ADAM GINDA 罗美娟", 
+        "NUR NAYYARA ASSYIFA 娜雅拉", "NUR SHELIENA BINTI ABDUL ALIY 沈丽娜", 
+        "AARON LIM FUNG BIN ABDULLAH 林枫", "AFEEF IQHWAN BIN ABDULLAH 艾非宜", 
+        "AIEZZANN AZZRYIEL BIN OCTOVYIANDYI 艾沾", "ARSHAN MIKHAIL KANG 江艾善", 
+        "HAWA EYRDEENA BINTI HODHORI HA娃", "MUHAMMAD AFNAN BIN ERWAN 周艾南", 
+        "MUHAMMAD AISY AZKA BIN ABDUL HAADI 艾习", "MUHAMMAD ARFAN BIN ERWAN 周艾凡", 
+        "MUHAMMAD ISKANDAR BIN KAMISIN 伊卡达", "NUR AINN BINTI RAINOH 安拉诺", 
+        "NURUL ZARA ZULIKAH BINTI JEFFREY 朱莉卡", "RAQEF HAZREEL BIN MOHD HAFIZI 哈哲立", 
+        "SITI FAIQAH ZIHNI BINTI AHMAD FADZIL 娣菲卡", "WAFIYATUL AAISHAH BINTI SUFRIH ISAMUDIN 华菲雅", 
+        "ADAM LUTHFI SHAH BIN ABDULLAH 亚当", "AIEDANN ARRSYHAD 艾尔dan", 
+        "ANGELY RUTH BINTI ABDULLAH 安琪丽", "AWANGKU AEMAN ALVEE BIN AWANGKU AZWAN 艾曼", 
+        "BENIDICT ANAK MAC KELLAR 贝尼迪", "BRANDON AIDEN JOHNNY 谭官君", 
+        "CARSON CHIN ZHI HANG 陈子航", "CAYDEN EZEKIEL CAMILUS 凯登", 
+        "CHING JIE QI 詹杰錡", "DAYANG RYAMIEZA ALYA BINTI RAMZI 妲央", 
+        "DRAYOOENCHIA EDSON 戴永佳", "EMASHA ESTHER REMSLONE 艾美莎", 
+        "ESTER ELIVIANA BINTI FREDDLEY 艾丝德", "IVAN VOO JIA MING 邬家民", 
+        "JANIELLE JACKSPENCE 洁妮丽", "KEVIN SHEN CHIN PIN 冼志平", 
+        "MANDY WONG YI WEN 黄怡文", "NIKA REHAZIEL NIKA DAVEY 尼卡", 
+        "NUR ADREANA QASEH BINTI JEFFRY 艾丽娜", "NUR FAIQAH KHALEEDA BINTI MUHAMMAD KHAIRY 奴菲卡", 
+        "NURRAIHANAH MIKAYLA BINTI RAHMAT JUWANTO 雷哈娜", "PUTRI MAGFIRAH BINTI MOHD ARIFFIN 麦菲拉", 
+        "RYVEAL LEE RODRIGO GUMBEH @ GUMBIH 李维恩", "SCARLET ELEANOR ALDAWIN 丝卡乐", 
+        "SHANEVERON WONG 黄雪玟", "SHERMELLY JUDE JAIBIN 雪茗丽", 
+        "STEVE WONG JI HONG 王济泓", "ZHEE YON 志勇",
+        "ABDUL HABIB HARITH BIN ABDUL SAHIDI 哈比", "AMYLIA BINTI KAMISIN 艾美拉",
+        "DEAN MIFZAL LIEW BIN ABDULLAH 刘迪恩", "FAHYM QUSHAIRY BIN FRANCIS 法杏",
+        "IRFAN ARFAKSYADZ BIN MOHD JAPRI 伊凡", "MUHAMAD HAFEEZ RAHIM 哈菲兹",
+        "NUR AINDREA NADIYA BINTI JOSAMIN@JASIMIN 安得拉", "NUR QHALLESHA ANAMI BINTI SAHARUL AZRIN 卡俐莎",
+        "NUR SHAINE SEIAN BINTI ABDULLAH 郑雪莉", "NURSYAZWINA SALI BINTI ABDULLAH 莎薇娜",
+        "ADIB ARYAN 叶艾狄", "AMNI NURADRIANA HUSNA YAP 叶玉娜",
+        "NOUFAL ARFAKSYADZ 诺法", "NUR AZZAHRA SOFIEA 苏菲亚"
+    ];
 
     let statusSession = "PERTANDINGAN AKADEMIK 1 2026"; 
 
@@ -1217,7 +1250,6 @@
         else { if(db[session][cls][name][sub]) delete db[session][cls][name][sub]; }
         localStorage.setItem('sistemMarkahDB', JSON.stringify(db));
 
-        // --- PENGIRAAN AUTOMATIK OTI 1 & OTI 2 ---
         if (session === 'TOV' || session === 'ETR') {
             let tovVal = document.getElementById(`hc-input-${displayCount}-TOV`).value;
             let etrVal = document.getElementById(`hc-input-${displayCount}-ETR`).value;
@@ -1270,7 +1302,6 @@
         
         div.classList.remove('hidden'); 
         
-        // Memeriksa sekiranya headcount dikunci secara global oleh Admin
         let isLocked = isMarkEntryLocked('TOV', cls, sub); 
         if (isLocked) {
             btnSave.disabled = true;
@@ -1336,7 +1367,6 @@
         window.print(); 
     }
 
-    // FUNGSI GURU: SIMPAN DRAFT MARKAH (SECARA LOKAL)
     function saveDraftMarks() {
         const sess = getCurrentSession();
         const cls = document.getElementById('classSelect').value;
@@ -1369,7 +1399,6 @@
         }, 500);
     }
 
-    // FUNGSI GURU: HANTAR MUKTAMAD KE SHEET (TIADA LAGI LOCK AUTOMATIK)
     function submitFinalMarks() {
         const sess = getCurrentSession();
         const cls = document.getElementById('classSelect').value;
@@ -1470,7 +1499,6 @@
         document.getElementById('markSheetArea').classList.remove('hidden');
         document.getElementById('sheetTitle').innerText = `${cls} - ${sub}`;
         
-        // Semak status penguncian global Admin
         const isLocked = isMarkEntryLocked(sess, cls, sub);
         const statusInd = document.getElementById('markSheetStatusIndicator');
         if (isLocked) {
@@ -1570,7 +1598,6 @@
         loadDashboardAnalytics();
     }
 
-    // --- FUNGSI MARKAH KESELURUHAN ---
     function generateOverallMarks() {
         const cls = document.getElementById('overallClassSelect').value;
         const sess = getCurrentSession();
@@ -1797,7 +1824,7 @@
                             <th style="width: 11%">C</th>
                             <th style="width: 11%">D</th>
                             <th style="width: 11%">E</th>
-                            <th style="width: 11%">F</th>
+                            <th style="width: 11%">TH</th>
                         </tr>
                     </thead>
                     <tbody class="bg-white">
@@ -1990,11 +2017,8 @@
         }
     }
 
-    // --- SISTEM PAPAN PENGUMUMAN DEDIKASI (TERASING DARIPADA MARKAH) ---
     function saveAdminAnnouncement() {
         const text = document.getElementById('adminAnnouncementText').value.trim();
-        
-        // Simpan salinan lokal segera
         localStorage.setItem('adminAnnouncement', text);
         
         if (URL_ANNOUNCEMENT === "SILA_TAMPAL_URL_WEB_APP_PENGUMUMAN_DI_SINI" || URL_ANNOUNCEMENT === "") {
@@ -2002,10 +2026,7 @@
             return;
         }
 
-        const payload = {
-            announcement: text
-        };
-        
+        const payload = { announcement: text };
         showLoader("Menyiarkan pengumuman ke pelayan Google Sheets...");
         
         fetch(URL_ANNOUNCEMENT, { method: 'POST', body: JSON.stringify(payload) })
@@ -2025,11 +2046,9 @@
     }
 
     function showLoginAnnouncement() {
-        // Paparkan salinan lokal dahulu sementara menunggu data segar dari server
         let text = localStorage.getItem('adminAnnouncement') || "";
         updateAnnouncementUI(text);
 
-        // Tarik pengumuman semasa dari server pengumuman secara asynchronous
         if (URL_ANNOUNCEMENT !== "SILA_TAMPAL_URL_WEB_APP_PENGUMUMAN_DI_SINI" && URL_ANNOUNCEMENT !== "") {
             fetch(URL_ANNOUNCEMENT)
             .then(res => res.json())
@@ -2039,7 +2058,7 @@
                     updateAnnouncementUI(data.announcement);
                 }
             })
-            .catch(err => console.log("Gagal menarik pengumuman dari server:", err));
+            .catch(err => console.log("Gagal menarik pengumuman:", err));
         }
     }
 
@@ -2051,7 +2070,7 @@
                 textEl.innerText = text;
                 box.classList.remove('hidden');
             } else {
-                box.classList.add('hidden');
+                box.box.classList.add('hidden');
             }
         }
     }
@@ -2138,7 +2157,6 @@
             if (index !== -1) {
                 dynamicStudentData[cls][index] = newName;
                 
-                // Kemas kini nama merentasi pangkalan data agar markah lama tidak hilang
                 Object.keys(db).forEach(sess => {
                     if (db[sess] && db[sess][cls] && db[sess][cls][oldName]) {
                         db[sess][cls][newName] = db[sess][cls][oldName];
@@ -2147,7 +2165,6 @@
                 });
                 localStorage.setItem('sistemMarkahDB', JSON.stringify(db));
                 
-                // Kemas kini status murid islam
                 let mIndex = muslimStudents.indexOf(oldName);
                 if (mIndex !== -1) {
                     if (isMuslim) {
@@ -2178,7 +2195,6 @@
         if (index !== -1) {
             dynamicStudentData[cls].splice(index, 1);
             
-            // Keluarkan murid dari pangkalan data
             Object.keys(db).forEach(sess => {
                 if (db[sess] && db[sess][cls] && db[sess][cls][name]) {
                     delete db[sess][cls][name];
