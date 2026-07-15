@@ -141,12 +141,12 @@
             #printTarget .mt-4 { margin-top: 10px !important; }
             #printTarget .col-6 .table td { padding: 1px 4px !important; font-size: 0.85rem !important; }
             
-            /* PEMBESARAN KHAS: Membesarkan tulisan Cina di dalam header h5 bagi mengelakkan kekaburan semasa print */
+            /* PEMBESARAN KHAS */
             #printTarget .rc-header h5 span { font-size: 1.35rem !important; font-weight: bold !important; color: #000000 !important; }
             
-            /* PENGELASAN DI BAWAH: MENYEDIAKAN RUANG MENCOP YANG LEBIH BESAR & MEMBAWA BLOK TANDATANGAN KE BAWAH LEBIH SEDIKIT */
+            /* PENGELASAN DI BAWAH */
             #printTarget .rc-signature { margin-top: 60px !important; padding-top: 0 !important; }
-            #printTarget .sig-spacer { height: 55px !important; } /* Memberikan lebih ruang menegak untuk meletakkan cop */
+            #printTarget .sig-spacer { height: 55px !important; } 
             #printTarget .cn-text { font-size: 0.75em !important; margin-top: 1px !important; }
             
             /* -- TETAPAN KHAS UNTUK FIT 1 PAGE BAGI LAPORAN PENGELOMPOKAN -- */
@@ -155,7 +155,7 @@
             #groupingResult h4 { font-size: 1.1rem !important; margin-bottom: 2px !important; }
             #groupingResult h5 { font-size: 0.8rem !important; margin-top: 0px !important; margin-bottom: 8px !important; }
             
-            /* NILAI DIKEMASKINI: Ditenggelamkan ke bawah dari sempadan jadual serta diberi jarak menegak yang selesa untuk meletakkan cop rasmi/tandatangan */
+            /* NILAI DIKEMASKINI */
             #groupingResult .signature-box { margin-top: 40px !important; page-break-inside: avoid; break-inside: avoid; }
             #groupingResult .signature-box p { margin-bottom: 2px !important; font-size: 0.72rem !important; line-height: 1.2 !important; }
             #groupingResult .sig-line { border-top: 1px solid black; width: 130px; margin: 45px auto 3px auto !important; }
@@ -358,7 +358,7 @@
                             </div>
                         </div>
                     </div>
-                    <!-- KAD STATUS PENGISIAN SEMASA DENGAN PILIHAN BUTANG PA1 & PA2 -->
+                    <!-- KAD STATUS PENGISIAN SEMASA -->
                     <div class="col-md-4">
                         <div class="card p-4 h-100 border-top border-4 border-info">
                             <div class="d-flex justify-content-between align-items-start mb-2">
@@ -819,7 +819,8 @@
 </div>
 
 <script>
-    const URL_EXAM = "https://script.google.com/macros/s/AKfycbxehwHXwup4NyKDmKdyC1fwMvxODLKQxx3Y7fpHMynWgrw5srnRhdooZnxGkSjMNWpYRg/exec"; 
+    // PAUTAN WEB APP GOOGLE APPS SCRIPT ANDA
+    const URL_EXAM = "https://script.google.com/macros/s/AKfycbw5XBp52ul7FbYXXbZ_XjgRW7wCpIuMAGAcZH3ywYzDjpWwolC7x-bHutGXlPJMbQvoFg/exec"; 
     const URL_EXAM_2 = "https://script.google.com/macros/s/AKfycbxt7Co492_riho0shJ9g6W12H4v9eVrnko13Fc7EQU_pjnarYq7VuTan5a2oS0ZecVvjA/exec";
     const URL_HEADCOUNT = "https://script.google.com/macros/s/AKfycbw147JTOQkKGkwZwU3upCVa63N34AYvQGX9xlMC0m7GCa2DeEDVbsHvfqUqvMP2Z94n/exec";
     const URL_ANNOUNCEMENT = "https://script.google.com/macros/s/AKfycbyqM41gt3FQbJNlV8PlOGmibXBNGEcqHgZ_YdCHwLKps-fPHUhJvyjS8HU1ImfogEhc/exec";
@@ -836,7 +837,7 @@
     const subShort = {
         "BAHASA CINA": "BC", "BAHASA INGGERIS": "BI", "BAHASA MALAYSIA": "BM",
         "MATEMATIK": "MT", "PENDIDIKAN AGAMA ISLAM": "PAI", "PENDIDIKAN MORAL": "PM",
-        "PENDIDIKAN JASMANI DAN KESIHATAN": "PJPK", "PENDIDIKAN MUZIK": "PMZ",
+        "PENDIDIKAN JASMANI DAN KESIHATAN": "PJK", "PENDIDIKAN MUZIK": "PMZ",
         "PENDIDIKAN SENI VISUAL": "PSV", "REKA BENTUK TEKNOLOGI": "RBT",
         "SAINS": "SN", "SEJARAH": "SEJ"
     };
@@ -871,7 +872,7 @@
         "MIQAILA AAIRA BINTI MAC ANDEON 艾菈", "MOHAMAD AZIZI BIN AHMAD FADZIL 阿齐治", 
         "MUHAMMAD ISAAC ISKANDAR BIN KAMISIN 艾泽", "NAAILA ADRIAANA FO WEI YI 贺薇怡", 
         "NUR FALISHA KHAYLA BINTI MUHAMMAD KHAIRY 法丽莎", "NURUL ZARA ZAHARA BINTI JEFFREY 扎哈拉", 
-        "RAISYA HAZIYAH BINTI MOHAMAD RASYID 拉依莎", "AMNI ANDHIKA YAP 叶迪卡", 
+        "RAISYA HAZIYAH BINTI MOHAMAD RASYID 拉依莎", "AMNI ANDHIKA YAP 叶品卡", 
         "DEVONE LEE BINTI ABDUL HAYY 李可欣", "IZZRAF ARFAKSYADZ 伊志拉", 
         "MUHAMMAD ARIF PUTRA 阿利夫", "MUHAMMAD FAREED QARIZH 柯利式", 
         "MUHAMMAD FAZLEESYAH 华利士", "NORMA JANE BINTI ADAM GINDA 罗美娟", 
@@ -951,6 +952,66 @@
         document.getElementById('btnSaveHeadcount').disabled = true;
     }
 
+    // FUNGSI CARIAN NAMA MURID YANG TAHAN LASAK (FUZZY MATCH)
+    function findStudentKey(sess, cls, clientName) {
+        if (!db[sess] || !db[sess][cls]) return null;
+        
+        let classRecords = db[sess][cls];
+        
+        // 1. Cuba cari padanan tepat (exact match)
+        if (classRecords[clientName]) {
+            return clientName;
+        }
+        
+        // 2. Jika tiada padanan tepat, lakukan padanan rumi (fuzzy match)
+        let cleanRumi = (name) => {
+            // Buang aksara Cina, buang semua simbol/jarak, ambil 12 karakter rumi pertama sahaja
+            return name.replace(/[\u4e00-\u9fa5]/g, "").replace(/[^A-Z0-9]/g, "").substring(0, 12).toUpperCase();
+        };
+        
+        let clientRumi = cleanRumi(clientName);
+        if (clientRumi.length === 0) return null;
+        
+        for (let sheetName of Object.keys(classRecords)) {
+            if (cleanRumi(sheetName) === clientRumi) {
+                return sheetName;
+            }
+        }
+        
+        return null;
+    }
+
+    // FUNGSI MEMBACA MARKAH & GRED DENGAN PEMETAAN KEPALA LAJUR (BC, BI, DLL)
+    function getStudentSubjectData(sess, cls, clientName, sub) {
+        if (!db[sess] || !db[sess][cls]) return null;
+        
+        let studentKey = findStudentKey(sess, cls, clientName);
+        if (!studentKey) return null;
+        
+        let studentRecord = db[sess][cls][studentKey];
+        
+        // 1. Cuba guna nama penuh subjek (contoh: "BAHASA CINA")
+        if (studentRecord[sub]) {
+            return studentRecord[sub];
+        }
+        
+        // 2. Cuba guna singkatan subShort (contoh: "BC", "BI", dsb.)
+        let shortKey = subShort[sub];
+        if (shortKey && studentRecord[shortKey]) {
+            return studentRecord[shortKey];
+        }
+        
+        // 3. Kes khas jika ejaan kepala lajur di sheet adalah "PJK" atau "PMZ"
+        if (sub === "PENDIDIKAN JASMANI DAN KESIHATAN" && studentRecord["PJK"]) {
+            return studentRecord["PJK"];
+        }
+        if (sub === "PENDIDIKAN MUZIK" && studentRecord["PMZ"]) {
+            return studentRecord["PMZ"];
+        }
+        
+        return null;
+    }
+
     window.onload = function() {
         if(sessionStorage.getItem('isLoggedIn') === 'true') {
             document.getElementById('loginOverlay').style.display = 'none';
@@ -971,27 +1032,58 @@
         popSub('subjectSelect');
         popSub('pmSubjectSelect'); 
 
+        // --- PRE-LOAD DARI LOCALSTORAGE UNTUK MENGELAKKAN MARKAH HILANG ---
+        const savedData = localStorage.getItem('sistemMarkahDB');
+        if (savedData) {
+            try {
+                db = JSON.parse(savedData);
+            } catch (e) {
+                console.error("Gagal parse local DB, reset ke kosong.");
+                db = {};
+            }
+        } else {
+            db = {};
+        }
+
+        let count = 0; Object.keys(dynamicStudentData).forEach(k => count += dynamicStudentData[k].length);
+        document.getElementById('totalStudents').innerText = count;
+
+        // Tunjukkan status pengisian dari DB lokal dahulu sementara menunggu fetch
+        loadFillStatus();
+
+        // TARIK DATA FRESH DI LATAR BELAKANG (SAFE MERGE)
         Promise.all([
-            fetch(URL_EXAM).then(r => r.json()).catch(e => ({})),
-            fetch(URL_EXAM_2).then(r => r.json()).catch(e => ({})),
-            fetch(URL_HEADCOUNT).then(r => r.json()).catch(e => ({}))
+            fetch(URL_EXAM).then(r => r.json()).catch(e => { console.error("URL_EXAM fetch error:", e); return null; }),
+            fetch(URL_EXAM_2).then(r => r.json()).catch(e => { console.error("URL_EXAM_2 fetch error:", e); return null; }),
+            fetch(URL_HEADCOUNT).then(r => r.json()).catch(e => { console.error("URL_HEADCOUNT fetch error:", e); return null; })
         ]).then(([examData, examData2, headcountData]) => {
-            db = { ...examData, ...examData2, ...headcountData }; 
-            localStorage.setItem('sistemMarkahDB', JSON.stringify(db));
-            
-            let count = 0; Object.keys(dynamicStudentData).forEach(k => count += dynamicStudentData[k].length);
-            document.getElementById('totalStudents').innerText = count;
-            
-            loadFillStatus();
+            let dataUpdated = false;
+
+            // Gabungkan hanya sekiranya fetch berjaya mengembalikan data (bukan null atau {})
+            if (examData && Object.keys(examData).length > 0) {
+                db = { ...db, ...examData };
+                dataUpdated = true;
+            }
+            if (examData2 && Object.keys(examData2).length > 0) {
+                db = { ...db, ...examData2 };
+                dataUpdated = true;
+            }
+            if (headcountData && Object.keys(headcountData).length > 0) {
+                db = { ...db, ...headcountData };
+                dataUpdated = true;
+            }
+
+            if (dataUpdated) {
+                localStorage.setItem('sistemMarkahDB', JSON.stringify(db));
+                loadFillStatus();
+            }
             
             // Mengekalkan halaman admin jika di-reload
             if (sessionStorage.getItem('isAdminLoggedIn') === 'true') {
                 showSection('adminPanel');
             }
         }).catch(e => {
-            const savedData = localStorage.getItem('sistemMarkahDB');
-            if (savedData) db = JSON.parse(savedData);
-            loadFillStatus();
+            console.error("Latar belakang sync gagal:", e);
         });
 
         document.getElementById('sessionSelect').value = "PERTANDINGAN AKADEMIK 1 2026";
@@ -1071,16 +1163,18 @@
                 dynamicStudentData[cls].forEach(stu => {
                     let stuSum1 = 0, stuSum2 = 0; let hasPA1 = false, hasPA2 = false;
                     
-                    if(db[sess1] && db[sess1][cls] && db[sess1][cls][stu]) {
-                        Object.entries(db[sess1][cls][stu]).forEach(([sub, data]) => {
+                    let key1 = findStudentKey(sess1, cls, stu);
+                    if (key1 && db[sess1] && db[sess1][cls] && db[sess1][cls][key1]) {
+                        Object.entries(db[sess1][cls][key1]).forEach(([sub, data]) => {
                             if(sub !== 'attendance' && data.mark !== 'TH' && !isNaN(data.mark) && data.mark !== '') {
                                 let m = parseFloat(data.mark); stuSum1 += m; classSum1 += m; classCount1++; hasPA1 = true;
                             }
                         });
                     }
                     
-                    if(db[sess2] && db[sess2][cls] && db[sess2][cls][stu]) {
-                        Object.entries(db[sess2][cls][stu]).forEach(([sub, data]) => {
+                    let key2 = findStudentKey(sess2, cls, stu);
+                    if (key2 && db[sess2] && db[sess2][cls] && db[sess2][cls][key2]) {
+                        Object.entries(db[sess2][cls][key2]).forEach(([sub, data]) => {
                             if(sub !== 'attendance' && data.mark !== 'TH' && !isNaN(data.mark) && data.mark !== '') {
                                 let m = parseFloat(data.mark); stuSum2 += m; classSum2 += m; classCount2++; hasPA2 = true;
                             }
@@ -1338,7 +1432,8 @@
             h += `<tr><td class="fw-bold text-muted">${displayCount}</td><td class="text-start text-uppercase fw-bold text-dark" style="font-size:0.8rem">${n}</td>`;
             cols.forEach((c, cIndex) => {
                 let m = '', g = '';
-                if(db[c.id] && db[c.id][cls] && db[c.id][cls][n] && db[c.id][cls][n][sub]) { m = db[c.id][cls][n][sub].mark; g = db[c.id][cls][n][sub].grade; }
+                let subData = getStudentSubjectData(c.id, cls, n, sub);
+                if (subData) { m = subData.mark; g = subData.grade; }
                 let safeSessionId = c.id.replace(/\s+/g, '-');
                 let inputId = `hc-input-${displayCount}-${safeSessionId}`;
                 let gradeSpanId = `hc-g-${displayCount}-${cIndex}`;
@@ -1517,8 +1612,8 @@
             if (sub === 'PENDIDIKAN MORAL' && isMuslim) return; 
 
             displayCount++; let m = '', g = '';
-            if(!db[sess][cls][n]) db[sess][cls][n] = {};
-            if(db[sess][cls][n][sub]) { m = db[sess][cls][n][sub].mark; g = db[sess][cls][n][sub].grade; }
+            let subData = getStudentSubjectData(sess, cls, n, sub);
+            if (subData) { m = subData.mark; g = subData.grade; }
             let safeID = displayCount;
             
             let disabledAttr = isLocked ? 'disabled style="background-color: #e9ecef; cursor: not-allowed;"' : '';
@@ -1651,8 +1746,9 @@
                 if (sub === 'PENDIDIKAN MORAL' && isMuslim) { h += `<td class="bg-light text-muted">-</td>`; return; }
 
                 let m = '', g = '';
-                if(db[sess] && db[sess][cls] && db[sess][cls][n] && db[sess][cls][n][sub]) {
-                    m = db[sess][cls][n][sub].mark; g = db[sess][cls][n][sub].grade;
+                let subData = getStudentSubjectData(sess, cls, n, sub);
+                if (subData) {
+                    m = subData.mark; g = subData.grade;
                     if(m !== 'TH' && !isNaN(m) && m !== '') { total += parseFloat(m); count++; }
                 }
                 
@@ -1694,10 +1790,19 @@
         let rankList = [];
         dynamicStudentData[cls].forEach(n => {
             let total = 0;
-            if(db[session][cls][n]) { Object.entries(db[session][cls][n]).forEach(([key, sub]) => { if(key !== 'attendance' && sub.mark && sub.mark !== 'TH' && !isNaN(sub.mark)) total += parseFloat(sub.mark); }); }
+            let studentKey = findStudentKey(session, cls, n);
+            if (studentKey && db[session][cls][studentKey]) {
+                Object.entries(db[session][cls][studentKey]).forEach(([key, subData]) => {
+                    if (key !== 'attendance' && subData.mark && subData.mark !== 'TH' && !isNaN(subData.mark)) {
+                        total += parseFloat(subData.mark);
+                    }
+                });
+            }
             rankList.push({ name: n, total: total });
         });
-        rankList.sort((a,b) => b.total - a.total); let rank = rankList.findIndex(x => x.name === name); return (rank !== -1) ? (rank + 1) + ' / ' + rankList.length : '-';
+        rankList.sort((a,b) => b.total - a.total);
+        let rank = rankList.findIndex(x => x.name === name);
+        return (rank !== -1) ? (rank + 1) + ' / ' + rankList.length : '-';
     }
 
     function generateReportCard() {
@@ -1728,8 +1833,9 @@
             
             rowNum++;
             let m = '-', g = '-';
-            if(db[session] && db[session][cls] && db[session][cls][name] && db[session][cls][name][sub]) { 
-                m = db[session][cls][name][sub].mark; g = db[session][cls][name][sub].grade; 
+            let subData = getStudentSubjectData(session, cls, name, sub);
+            if (subData) { 
+                m = subData.mark; g = subData.grade; 
                 if(m !== 'TH' && !isNaN(m) && m !== '') { totalMarks += parseFloat(m); subjectCount++; } 
             }
             tbody.innerHTML += `<tr><td class="fw-bold text-muted">${rowNum}</td><td class="text-start fw-bold text-dark">${sub}</td><td class="fw-bold text-dark">${m}</td><td><span class="grade-box ${g!=='-'?'g-'+g:''}">${g}</span></td></tr>`;
@@ -1751,7 +1857,11 @@
             let passedCount = 0, subResults = {};
             coreSubjects.forEach(sub => {
                 let m = '-', g = '-';
-                if(db[session] && db[session][className] && db[session][className][name] && db[session][className][name][sub]) { m = db[session][className][name][sub].mark; g = db[session][className][name][sub].grade; if (g !== 'E' && g !== 'TH' && g !== '-' && g !== '') passedCount++; }
+                let subData = getStudentSubjectData(session, className, name, sub);
+                if (subData) { 
+                    m = subData.mark; g = subData.grade; 
+                    if (g !== 'E' && g !== 'TH' && g !== '-' && g !== '') passedCount++; 
+                }
                 subResults[sub] = { m: m, g: g };
             });
             let groupChar = 'F';
@@ -1846,8 +1956,9 @@
                     if (sub === 'PENDIDIKAN MORAL' && isMuslim) return;
 
                     let g = '';
-                    if (db[session] && db[session][cls] && db[session][cls][stu] && db[session][cls][stu][sub]) {
-                        g = db[session][cls][stu][sub].grade;
+                    let subData = getStudentSubjectData(session, cls, stu, sub);
+                    if (subData) {
+                        g = subData.grade;
                     }
                     
                     let gNorm = g ? g.toUpperCase() : '';
@@ -1892,7 +2003,14 @@
         let arr = [];
         dynamicStudentData[cls].forEach(n => {
             let tot=0, c=0;
-            if(db[sess][cls][n]) { Object.entries(db[sess][cls][n]).forEach(([k,v])=>{ if(k!=='attendance' && v.mark && v.mark !== 'TH' && !isNaN(v.mark)) { tot+=parseFloat(v.mark); c++; } }); }
+            let studentKey = findStudentKey(sess, cls, n);
+            if(studentKey && db[sess][cls][studentKey]) { 
+                Object.entries(db[sess][cls][studentKey]).forEach(([k,v])=>{ 
+                    if(k!=='attendance' && v.mark && v.mark !== 'TH' && !isNaN(v.mark)) { 
+                        tot+=parseFloat(v.mark); c++; 
+                    } 
+                }); 
+            }
             arr.push({n:n, t:tot, a:c>0?(tot/c).toFixed(2):0});
         });
         arr.sort((a,b)=>b.t-a.t);
@@ -1914,12 +2032,13 @@
                     h+=`<div class="card p-4 mb-3 shadow-sm border-start border-4 border-primary"><div class="d-flex align-items-center mb-3"><i class="fas fa-user-graduate fs-3 text-primary me-3"></i><div><strong class="fs-5 text-dark">${n}</strong><br><span class="badge bg-secondary rounded-pill mt-1">${c}</span></div></div><hr class="my-2 border-light">`;
                     let foundData = false;
                     Object.keys(db).forEach(s=>{
-                        if(db[s][c] && db[s][c][n]) {
+                        let studentKey = findStudentKey(s, c, n);
+                        if(studentKey && db[s] && db[s][c] && db[s][c][studentKey]) {
                             foundData = true; h+=`<div class="mb-3 bg-light p-3 rounded"><span class="badge bg-primary mb-2 py-1 px-2 shadow-sm">${s}</span><br><div class="d-flex flex-wrap gap-2">`;
-                            Object.keys(db[s][c][n]).forEach(sb=>{ 
+                            Object.keys(db[s][c][studentKey]).forEach(sb=>{ 
                                 if(sb!=='attendance') {
-                                    let gColor = ['A','B'].includes(db[s][c][n][sb].grade) ? 'text-success' : ['C','D'].includes(db[s][c][n][sb].grade) ? 'text-warning' : 'text-danger';
-                                    h+=`<span class="border rounded px-2 py-1 bg-white small shadow-sm">${subShort[sb]||sb}: <b class="${gColor} fs-6">${db[s][c][n][sb].grade}</b></span>`; 
+                                    let gColor = ['A','B'].includes(db[s][c][studentKey][sb].grade) ? 'text-success' : ['C','D'].includes(db[s][c][studentKey][sb].grade) ? 'text-warning' : 'text-danger';
+                                    h+=`<span class="border rounded px-2 py-1 bg-white small shadow-sm">${subShort[sb]||sb}: <b class="${gColor} fs-6">${db[s][c][studentKey][sb].grade}</b></span>`; 
                                 }
                             });
                             h+= `</div></div>`;
@@ -2070,7 +2189,7 @@
                 textEl.innerText = text;
                 box.classList.remove('hidden');
             } else {
-                box.box.classList.add('hidden');
+                box.classList.add('hidden');
             }
         }
     }
