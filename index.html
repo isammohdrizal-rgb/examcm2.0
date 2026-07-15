@@ -1,0 +1,2216 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistem Pengurusan Sekolah (SJKC CHENG MING)</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <!-- Chart.js CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body { background-color: #f0f4f8; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        
+        /* -- ANIMASI BACKGROUND LOGIN -- */
+        #loginOverlay { 
+            position: fixed; top: 0; left: 0; width: 100%; height: 100vh; 
+            background: linear-gradient(-45deg, #1e3c72, #2a5298, #00C9FF, #92FE9D); 
+            background-size: 400% 400%; 
+            animation: gradientBG 15s ease infinite; 
+            z-index: 9999; display: flex; justify-content: center; align-items: center; overflow: hidden; 
+        }
+        @keyframes gradientBG { 
+            0% { background-position: 0% 50%; } 
+            50% { background-position: 100% 50%; } 
+            100% { background-position: 0% 50%; } 
+        }
+        .circles { position: absolute; top: 0; left: 0; width: 100%; height: 100%; overflow: hidden; margin: 0; padding: 0; z-index: 0; }
+        .circles li { position: absolute; display: block; list-style: none; width: 20px; height: 20px; background: rgba(255, 255, 255, 0.15); animation: animate 25s linear infinite; bottom: -150px; }
+        .circles li:nth-child(1) { left: 25%; width: 80px; height: 80px; animation-delay: 0s; }
+        .circles li:nth-child(2) { left: 10%; width: 20px; height: 20px; animation-delay: 2s; animation-duration: 12s; }
+        .circles li:nth-child(3) { left: 70%; width: 20px; height: 20px; animation-delay: 4s; }
+        .circles li:nth-child(4) { left: 40%; width: 60px; height: 60px; animation-delay: 0s; animation-duration: 18s; }
+        .circles li:nth-child(5) { left: 65%; width: 20px; height: 20px; animation-delay: 0s; }
+        .circles li:nth-child(6) { left: 75%; width: 110px; height: 110px; animation-delay: 3s; }
+        .circles li:nth-child(7) { left: 35%; width: 150px; height: 150px; animation-delay: 7s; }
+        .circles li:nth-child(8) { left: 50%; width: 25px; height: 25px; animation-delay: 15s; animation-duration: 45s; }
+        .circles li:nth-child(9) { left: 20%; width: 15px; height: 15px; animation-delay: 2s; animation-duration: 35s; }
+        .circles li:nth-child(10) { left: 85%; width: 150px; height: 150px; animation-delay: 0s; animation-duration: 11s; }
+        @keyframes animate { 
+            0% { transform: translateY(0) rotate(0deg); opacity: 1; border-radius: 0; } 
+            100% { transform: translateY(-1000px) rotate(720deg); opacity: 0; border-radius: 50%; } 
+        }
+        
+        /* -- REKAAN LOGIN BOX (SPLIT DESIGN) -- */
+        .login-card-split { display: flex; flex-direction: row; width: 850px; max-width: 95%; background: #fff; border-radius: 20px; overflow: hidden; box-shadow: 0 20px 50px rgba(0,0,0,0.3); z-index: 1; min-height: 500px; }
+        .login-left { flex: 5; background: linear-gradient(135deg, #0052D4, #4364F7); padding: 40px; color: white; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; position: relative; overflow: hidden; }
+        .login-left .shape { position: absolute; border-radius: 50%; background: rgba(255, 255, 255, 0.1); }
+        .login-left .shape-1 { width: 350px; height: 350px; top: -120px; left: -120px; }
+        .login-left .shape-2 { width: 200px; height: 200px; bottom: -50px; right: -50px; }
+        .login-left .shape-3 { width: 100px; height: 100px; bottom: 20%; left: -20px; background: rgba(255, 255, 255, 0.05); }
+        .login-right { flex: 6; padding: 40px 50px; background: #fff; display: flex; flex-direction: column; justify-content: center; overflow-y: auto; max-height: 100vh; }
+        @media (max-width: 768px) { .login-card-split { flex-direction: column; width: 450px; min-height: auto; } .login-left { padding: 40px 20px; } .login-right { padding: 40px 30px; } .login-left .shape-1 { width: 200px; height: 200px; } }
+        
+        /* -- REKAAN DALAMAN (DASHBOARD & APP) -- */
+        #mainApp { display: none; } 
+        
+        /* Sidebar Baru (Gelap Sikit & Ada Animasi) */
+        .sidebar { background: linear-gradient(180deg, #0c2646 0%, #1b4b8a 100%); min-height: 100vh; color: white; box-shadow: 4px 0 25px rgba(0,0,0,0.15); z-index: 10; padding-top: 20px; position: relative; overflow: hidden; }
+        .sidebar-shapes { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none; }
+        .sidebar-shapes i { position: absolute; color: rgba(255, 255, 255, 0.06); font-size: 1.5rem; animation: floatEdu linear infinite; bottom: -50px; }
+        @keyframes floatEdu { 0% { transform: translateY(0) rotate(0deg); opacity: 0; } 10% { opacity: 1; } 90% { opacity: 1; } 100% { transform: translateY(-120vh) rotate(360deg); opacity: 0; } }
+        .sidebar-shapes i:nth-child(1) { left: 15%; animation-duration: 18s; animation-delay: 0s; font-size: 2rem; }
+        .sidebar-shapes i:nth-child(2) { left: 85%; animation-duration: 22s; animation-delay: 3s; font-size: 1.2rem; }
+        .sidebar-shapes i:nth-child(3) { left: 45%; animation-duration: 25s; animation-delay: 1s; font-size: 1.8rem; }
+        .sidebar-shapes i:nth-child(4) { left: 70%; animation-duration: 15s; animation-delay: 5s; font-size: 1.5rem; }
+        .sidebar-shapes i:nth-child(5) { left: 25%; animation-duration: 20s; animation-delay: 8s; font-size: 2.2rem; }
+        .sidebar-shapes i:nth-child(6) { left: 60%; animation-duration: 19s; animation-delay: 12s; font-size: 1.4rem; }
+        .sidebar-shapes i:nth-child(7) { left: 10%; animation-duration: 24s; animation-delay: 15s; font-size: 1.6rem; }
+        .sidebar-shapes i:nth-child(8) { left: 80%; animation-duration: 17s; animation-delay: 10s; font-size: 1.9rem; }
+
+        .nav-link { color: rgba(255,255,255,0.7); cursor: pointer; border-radius: 12px; margin: 4px 10px; padding: 12px 15px; transition: all 0.3s ease; position: relative; z-index: 2; }
+        .nav-link:hover { background-color: rgba(255,255,255,0.15); color: white; transform: translateX(5px); }
+        .nav-link.active { background-color: white; color: #1b4b8a !important; font-weight: bold; box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
+        .nav-link.active .cn-text { color: #6c757d !important; }
+        .sidebar hr { border-color: rgba(255,255,255,0.2); margin: 20px 15px; position: relative; z-index: 2; }
+        
+        .card { border-radius: 18px; border: none; box-shadow: 0 8px 25px rgba(0,0,0,0.03); margin-bottom: 20px; transition: transform 0.3s ease; position: relative; z-index: 2; }
+        .card:hover { box-shadow: 0 12px 30px rgba(0,0,0,0.05); }
+        .stat-card { border-radius: 18px; border: none; color: white; position: relative; overflow: hidden; box-shadow: 0 10px 20px rgba(0,0,0,0.08); transition: transform 0.3s ease; }
+        .stat-card:hover { transform: translateY(-5px); box-shadow: 0 15px 30px rgba(0,0,0,0.15); }
+        .stat-blue { background: linear-gradient(135deg, #0052D4, #4364F7); } .stat-green { background: linear-gradient(135deg, #11998e, #38ef7d); } .stat-cyan { background: linear-gradient(135deg, #00c6ff, #0072ff); }
+        .stat-card::after { content: ''; position: absolute; top: -20px; right: -20px; width: 120px; height: 120px; background: rgba(255,255,255,0.15); border-radius: 50%; }
+        .stat-card::before { content: ''; position: absolute; bottom: -30px; right: 40px; width: 80px; height: 80px; background: rgba(255,255,255,0.1); border-radius: 50%; }
+        
+        .form-control, .form-select, .input-group-text { border-radius: 10px; border: 1px solid #dee2e6; }
+        .form-control:focus, .form-select:focus { box-shadow: 0 0 0 0.25rem rgba(0, 82, 212, 0.15); border-color: #0052D4; }
+        .btn { border-radius: 10px; font-weight: 500; transition: all 0.3s ease; }
+        .btn-primary { background: linear-gradient(135deg, #0052D4, #4364F7); border: none; }
+        .btn-primary:hover { background: linear-gradient(135deg, #0044b3, #3655d4); box-shadow: 0 5px 15px rgba(0,82,212,0.3); transform: translateY(-2px); }
+        .btn-success { background: linear-gradient(135deg, #11998e, #38ef7d); border: none; }
+        .btn-danger { background: linear-gradient(135deg, #ff416c, #ff4b2b); border: none; }
+        
+        .table-dark th { background-color: #0c2646 !important; color: white !important; border-color: #1b4b8a !important; }
+        .table-custom-border { border-radius: 15px; overflow: hidden; border: 1px solid #e0e0e0; }
+
+        .grade-box { font-weight: bold; padding: 2px 6px; border-radius: 6px; text-align: center; color: white; font-size: 0.85em; display: inline-block; min-width: 30px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        .g-A { background-color: #28a745; } .g-B { background-color: #17a2b8; } .g-C { background-color: #ffc107; color: black; } .g-D { background-color: #fd7e14; } .g-E { background-color: #dc3545; } .g-TH { background-color: #6c757d; }
+        .hc-tov { background-color: #f1f3f5; color: black; } .hc-u1 { background-color: #e3f2fd; color: black; } .hc-oti1 { background-color: #fff3e0; color: black; } .hc-u2 { background-color: #e8f5e9; color: black; } .hc-oti2 { background-color: #fce4ec; color: black; } .hc-etr { background-color: #f3e5f5; color: black; }
+        .hidden { display: none !important; }
+        .cn-text { display: block; font-size: 0.9em; font-weight: normal; opacity: 0.85; line-height: 1.2; margin-top: 2px; }
+        .cn-nav-text { margin-left: 32px; opacity: 0.7; } 
+
+        .custom-scrollbar::-webkit-scrollbar { width: 6px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: #f1f1f1; border-radius: 4px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #c1c1c1; border-radius: 4px; }
+        
+        @keyframes shakeAnimation { 0%, 100% { transform: translateX(0); } 20%, 60% { transform: translateX(-5px); } 40%, 80% { transform: translateX(5px); } }
+        .input-error { border: 2px solid #dc3545 !important; background-color: #f8d7da !important; animation: shakeAnimation 0.4s ease-in-out; }
+        
+        .sig-spacer { height: 60px; }
+        
+        /* GARISAN TANDATANGAN BARU */
+        .sig-line { border-top: 1px solid black; width: 150px; margin: 40px auto 5px auto; }
+
+        @media print {
+            @page { margin: 10mm; } /* FORCE MINIMAL MARGIN ON A4 */
+            .no-print { display: none !important; } .sidebar { display: none !important; }
+            .main-content { width: 100% !important; margin: 0 !important; padding: 0 !important; }
+            #loginOverlay { display: none !important; } #mainApp { display: block !important; }
+            body { background-color: white; font-size: 11pt !important; } 
+            .card { box-shadow: none; border: none; }
+            body > * { display: none; } #mainApp { display: block; }
+            .container-fluid { padding: 0; } .row { margin: 0; } .col-md-10 { width: 100%; max-width: 100%; flex: 0 0 100%; padding: 0; }
+            .content-section { display: none; } .content-section:not(.hidden) { display: block; }
+            #reportCardPreview { display: block !important; position: absolute; top: 0; left: 0; width: 100%; }
+            #printTarget, #printOverallTarget { border: none !important; padding: 0 !important; }
+            .table-responsive { overflow: visible !important; } 
+            input[type="text"].form-control { border: none !important; background: transparent !important; padding: 0 !important; box-shadow: none !important; outline: none !important; }
+            .table-dark th { background-color: #212529 !important; color: white !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+            .hc-tov { background-color: #e2e3e5 !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; } .hc-u1 { background-color: #d1e7dd !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; } .hc-oti1 { background-color: #f8d7da !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; } .hc-u2 { background-color: #cff4fc !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; } .hc-oti2 { background-color: #fff3cd !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; } .hc-etr { background-color: #cfe2ff !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+            .grade-box { -webkit-print-color-adjust: exact; print-color-adjust: exact; box-shadow: none; }
+            
+            /* -- TETAPAN KHAS UNTUK FIT 1 PAGE MASA PRINT (REPORT CARD) -- */
+            #printTarget .table td, #printTarget .table th { padding: 2px 4px !important; font-size: 0.85rem !important; }
+            #printTarget .rc-header { padding-bottom: 5px !important; margin-bottom: 5px !important; }
+            #printTarget .rc-header h3 { font-size: 1.2rem !important; margin-bottom: 0 !important; }
+            #printTarget .rc-header h5 { font-size: 0.9rem !important; margin-top: 0 !important; }
+            #printTarget .rc-header img { width: 75px !important; max-width: 75px !important; margin-right: 15px !important; }
+            #printTarget .rc-info-table { margin-bottom: 5px !important; font-size: 0.85rem !important; }
+            #printTarget .mt-4 { margin-top: 10px !important; }
+            #printTarget .col-6 .table td { padding: 1px 4px !important; font-size: 0.85rem !important; }
+            
+            /* PEMBESARAN KHAS: Membesarkan tulisan Cina di dalam header h5 bagi mengelakkan kekaburan semasa print */
+            #printTarget .rc-header h5 span { font-size: 1.35rem !important; font-weight: bold !important; color: #000000 !important; }
+            
+            /* PENGELASAN DI BAWAH: MENYEDIAKAN RUANG MENCOP YANG LEBIH BESAR & MEMBAWA BLOK TANDATANGAN KE BAWAH LEBIH SEDIKIT */
+            #printTarget .rc-signature { margin-top: 60px !important; padding-top: 0 !important; }
+            #printTarget .sig-spacer { height: 55px !important; } /* Memberikan lebih ruang menegak untuk meletakkan cop */
+            #printTarget .cn-text { font-size: 0.75em !important; margin-top: 1px !important; }
+            
+            /* -- TETAPAN KHAS UNTUK FIT 1 PAGE BAGI LAPORAN PENGELOMPOKAN -- */
+            #groupingResult .table td, #groupingResult .table th { padding: 1px 4px !important; font-size: 0.72rem !important; line-height: 1.1 !important; }
+            #groupingResult .table-secondary td { padding: 2px 4px !important; font-size: 0.75rem !important; font-weight: bold !important; }
+            #groupingResult h4 { font-size: 1.1rem !important; margin-bottom: 2px !important; }
+            #groupingResult h5 { font-size: 0.8rem !important; margin-top: 0px !important; margin-bottom: 8px !important; }
+            
+            /* NILAI DIKEMASKINI: Ditenggelamkan ke bawah dari sempadan jadual serta diberi jarak menegak yang selesa untuk meletakkan cop rasmi/tandatangan */
+            #groupingResult .signature-box { margin-top: 40px !important; page-break-inside: avoid; break-inside: avoid; }
+            #groupingResult .signature-box p { margin-bottom: 2px !important; font-size: 0.72rem !important; line-height: 1.2 !important; }
+            #groupingResult .sig-line { border-top: 1px solid black; width: 130px; margin: 45px auto 3px auto !important; }
+            #groupingResult .cn-text { font-size: 0.65em !important; margin-top: 0px !important; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- GLOBAL LOADER OVERLAY -->
+<div id="globalLoader" class="hidden" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(255, 255, 255, 0.75); z-index: 10000; display: flex; flex-direction: column; justify-content: center; align-items: center;">
+    <div class="spinner-border text-primary" role="status" style="width: 3.5rem; height: 3.5rem;"></div>
+    <h5 class="fw-bold text-dark mt-3" id="loaderMessage">Sila tunggu sebentar...</h5>
+</div>
+
+<div id="loginOverlay">
+    <ul class="circles">
+        <li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li>
+    </ul>
+    <div class="login-card-split shadow-lg">
+        <!-- BAHAGIAN KIRI (BIRU) -->
+        <div class="login-left">
+            <div class="shape shape-1"></div><div class="shape shape-2"></div><div class="shape shape-3"></div>
+            <div style="z-index: 2; position: relative;">
+                <img src="https://i.postimg.cc/63gD9WdB/LOGO-BARU.jpg" alt="Logo SJKC Cheng Ming" style="width: 100px; height: auto; border-radius: 12px; margin-bottom: 15px; box-shadow: 0 8px 20px rgba(0,0,0,0.3);">
+                <h3 class="fw-bold mb-0 text-white" style="letter-spacing: 1px;">SJKC CHENG MING</h3>
+                <span class="cn-text text-white-50 d-block mb-3 fw-bold" style="font-size: 1.1em;">正明华小</span>
+                <hr style="width: 60%; margin: 0 auto 15px auto; border-color: rgba(255,255,255,0.5);">
+                <h6 class="mb-0 fw-bold text-white lh-base">SISTEM PENGURUSAN<br>PEPERIKSAAN</h6>
+                <span class="cn-text text-white-50 mt-1 d-block" style="font-size: 0.85em;">考试 management system</span>
+                
+                <!-- KOTAK PENGUMUMAN DI BAHAGIAN KIRI (BIRU) -->
+                <div id="loginAnnouncementBox" class="mt-4 p-3 hidden" style="background: rgba(255, 255, 255, 0.15); border-radius: 12px; border: 1px solid rgba(255, 255, 255, 0.25); text-align: left; max-width: 320px; margin: 20px auto 0 auto; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
+                    <div class="d-flex align-items-center mb-1">
+                        <i class="fas fa-bullhorn text-warning fs-5 me-2 animate-bounce"></i>
+                        <strong class="text-white small">PENGUMUMAN / 公告 :</strong>
+                    </div>
+                    <div id="loginAnnouncementText" class="text-white small fw-bold mt-1" style="white-space: pre-wrap; line-height: 1.4; font-size: 0.85rem;"></div>
+                </div>
+            </div>
+        </div>
+        <!-- BAHAGIAN KANAN (PUTIH) -->
+        <div class="login-right">
+            <div class="mb-4 text-center text-md-start">
+                <h2 class="fw-bold mb-1 text-dark">Sila Log Masuk</h2>
+                <p class="text-muted mb-0 cn-text" style="font-size: 1.1em;">请登录</p>
+            </div>
+            
+            <div class="mb-3">
+                <label class="form-label fw-bold text-dark small mb-1">ID Pengguna <span class="text-muted cn-text d-inline ms-1">用户 ID</span></label>
+                <div class="input-group">
+                    <span class="input-group-text bg-light border-0 text-muted px-3" style="border-radius: 8px 0 0 8px;"><i class="fas fa-user"></i></span>
+                    <input type="text" id="usernameInput" class="form-control bg-light border-0 py-2" placeholder="Masukkan ID (输入用户 ID)" style="border-radius: 0 8px 8px 0;">
+                </div>
+            </div>
+            <div class="mb-4">
+                <label class="form-label fw-bold text-dark small mb-1">Kata Laluan <span class="text-muted cn-text d-inline ms-1">密码</span></label>
+                <div class="input-group">
+                    <span class="input-group-text bg-light border-0 text-muted px-3" style="border-radius: 8px 0 0 8px;"><i class="fas fa-lock"></i></span>
+                    <input type="password" id="passwordInput" class="form-control bg-light border-0 py-2" placeholder="Masukkan Kata Laluan (请输入密码)" style="border-radius: 0 8px 8px 0;">
+                </div>
+            </div>
+            <button class="btn btn-primary w-100 mb-3 d-flex flex-column align-items-center justify-content-center py-2 shadow-sm" onclick="performLogin()" style="border-radius: 8px; background: #0052D4; border: none;">
+                <span class="fw-bold" style="font-size: 1.1em; letter-spacing: 1px;">MASUK</span><small style="font-size: 0.85em; font-weight: normal; opacity: 0.9;">登录</small>
+            </button>
+            <div id="loginError" class="alert alert-danger hidden text-center p-2 small mb-0" style="border-radius: 8px;">ID atau Kata Laluan Salah!</div>
+            <div class="text-center text-muted mt-4" style="font-size: 0.8em; margin-top: auto;">Sebarang aduan hubungi Unit ICT</div>
+        </div>
+    </div>
+</div>
+
+<div class="container-fluid" id="mainApp">
+    <div class="row">
+        <!-- SIDEBAR BARU -->
+        <div class="col-md-2 sidebar px-2 no-print">
+            
+            <div class="sidebar-shapes">
+                <i class="fas fa-pencil-alt"></i><i class="fas fa-book"></i><i class="fas fa-divide"></i><i class="fas fa-plus"></i><i class="fas fa-ruler-combined"></i><i class="fas fa-minus"></i><i class="fas fa-square-root-alt"></i><i class="fas fa-calculator"></i>
+            </div>
+            
+            <div style="position: relative; z-index: 2;">
+                <div class="d-flex align-items-center mb-4 px-3 mt-3">
+                    <div class="bg-white rounded p-1 me-3 shadow-sm d-flex justify-content-center align-items-center" style="width: 50px; height: 50px; flex-shrink: 0;">
+                        <img src="https://i.postimg.cc/63gD9WdB/LOGO-BARU.jpg" alt="Logo" style="max-width: 100%; height: auto; border-radius: 5px;">
+                    </div>
+                    <div>
+                        <h6 class="mb-0 fw-bold text-white lh-1">SJKC CHENG MING</h6>
+                        <small class="text-white-50 cn-text mt-1" style="font-size: 0.75rem;">正明华小</small>
+                    </div>
+                </div>
+                <div class="px-3 mb-4">
+                    <label class="small text-white-50 fw-bold mb-2 d-block" style="letter-spacing: 0.5px;">SESI PERTANDINGAN</label>
+                    <select id="sessionSelect" class="form-select form-select-sm shadow-sm border-0 fw-bold text-dark" style="background-color: rgba(255,255,255,0.95); border-radius: 8px; height: 35px;" onchange="loadData()">
+                        <option value="" disabled>-- HEADCOUNT --</option>
+                        <option value="TOV">TOV (Take Off Value)</option>
+                        <option value="OTI 1">OTI 1 (Target 1)</option>
+                        <option value="OTI 2">OTI 2 (Target 2)</option>
+                        <option value="ETR">ETR (Target Akhir)</option>
+                        <option value="" disabled>-- UJIAN SEBENAR --</option>
+                        <option value="PERTANDINGAN AKADEMIK 1 2026">PERTANDINGAN AKADEMIK 1 2026 (2026年学术比赛（一）)</option>
+                        <option value="PERTANDINGAN AKADEMIK 2 2026">PERTANDINGAN AKADEMIK 2 2026 (2026年学术比赛（二）)</option>
+                    </select>
+                </div>
+                <ul class="nav flex-column">
+                    <li class="nav-item"><a class="nav-link active" onclick="showSection('dashboard')"><i class="fas fa-home me-2"></i> Utama <span class="cn-text cn-nav-text">主页</span></a></li>
+                    <li class="nav-item"><a class="nav-link" onclick="showSection('inputMarks')"><i class="fas fa-edit me-2"></i> Isi Markah <span class="cn-text cn-nav-text">输入分数</span></a></li>
+                    <li class="nav-item"><a class="nav-link" onclick="showSection('headcount')"><i class="fas fa-chart-line me-2"></i> Isi & Analisis Headcount <span class="cn-text cn-nav-text">学生成绩预算</span></a></li>
+                    <li class="nav-item"><a class="nav-link" onclick="showSection('overallMarks')"><i class="fas fa-clipboard-list me-2"></i> Markah Keseluruhan <span class="cn-text cn-nav-text">班级整体成绩</span></a></li>
+                    <li class="nav-item"><a class="nav-link" onclick="showSection('reportCard')"><i class="fas fa-id-card me-2"></i> Kad Pelaporan <span class="cn-text cn-nav-text">成绩报告单</span></a></li>
+                    <li class="nav-item"><a class="nav-link" onclick="showSection('grouping')"><i class="fas fa-users me-2"></i> Pengelompokan <span class="cn-text cn-nav-text">成绩归类表</span></a></li>
+                    <li class="nav-item"><a class="nav-link" onclick="showSection('postMortem')"><i class="fas fa-file-contract me-2"></i> Post Mortem <span class="cn-text cn-nav-text">改进报告</span></a></li>
+                    <li class="nav-item"><a class="nav-link" onclick="showSection('ranking')"><i class="fas fa-trophy me-2"></i> Ranking Kelas <span class="cn-text cn-nav-text">班级排名</span></a></li>
+                    <li class="nav-item"><a class="nav-link" onclick="showSection('search')"><i class="fas fa-search me-2"></i> Carian Murid <span class="cn-text cn-nav-text">学生搜索</span></a></li>
+                    <hr>
+                    <!-- LOG MASUK PORTAL ADMIN -->
+                    <li class="nav-item">
+                        <a class="nav-link text-warning" onclick="openAdminLogin()"><i class="fas fa-user-shield me-2"></i> Urusan Admin <span class="cn-text cn-nav-text text-warning">管理员</span></a>
+                    </li>
+                </ul>
+                <hr>
+                <div class="px-3 pb-4">
+                    <p class="small text-white-50 fw-bold mb-2" style="letter-spacing: 0.5px;">PENGURUSAN DATA</p>
+                    <button class="btn btn-sm w-100 mb-2 fw-bold" style="background: rgba(255,255,255,0.2); color: white;" onclick="exportData()"><i class="fas fa-download me-1"></i> Simpan Backup</button>
+                    <input type="file" id="importFile" class="hidden" accept=".json" onchange="importData(this)">
+                    <button class="btn btn-sm btn-outline-light w-100 fw-bold border-0 bg-transparent text-start px-0 mt-2" onclick="logout()"><i class="fas fa-sign-out-alt me-2"></i> Keluar Sistem</button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-10 p-4 main-content">
+            <!-- UTAMA (DASHBOARD) -->
+            <div id="dashboard" class="content-section">
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <div><h2 class="fw-bold text-dark mb-0">Paparan Utama</h2><span class="cn-text text-muted fs-6 mt-1">主界面</span></div>
+                    <div class="bg-white rounded-pill px-4 py-2 shadow-sm border"><i class="far fa-calendar-alt text-primary me-2"></i><span id="currentSessionDisplay" class="fw-bold text-dark small"></span></div>
+                </div>
+                
+                <div class="row g-3">
+                    <div class="col-md-4">
+                        <div class="stat-card stat-blue p-4 h-100 d-flex flex-column justify-content-between">
+                            <div><h5 class="fw-bold mb-1">Jumlah Murid</h5><span class="cn-text text-white-50">学生人数</span></div>
+                            <h1 id="totalStudents" class="mt-4 mb-0 fw-bold" style="font-size: 3.5rem; text-shadow: 2px 2px 4px rgba(0,0,0,0.2);">0</h1>
+                            <i class="fas fa-users" style="position: absolute; right: 20px; bottom: 20px; font-size: 5rem; opacity: 0.2; transform: rotate(-10deg);"></i>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="stat-card stat-green p-4 h-100 d-flex flex-column justify-content-between">
+                            <div><h5 class="fw-bold mb-1">Kelas Terlibat</h5><span class="cn-text text-white-50">参与班级</span></div>
+                            <h1 class="mt-4 mb-0 fw-bold" style="font-size: 3.5rem; text-shadow: 2px 2px 4px rgba(0,0,0,0.2);">6</h1>
+                            <i class="fas fa-chalkboard-teacher" style="position: absolute; right: 20px; bottom: 20px; font-size: 5rem; opacity: 0.2; transform: rotate(-10deg);"></i>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="stat-card stat-cyan p-4 h-100 d-flex flex-column justify-content-between">
+                            <div><h5 class="fw-bold mb-1">Jumlah Subjek</h5><span class="cn-text text-white-50">科目</span></div>
+                            <h1 class="mt-4 mb-0 fw-bold" style="font-size: 3.5rem; text-shadow: 2px 2px 4px rgba(0,0,0,0.2);">12</h1>
+                            <i class="fas fa-book-open" style="position: absolute; right: 20px; bottom: 20px; font-size: 5rem; opacity: 0.2; transform: rotate(-10deg);"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row mt-4 g-3">
+                    <div class="col-md-8">
+                        <div class="card p-4 h-100">
+                            <h5 class="fw-bold text-dark"><i class="fas fa-chart-bar me-2 text-primary"></i> Analisis Perbandingan (PA 1 vs PA 2) <br><span class="cn-text text-muted fs-6 d-inline-block mt-1" style="margin-left: 30px;">成绩对比 analysis</span></h5>
+                            <div style="height: 300px; width: 100%; position: relative; mt-3">
+                                <canvas id="comparisonChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card p-4 h-100">
+                            <h5 class="fw-bold text-success"><i class="fas fa-arrow-trend-up me-2"></i> Peningkatan Cemerlang <br><span class="cn-text text-muted fs-6 d-inline-block mt-1" style="margin-left: 30px;">成绩进步 student list</span></h5>
+                            <small class="text-muted mb-3 border-bottom pb-2">Top peningkatan jumlah markah keseluruhan</small>
+                            <div id="improvementList" class="custom-scrollbar" style="max-height: 250px; overflow-y: auto; padding-right:5px;">
+                                <div class="text-center text-muted mt-4"><i class="fas fa-spinner fa-spin mb-2"></i><br>Memuatkan data...</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row mt-4 g-3">
+                    <div class="col-md-8">
+                        <div class="card p-4 h-100">
+                            <h5 class="fw-bold text-dark"><i class="fas fa-ranking-star me-2 text-warning"></i> Ringkasan Prestasi Kelas <br><span class="cn-text text-muted fs-6 d-inline-block mt-1" style="margin-left: 30px;">班级表现总结</span></h5>
+                            <div class="table-responsive mt-3 table-custom-border">
+                                <table class="table table-sm table-hover text-center align-middle mb-0" style="font-size:0.95rem;">
+                                    <thead class="table-dark">
+                                        <tr>
+                                            <th width="25%" class="py-3">Kelas <br><span class="cn-text text-white-50">班级</span></th>
+                                            <th width="25%" class="py-3">Purata PA1 <br><span class="cn-text text-white-50">PA1 平均</span></th>
+                                            <th width="25%" class="py-3">Purata PA2 <br><span class="cn-text text-white-50">PA2 平均</span></th>
+                                            <th width="25%" class="py-3">Beza (+/-) <br><span class="cn-text text-white-50">差异</span></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="classPerformanceTable" class="bg-white">
+                                        <tr><td colspan="4" class="text-muted py-4">Memuatkan data...</td></tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- KAD STATUS PENGISIAN SEMASA DENGAN PILIHAN BUTANG PA1 & PA2 -->
+                    <div class="col-md-4">
+                        <div class="card p-4 h-100 border-top border-4 border-info">
+                            <div class="d-flex justify-content-between align-items-start mb-2">
+                                <div>
+                                    <h5 class="fw-bold text-dark mb-0"><i class="fas fa-check-circle me-2 text-info"></i> Status Pengisian Semasa</h5>
+                                    <span class="cn-text text-muted fs-6 mt-1">当前学期的填写状态</span>
+                                </div>
+                                <div class="btn-group btn-group-sm" role="group" aria-label="Sesi Status">
+                                    <button type="button" class="btn btn-primary btn-sm px-3 fw-bold active" id="btnStatusPA1" onclick="changeStatusSession('PERTANDINGAN AKADEMIK 1 2026')">PA1</button>
+                                    <button type="button" class="btn btn-outline-primary btn-sm px-3 fw-bold" id="btnStatusPA2" onclick="changeStatusSession('PERTANDINGAN AKADEMIK 2 2026')">PA2</button>
+                                </div>
+                            </div>
+                            <div id="fillStatusList" class="mt-3 custom-scrollbar" style="max-height: 250px; overflow-y: auto; padding-right: 5px;"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ISI MARKAH -->
+            <div id="inputMarks" class="content-section hidden">
+                <h2 class="fw-bold text-dark mb-1">Pengisian Markah</h2>
+                <span class="cn-text text-muted fs-5 mb-4">分数填写</span>
+                
+                <div class="alert alert-primary shadow-sm border-0 d-flex align-items-center mb-4">
+                    <i class="fas fa-info-circle fs-4 me-3"></i> 
+                    <div>Sesi Pengisian Semasa: <strong><span id="inputSessionDisplay"></span></strong></div>
+                </div>
+                
+                <div class="card p-4 mb-4 no-print">
+                    <div class="row g-3">
+                        <div class="col-md-4">
+                            <label class="fw-bold small text-muted mb-1">Pilih Kelas</label>
+                            <select id="classSelect" class="form-select border-0 bg-light" onchange="loadStudentList()">
+                                <option value="">-- Sila Pilih --</option>
+                                <option value="TAHUN 1">TAHUN 1</option>
+                                <option value="TAHUN 2">TAHUN 2</option>
+                                <option value="TAHUN 3">TAHUN 3</option>
+                                <option value="TAHUN 4">TAHUN 4</option>
+                                <option value="TAHUN 5">TAHUN 5</option>
+                                <option value="TAHUN 6">TAHUN 6</option>
+                            </select>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="fw-bold small text-muted mb-1">Pilih Subjek</label>
+                            <select id="subjectSelect" class="form-select border-0 bg-light" onchange="renderMarkSheet()" disabled></select>
+                        </div>
+                        <div class="col-md-4 d-flex align-items-end gap-2">
+                            <button class="btn btn-warning text-white w-50 py-2 shadow-sm fw-bold" onclick="saveDraftMarks()">
+                                <i class="fas fa-edit me-1"></i> SIMPAN DRAFT
+                            </button>
+                            <button class="btn btn-primary w-50 py-2 shadow-sm fw-bold" onclick="submitFinalMarks()">
+                                <i class="fas fa-paper-plane me-1"></i> HANTAR
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div id="markSheetArea" class="card p-4 hidden">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h5 id="sheetTitle" class="fw-bold text-primary mb-0">Senarai Nama</h5>
+                        <div id="markSheetStatusIndicator"></div>
+                    </div>
+                    <div class="table-responsive table-custom-border">
+                        <table class="table table-bordered table-striped table-hover mb-0">
+                            <thead class="table-dark text-center align-middle">
+                                <tr><th style="width: 5%">No</th><th class="text-start">Nama Murid</th><th style="width: 15%">Markah <br><span class="cn-text text-white-50">分数</span></th><th style="width: 10%">Gred <br><span class="cn-text text-white-50">等级</span></th></tr>
+                            </thead>
+                            <tbody id="studentTableBody" class="bg-white"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- MARKAH KESELURUHAN KELAS -->
+            <div id="overallMarks" class="content-section hidden">
+                <h2 class="fw-bold text-dark mb-1 no-print">Markah Keseluruhan Kelas</h2>
+                <span class="cn-text text-muted fs-5 mb-4 no-print">班级整体成绩</span>
+                
+                <div class="card p-4 mb-4 no-print">
+                    <div class="row g-3">
+                        <div class="col-md-4">
+                            <label class="fw-bold small text-muted mb-1">Pilih Kelas</label>
+                            <select id="overallClassSelect" class="form-select border-0 bg-light" onchange="generateOverallMarks()">
+                                <option value="">-- Sila Pilih --</option><option value="TAHUN 1">TAHUN 1</option><option value="TAHUN 2">TAHUN 2</option><option value="TAHUN 3">TAHUN 3</option><option value="TAHUN 4">TAHUN 4</option><option value="TAHUN 5">TAHUN 5</option><option value="TAHUN 6">TAHUN 6</option>
+                            </select>
+                        </div>
+                        <div class="col-md-4 d-flex align-items-end">
+                            <button class="btn btn-danger w-100 py-2 shadow-sm" onclick="printOverallMarksPDF()"><i class="fas fa-print me-2"></i> CETAK PDF</button>
+                        </div>
+                    </div>
+                </div>
+                <div id="overallMarksResult" class="card p-4 hidden border-0 shadow-sm"></div>
+            </div>
+
+            <!-- KAD PELAPORAN -->
+            <div id="reportCard" class="content-section hidden">
+                <h2 class="fw-bold text-dark mb-1 no-print">Kad Pelaporan Murid</h2>
+                <span class="cn-text text-muted fs-5 mb-4 no-print">成绩报告单</span>
+                
+                <div class="card p-4 mb-4 no-print">
+                    <div class="row g-3">
+                        <div class="col-md-3"><label class="fw-bold small text-muted mb-1">Kelas</label><select id="rcClassSelect" class="form-select border-0 bg-light" onchange="loadRCStudentList()"><option value="">-- Pilih Kelas --</option><option value="TAHUN 1">TAHUN 1</option><option value="TAHUN 2">TAHUN 2</option><option value="TAHUN 3">TAHUN 3</option><option value="TAHUN 4">TAHUN 4</option><option value="TAHUN 5">TAHUN 5</option><option value="TAHUN 6">TAHUN 6</option></select></div>
+                        <div class="col-md-4"><label class="fw-bold small text-muted mb-1">Nama Murid</label><select id="rcStudentSelect" class="form-select border-0 bg-light" onchange="loadAttendanceFromDB()" disabled><option value="">-- Pilih Murid --</option></select></div>
+                        <div class="col-md-3"><label class="fw-bold small text-muted mb-1">Kehadiran (Hadir / Jum)</label><div class="input-group"><input type="number" id="attPresent" class="form-control border-0 bg-light text-center" placeholder="Hadir"><span class="input-group-text bg-white border-0">/</span><input type="number" id="attTotal" class="form-control border-0 bg-light text-center" placeholder="Jum"></div></div>
+                        <div class="col-md-2 d-flex align-items-end"><button class="btn btn-success w-100 py-2 shadow-sm" onclick="generateReportCard()"><i class="fas fa-eye me-1"></i> Papar</button></div>
+                    </div>
+                </div>
+                
+                <div id="reportCardPreview" class="hidden card p-0 overflow-hidden">
+                    <div class="bg-light p-3 border-bottom d-flex justify-content-end no-print"><button class="btn btn-danger shadow-sm" onclick="window.print()"><i class="fas fa-print me-2"></i> CETAK PDF</button></div>
+                    <div id="printTarget" class="bg-white p-4">
+                        
+                        <div class="rc-header d-flex align-items-center mb-3 pb-2" style="border-bottom: 2px solid black;">
+                            <img src="https://i.postimg.cc/63gD9WdB/LOGO-BARU.jpg" alt="Logo" style="width: 100px !important; max-width: 100px !important; height: auto !important; margin-right: 20px;" onerror="this.style.display='none'">
+                            <div>
+                                <h3 class="fw-bold mb-0 text-uppercase text-dark" style="font-size: 1.5rem;">SJK(C) CHENG MING</h3>
+                                <h5 id="rcSessionTitle" class="mt-2 fw-bold text-uppercase mb-0 text-dark" style="font-size: 1rem;">PERTANDINGAN AKADEMIK 1 2026</h5>
+                            </div>
+                        </div>
+                        
+                        <table class="rc-info-table w-100 mb-2 text-dark"><tr><td width="15%">NAMA:</td><td width="45%" style="border-bottom: 1px dotted #000;" id="rcName" class="text-uppercase text-dark fw-bold"></td><td width="10%">KELAS:</td><td width="30%" style="border-bottom: 1px dotted #000;" id="rcClass" class="text-dark fw-bold"></td></tr></table>
+                        <table class="table table-bordered table-sm text-center align-middle mb-2" style="border-color: black;">
+                            <thead class="table-dark">
+                                <tr><th width="10%" class="py-2">BIL</th><th class="text-start py-2">MATA PELAJARAN <br><span class="cn-text text-white-50 text-start">科目</span></th><th width="15%" class="py-2">MARKAH <br><span class="cn-text text-white-50">分数</span></th><th width="10%" class="py-2">GRED <br><span class="cn-text text-white-50">等级</span></th></tr>
+                            </thead>
+                            <tbody id="rcTableBody"></tbody>
+                        </table>
+                        <div class="row mt-3">
+                            <div class="col-6">
+                                <table class="table table-bordered table-sm mb-0" style="border-color:black;">
+                                    <tr><td class="bg-light fw-bold py-1 text-dark">JUMLAH MARKAH <br><span class="cn-text text-muted">总分数</span></td><td id="rcTotalMarks" class="text-center align-middle fw-bold fs-5 text-dark"></td></tr>
+                                    <tr><td class="bg-light fw-bold py-1 text-dark">PURATA <br><span class="cn-text text-muted">平均</span></td><td id="rcAverage" class="text-center align-middle fw-bold fs-5 text-dark"></td></tr>
+                                    <tr><td class="bg-light fw-bold py-1 text-dark">KEDUDUKAN DALAM KELAS <br><span class="cn-text text-muted">班级排名</span></td><td id="rcRank" class="text-center align-middle fw-bold fs-5 text-dark"></td></tr>
+                                </table>
+                            </div>
+                            <div class="col-6">
+                                <table class="table table-bordered table-sm mb-0" style="border-color:black;">
+                                    <tr><td colspan="2" class="bg-light text-center fw-bold py-1 text-dark">REKOD KEHADIRAN <br><span class="cn-text text-muted" style="display:inline-block">出席记录</span></td></tr>
+                                    <tr><td class="fw-bold py-1 text-dark">BILANGAN HARI HADIR <br><span class="cn-text text-muted">出席天数</span></td><td id="rcAttPresent" class="text-center align-middle fs-6 text-dark">0</td></tr>
+                                    <tr><td class="fw-bold py-1 text-dark">JUMLAH HARI PERSEKOLAHAN <br><span class="cn-text text-muted">总上课天数</span></td><td id="rcAttTotal" class="text-center align-middle fs-6 text-dark">0</td></tr>
+                                    <tr><td class="bg-light fw-bold py-1 text-dark">PERATUS KEHADIRAN <br><span class="cn-text text-muted">出席率</span></td><td id="rcAttPercent" class="text-center align-middle fw-bold fs-5 text-dark">0%</td></tr>
+                                </table>
+                            </div>
+                        </div>
+                        
+                        <div class="rc-signature mt-4 pt-2" style="page-break-inside: avoid; break-inside: avoid;">
+                            <div class="row text-center text-dark">
+                                <div class="col-4">
+                                    <div class="sig-spacer"></div>
+                                    <div style="border-top: 1px solid black; width: 85%; margin: 0 auto; padding-top: 5px;">
+                                        <span id="rcGuruKelasName" class="fw-bold d-block text-uppercase" style="font-size:0.9em;"></span>
+                                        <strong style="font-size:0.9em;">GURU KELAS</strong><br>
+                                        <span class="cn-text mt-1 text-dark" style="font-size:0.8em;">班主任</span>
+                                    </div>
+                                </div>
+                                <div class="col-4">
+                                    <div class="sig-spacer"></div>
+                                    <div style="border-top: 1px solid black; width: 85%; margin: 0 auto; padding-top: 5px;">
+                                        <span class="fw-bold d-block text-uppercase" style="font-size:0.9em;">CHEE SUI FUNG</span>
+                                        <strong style="font-size:0.9em;">GURU BESAR</strong><br>
+                                        <span class="cn-text mt-1 text-dark" style="font-size:0.8em;">校长</span>
+                                    </div>
+                                </div>
+                                <div class="col-4">
+                                    <div class="sig-spacer"></div>
+                                    <div style="border-top: 1px solid black; width: 85%; margin: 0 auto; padding-top: 5px;">
+                                        <span class="fw-bold d-block text-uppercase" style="font-size:0.9em;">&nbsp;</span>
+                                        <strong style="font-size:0.9em;">IBU BAPA / PENJAGA</strong><br>
+                                        <span class="cn-text mt-1 text-dark" style="font-size:0.8em;">父母 / 监护人</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                    </div>
+                </div>
+            </div>
+
+            <!-- PENGELOMPOKAN -->
+            <div id="grouping" class="content-section hidden">
+                <h2 class="fw-bold text-dark mb-1 no-print">Sistem Pengelompokan</h2>
+                <span class="cn-text text-muted fs-5 mb-4 no-print">分组系统</span>
+                <div class="card p-4 mb-4 no-print">
+                    <div class="row g-3">
+                        <div class="col-md-4"><label class="fw-bold small text-muted mb-1">Pilih Kelas</label><select id="groupClassSelect" class="form-select border-0 bg-light"><option value="TAHUN 1">TAHUN 1</option><option value="TAHUN 2">TAHUN 2</option><option value="TAHUN 3">TAHUN 3</option><option value="TAHUN 4">TAHUN 4</option><option value="TAHUN 5">TAHUN 5</option><option value="TAHUN 6">TAHUN 6</option></select></div>
+                        <div class="col-md-4 d-flex align-items-end"><button class="btn btn-success w-100 py-2 shadow-sm" onclick="generateGrouping()"><i class="fas fa-sync me-2"></i> Jana Data</button></div>
+                        <div class="col-md-4 d-flex align-items-end"><button class="btn btn-danger w-100 py-2 shadow-sm" onclick="printGroupingPDF()"><i class="fas fa-print me-2"></i> CETAK PDF</button></div>
+                    </div>
+                </div>
+                <div id="groupingResult" class="card p-5 hidden"></div>
+            </div>
+
+            <!-- POST MORTEM -->
+            <div id="postMortem" class="content-section hidden">
+                <h2 class="fw-bold text-dark mb-1 no-print">Laporan Post Mortem / Penambahbaikan</h2>
+                <span class="cn-text text-muted fs-5 mb-4 no-print">改进与 analysis 报告</span>
+                
+                <div class="card p-4 mb-4 no-print">
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label class="fw-bold small text-muted mb-1">Pilih Subjek</label>
+                            <select id="pmSubjectSelect" class="form-select border-0 bg-light">
+                                <!-- Populated dynamically -->
+                            </select>
+                        </div>
+                        <div class="col-md-3 d-flex align-items-end">
+                            <button class="btn btn-success w-100 py-2 shadow-sm" onclick="generatePostMortem()"><i class="fas fa-sync me-2"></i> Jana Laporan</button>
+                        </div>
+                        <div class="col-md-3 d-flex align-items-end">
+                            <button class="btn btn-danger w-100 py-2 shadow-sm" onclick="printPostMortemPDF()"><i class="fas fa-print me-2"></i> CETAK PDF</button>
+                        </div>
+                    </div>
+                </div>
+                <div id="postMortemResult" class="card p-5 hidden"></div>
+            </div>
+
+            <!-- ISI & ANALISIS HEADCOUNT -->
+            <div id="headcount" class="content-section hidden">
+                <h2 class="fw-bold text-dark mb-1">Isi & Analisis Headcount</h2>
+                <span class="cn-text text-muted fs-5 mb-4">学生成绩预算</span>
+                
+                <div class="card p-4 mb-4 no-print">
+                    <div class="row g-3">
+                        <div class="col-md-3">
+                            <label class="fw-bold small text-muted mb-1">Kelas <br><span class="cn-text d-inline">选择班级</span></label>
+                            <select id="hcClassSelect" class="form-select border-0 bg-light" onchange="updateHcSubjects()"><option value="TAHUN 1">TAHUN 1</option><option value="TAHUN 2">TAHUN 2</option><option value="TAHUN 3">TAHUN 3</option><option value="TAHUN 4">TAHUN 4</option><option value="TAHUN 5">TAHUN 5</option><option value="TAHUN 6">TAHUN 6</option></select>
+                        </div>
+                        <div class="col-md-3">
+                            <label class="fw-bold small text-muted mb-1">Subjek <br><span class="cn-text d-inline">选择科目</span></label>
+                            <select id="hcSubjectSelect" class="form-select border-0 bg-light"></select>
+                        </div>
+                        <div class="col-md-2 d-flex align-items-end">
+                            <button class="btn btn-success w-100 d-flex flex-column align-items-center justify-content-center py-2 shadow-sm" onclick="generateHeadcountMatrix()">
+                                <span class="fw-bold"><i class="fas fa-table me-1"></i> Papar</span><span class="cn-text text-white-50 mt-1" style="font-size: 0.8em;">查看</span>
+                            </button>
+                        </div>
+                        <div class="col-md-3 d-flex align-items-end">
+                            <button id="btnSaveHeadcount" class="btn btn-primary w-100 d-flex flex-column align-items-center justify-content-center py-2 shadow-sm" onclick="saveHeadcountMatrix()" disabled>
+                                <span class="fw-bold"><i class="fas fa-save me-1"></i> SIMPAN</span><span class="cn-text text-white-50 mt-1" style="font-size: 0.8em;">保存成绩</span>
+                            </button>
+                        </div>
+                        <div class="col-md-1 d-flex align-items-end">
+                            <button class="btn btn-danger w-100 d-flex flex-column align-items-center justify-content-center py-2 shadow-sm" onclick="printHeadcountPDF()" title="Cetak PDF">
+                                <span class="fw-bold"><i class="fas fa-print"></i></span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div id="headcountMatrixResult" class="card p-4 hidden shadow-sm border-0"></div>
+            </div>
+
+            <!-- RANKING -->
+            <div id="ranking" class="content-section hidden">
+                <h2 class="fw-bold text-dark mb-1">Ranking Kelas</h2>
+                <span class="cn-text text-muted fs-5 mb-4">班级排名</span>
+                <div class="row mb-4 no-print"><div class="col-md-6"><select id="rankClassSelect" class="form-select border-0 bg-white shadow-sm py-2" onchange="generateRanking()"><option value="">-- Sila Pilih Kelas --</option><option value="TAHUN 1">TAHUN 1</option><option value="TAHUN 2">TAHUN 2</option><option value="TAHUN 3">TAHUN 3</option><option value="TAHUN 4">TAHUN 4</option><option value="TAHUN 5">TAHUN 5</option><option value="TAHUN 6">TAHUN 6</option></select></div></div>
+                <div id="rankingResult"></div>
+            </div>
+
+            <!-- CARIAN MURID -->
+            <div id="search" class="content-section hidden">
+                <h2 class="fw-bold text-dark mb-1">Carian Murid</h2>
+                <span class="cn-text text-muted fs-5 mb-4">学生搜索</span>
+                <div class="card p-4 mb-4 bg-white border-0 shadow-sm">
+                    <div class="input-group input-group-lg">
+                        <span class="input-group-text bg-light border-0"><i class="fas fa-search text-primary"></i></span>
+                        <input type="text" id="searchInput" class="form-control bg-light border-0" placeholder="Taip nama murid di sini...">
+                        <button class="btn btn-primary px-4 fw-bold" onclick="searchStudent()">Cari</button>
+                    </div>
+                </div>
+                <div id="searchResult"></div>
+            </div>
+
+            <!-- PANEL URUSAN & PENGURUSAN ADMIN -->
+            <div id="adminPanel" class="content-section hidden">
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <div>
+                        <h2 class="fw-bold text-dark mb-1">Urusan & Kawalan Admin</h2>
+                        <span class="cn-text text-muted fs-5">管理员控制台</span>
+                    </div>
+                    <button class="btn btn-outline-danger fw-bold rounded-pill px-4" onclick="logoutAdmin()">
+                        <i class="fas fa-sign-out-alt me-1"></i> Log Keluar Admin
+                    </button>
+                </div>
+
+                <div class="row g-3">
+                    <!-- PANEL KIRI (KAWALAN KUNCI & PAPAN PENGUMUMAN) -->
+                    <div class="col-md-4 d-flex flex-column gap-3">
+                        
+                        <div class="card p-4 border-top border-4 border-danger shadow-sm">
+                            <h5 class="fw-bold text-dark mb-3"><i class="fas fa-lock me-2 text-danger"></i> Kawalan Kunci Markah <br><span class="cn-text text-muted fs-6 mt-1">成绩输入锁</span></h5>
+                            <p class="text-muted small">Kunci atau buka fungsi pengisian markah guru mengikut sesi pertandingan akademik spesifik.</p>
+                            
+                            <!-- Lock Sesi 1 -->
+                            <div class="border rounded p-3 mb-3 bg-light">
+                                <h6 class="fw-bold text-primary mb-1">Pertandingan Akademik 1</h6>
+                                <small class="text-muted d-block mb-2">Merangkumi: PA 1, TOV & OTI 1</small>
+                                <div id="lockPA1Status" class="alert alert-success py-2 px-3 fw-bold text-center mb-2" style="border-radius:8px; font-size: 0.9rem;">
+                                    <i class="fas fa-unlock me-1"></i> DIBUKA
+                                </div>
+                                <button id="btnToggleLockPA1" class="btn btn-sm btn-danger w-100 fw-bold shadow-sm" onclick="toggleLockPA1()">
+                                    <i class="fas fa-lock me-1"></i> Kunci Sesi 1
+                                </button>
+                            </div>
+
+                            <!-- Lock Sesi 2 -->
+                            <div class="border rounded p-3 bg-light">
+                                <h6 class="fw-bold text-success mb-1">Pertandingan Akademik 2</h6>
+                                <small class="text-muted d-block mb-2">Merangkumi: PA 2, OTI 2 & ETR</small>
+                                <div id="lockPA2Status" class="alert alert-success py-2 px-3 fw-bold text-center mb-2" style="border-radius:8px; font-size: 0.9rem;">
+                                    <i class="fas fa-unlock me-1"></i> DIBUKA
+                                </div>
+                                <button id="btnToggleLockPA2" class="btn btn-sm btn-danger w-100 fw-bold shadow-sm" onclick="toggleLockPA2()">
+                                    <i class="fas fa-lock me-1"></i> Kunci Sesi 2
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- PAPAN PENGUMUMAN ADMIN -->
+                        <div class="card p-4 border-top border-4 border-warning shadow-sm">
+                            <h5 class="fw-bold text-dark mb-2"><i class="fas fa-bullhorn me-2 text-warning"></i> Papan Pengumuman <br><span class="cn-text text-muted fs-6 mt-1">公告栏</span></h5>
+                            <p class="text-muted small mb-3">Tulis pengumuman di bawah untuk dipaparkan secara langsung pada skrin log masuk utama semua peranti guru.</p>
+                            <div class="mb-3">
+                                <textarea id="adminAnnouncementText" class="form-control bg-light" rows="4" placeholder="Tulis pengumuman atau peringatan tarikh tutup di sini..."></textarea>
+                            </div>
+                            <button class="btn btn-warning text-white w-100 fw-bold shadow-sm" onclick="saveAdminAnnouncement()">
+                                <i class="fas fa-paper-plane me-1"></i> Paparkan Pengumuman
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- PANEL EDIT, TAMBAH & BUANG NAMA MURID -->
+                    <div class="col-md-8">
+                        <div class="card p-4 h-100 border-top border-4 border-primary shadow-sm">
+                            <h5 class="fw-bold text-dark mb-3"><i class="fas fa-users-cog me-2 text-primary"></i> Pengurusan Senarai Nama Murid <br><span class="cn-text text-muted fs-6 mt-1">学生名单管理</span></h5>
+                            
+                            <div class="row g-2 mb-3">
+                                <div class="col-md-6">
+                                    <label class="small fw-bold text-muted mb-1">Pilih Kelas</label>
+                                    <select id="adminClassSelect" class="form-select bg-light border-0" onchange="loadAdminStudentList()">
+                                        <option value="">-- Pilih Kelas --</option>
+                                        <option value="TAHUN 1">TAHUN 1</option>
+                                        <option value="TAHUN 2">TAHUN 2</option>
+                                        <option value="TAHUN 3">TAHUN 3</option>
+                                        <option value="TAHUN 4">TAHUN 4</option>
+                                        <option value="TAHUN 5">TAHUN 5</option>
+                                        <option value="TAHUN 6">TAHUN 6</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-6 d-flex align-items-end">
+                                    <button class="btn btn-success w-100 py-2 fw-bold" onclick="openAddStudentModal()" id="btnAddStudentBtn" disabled>
+                                        <i class="fas fa-plus-circle me-1"></i> Tambah Murid Baru
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div class="table-responsive table-custom-border">
+                                <table class="table table-bordered table-striped table-hover mb-0 text-center align-middle">
+                                    <thead class="table-dark">
+                                        <tr>
+                                            <th style="width: 10%">No</th>
+                                            <th class="text-start">Nama Murid</th>
+                                            <th style="width: 30%">Tindakan</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="adminStudentTableBody" class="bg-white">
+                                        <tr>
+                                            <td colspan="3" class="text-muted py-4">Sila pilih kelas terlebih dahulu.</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<!-- Modal Amaran Ruangan Kosong -->
+<div class="modal fade" id="emptyWarningModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-0 shadow-lg" style="border-radius: 20px;">
+            <div class="modal-header bg-danger text-white border-0" style="border-radius: 20px 20px 0 0;">
+                <h5 class="modal-title fw-bold"><i class="fas fa-exclamation-triangle me-2"></i> Ralat: Ruangan Kosong!</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body text-center p-4">
+                <div class="mb-3"><i class="fas fa-clipboard-list text-danger" style="font-size: 4rem; text-shadow: 0 5px 15px rgba(220,53,69,0.3);"></i></div>
+                <p class="fs-5 mb-2 text-dark fw-bold">Terdapat markah yang belum diisi pada murid nombor:</p>
+                <div class="bg-light border rounded-pill p-3 mb-3 mx-auto shadow-sm" style="max-width: 80%;">
+                    <h3 id="emptyRowNumbers" class="text-danger fw-bold mb-0" style="letter-spacing: 2px; word-wrap: break-word;"></h3>
+                </div>
+                <p class="text-muted small mb-0">Sila semak semula dan lengkapkan semua ruangan.<br><em>(Peringatan: Taip <strong>'TH'</strong> jika murid tidak hadir)</em></p>
+            </div>
+            <div class="modal-footer justify-content-center border-0 pb-4">
+                <button type="button" class="btn btn-secondary px-5 py-2 fw-bold rounded-pill" data-bs-dismiss="modal">Tutup & Kemas Kini</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Login Admin -->
+<div class="modal fade" id="adminLoginModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-0 shadow-lg" style="border-radius: 20px;">
+            <div class="modal-header bg-dark text-white border-0" style="border-radius: 20px 20px 0 0;">
+                <h5 class="modal-title fw-bold"><i class="fas fa-user-shield me-2"></i> Log Masuk Portal Admin</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body p-4">
+                <div class="mb-3">
+                    <label class="form-label fw-bold text-dark small">ID Pengguna Admin</label>
+                    <input type="text" id="adminUsername" class="form-control bg-light" placeholder="Masukkan ID Admin">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label fw-bold text-dark small">Kata Laluan</label>
+                    <input type="password" id="adminPassword" class="form-control bg-light" placeholder="Masukkan Kata Laluan">
+                </div>
+                <div id="adminLoginError" class="alert alert-danger p-2 small text-center hidden" style="border-radius: 8px;">ID atau Kata Laluan Admin Salah!</div>
+            </div>
+            <div class="modal-footer justify-content-center border-0 pb-4">
+                <button type="button" class="btn btn-secondary px-4 py-2 fw-bold rounded-pill" data-bs-dismiss="modal">Batal</button>
+                <button type="button" class="btn btn-dark px-4 py-2 fw-bold rounded-pill" onclick="checkAdminLogin()">Masuk <i class="fas fa-sign-in-alt ms-1"></i></button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Tambah / Edit Murid -->
+<div class="modal fade" id="studentActionModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-0 shadow-lg" style="border-radius: 20px;">
+            <div class="modal-header bg-primary text-white border-0" style="border-radius: 20px 20px 0 0;">
+                <h5 class="modal-title fw-bold" id="studentModalTitle"><i class="fas fa-user-plus me-2"></i> Tambah Murid</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body p-4">
+                <input type="hidden" id="studentActionType">
+                <input type="hidden" id="oldStudentName">
+                <div class="mb-3">
+                    <label class="form-label fw-bold text-dark small">Nama Murid (Huruf Besar & Bahasa Cina)</label>
+                    <input type="text" id="studentInputName" class="form-control bg-light text-uppercase" placeholder="CONTOH: ABIGAIL HOGAN 艾比佳">
+                </div>
+                <div class="form-check form-switch mb-3">
+                    <input class="form-check-input" type="checkbox" id="studentIsMuslim">
+                    <label class="form-check-label fw-bold text-dark small" for="studentIsMuslim">Murid Beragama Islam (Pendidikan Agama Islam)</label>
+                </div>
+            </div>
+            <div class="modal-footer justify-content-center border-0 pb-4">
+                <button type="button" class="btn btn-secondary px-4 py-2 fw-bold rounded-pill" data-bs-dismiss="modal">Batal</button>
+                <button type="button" class="btn btn-primary px-4 py-2 fw-bold rounded-pill" onclick="saveStudentAction()">Simpan <i class="fas fa-check ms-1"></i></button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    const URL_EXAM = "https://script.google.com/macros/s/AKfycbw5XBp52ul7FbYXXbZ_XjgRW7wCpIuMAGAcZH3ywYzDjpWwolC7x-bHutGXlPJMbQvoFg/exec"; 
+    const URL_EXAM_2 = "https://script.google.com/macros/s/AKfycbxt7Co492_riho0shJ9g6W12H4v9eVrnko13Fc7EQU_pjnarYq7VuTan5a2oS0ZecVvjA/exec";
+    const URL_HEADCOUNT = "https://script.google.com/macros/s/AKfycbw147JTOQkKGkwZwU3upCVa63N34AYvQGX9xlMC0m7GCa2DeEDVbsHvfqUqvMP2Z94n/exec";
+    const URL_ANNOUNCEMENT = "https://script.google.com/macros/s/AKfycbyqM41gt3FQbJNlV8PlOGmibXBNGEcqHgZ_YdCHwLKps-fPHUhJvyjS8HU1ImfogEhc/exec";
+
+    // KELAYAKAN LOG MASUK PORTAL GURU (SJKC CHENG MING)
+    const CRED_USER = "SJKCCM";
+    const CRED_PASS = "XBC@1012";
+
+    let myCompareChart = null; 
+
+    const subjects = ["BAHASA CINA", "BAHASA INGGERIS", "BAHASA MALAYSIA", "MATEMATIK", "PENDIDIKAN AGAMA ISLAM", "PENDIDIKAN MORAL", "PENDIDIKAN JASMANI DAN KESIHATAN", "PENDIDIKAN MUZIK", "PENDIDIKAN SENI VISUAL", "REKA BENTUK TEKNOLOGI", "SAINS", "SEJARAH"];
+    const coreSubjects = ["BAHASA CINA", "BAHASA MALAYSIA", "BAHASA INGGERIS", "MATEMATIK", "SAINS"];
+    
+    const subShort = {
+        "BAHASA CINA": "BC", "BAHASA INGGERIS": "BI", "BAHASA MALAYSIA": "BM",
+        "MATEMATIK": "MT", "PENDIDIKAN AGAMA ISLAM": "PAI", "PENDIDIKAN MORAL": "PM",
+        "PENDIDIKAN JASMANI DAN KESIHATAN": "PJPK", "PENDIDIKAN MUZIK": "MZ",
+        "PENDIDIKAN SENI VISUAL": "PSV", "REKA BENTUK TEKNOLOGI": "RBT",
+        "SAINS": "SN", "SEJARAH": "SEJ"
+    };
+
+    const studentData = {
+        "TAHUN 1": ["ABIGAIL HOGAN 艾比佳", "ALVIN EDWIN ALMENG 艾文", "ARYAND ARRIQINN BIN OCTOVYIANDYI 艾彦", "AVERY CHRISTEL YIH 易美丽", "CELINE LEE YEN 李妍", "CHEN YI QUAN 曾翊銓", "CHRISCY CLARE COSMAS 柯丽丝", "DEBORA ANIKIE ALEXCIUS 狄波菈", "DEJIMDINAROS MOO XIAO SHEUEN 巫晓萱", "DWAYNE ISAAC PALIKAT 邬韦文", "EABBY CHANZEL CHANBERLAN 陈琪琪", "EALVIE EVERDIN 艾薇", "ELIZ LOH SZE CHING 罗秄溱", "GRIXTON LEE BIN ABDUL HAYY 李关隼", "IVY VYONE JANUARIUS 艾玮", "MIQAILA AAIRA BINTI MAC ANDEON 艾菈", "MOHAMAD AZIZI BIN AHMAD FADZIL 阿齐治", "MUHAMMAD ISAAC ISKANDAR BIN KAMISIN 艾泽", "NAAILA ADRIAANA FO WEI YI 贺薇怡", "NUR FALISHA KHAYLA BINTI MUHAMMAD KHAIRY 法丽莎", "NURUL ZARA ZAHARA BINTI JEFFREY 扎哈拉", "QUEENCIE KING FUNG QIN 金凤勤", "RAISYA HAZIYAH BINTI MOHAMAD RASYID 拉依莎", "SHANELEY WONG 黄雪莉"],
+        "TAHUN 2": ["AARON OCONELL WELFRED 亚伦", "ALDERCY RICHELLE REPIN 艾디丝", "AMNI ANDHIKA YAP 叶迪卡", "ANGELO ADEEN AJINE 罗安泽", "CAYDEN WONG JI YUAN 王济源", "CHESTER KHOO 顾杰德", "CHLOE LIU SHIN YEE 刘欣怡", "CHRISTY CHEE ZI TING 徐紫婷", "DALTON NEIL LAZARUS 德尔den", "DARREN HO CHONG HENG 何宗恒", "DEJANTZEL MOO TECK WEI 巫德伟", "DEVONE LEE BINTI ABDUL HAYY 李可欣", "ELDEONLEE BIN ELGA 李迪恩", "ELLENNA AUDREY STEPHEN 伊丽娜", "EUXENE THAM YU QIN 谭宇芹", "EVELINA ELNI MERCO 伊韦娜", "FIONA JOHNNY 谭芷荃", "HANS JAVIER EFANDDY 汉斯", "IZZRAF ARFAKSYADZ 伊志拉", "JACQUEEN JACKSPENCE 洁可灵", "JESSE MATTHEW P ARCENA 杰西", "JONATHAN ISAAC MADIRA BAYLON 左纳den", "MCKELLEN KARL BIN MITCHEEL 麦克仁", "MUHAMMAD ARIF PUTRA 阿利夫", "MUHAMMAD FAREED QARIZH 柯利式", "MUHAMMAD FAZLEESYAH 华利士", "NORMA JANE BINTI ADAM GINDA 罗美娟", "NUR NAYYARA ASSYIFA 娜雅拉", "NUR SHELIENA BINTI ABDUL ALIY 沈丽娜", "SALLY ANN JEFF 雪莉", "WILLENA CHONG ER THONG 张尔彤"],
+        "TAHUN 3": ["AARON LIM FUNG BIN ABDULLAH 林枫", "ADKINSLEX AVNER ALEXIUS 阿夫纳", "AFEEF IQHWAN BIN ABDULLAH 艾非宜", "AIEZZANN AZZRYIEL BIN OCTOVYIANDYI 艾沾", "ALDER GABE DJ 艾得", "ALEX ZANDER JAIDDY 艾历克", "ALEXANDER YONG LI WEI 杨利伟", "ANNA ANMERRY EDMOND 李安娜", "ARSHAN MIKHAIL KANG 江艾善", "AVY CHRIST JOHN 真仪", "BELLA BETHANY LI AI 李爱", "CHLOE WONG PAU JING 王宝静", "DAYSON CHONG YUNG FOOK 张永福", "EALDY ALBERT 艾迪", "EALVIAN EVERDIN 艾文", "HAWA EYRDEENA BINTI HODHORI HA娃", "JADEN HOPE JEROME JONATHAN 周杰德", "JULIET ROSABELL JOSUE 朱莉悦", "KAYLYN ONG QIAO EN 翁巧恩", "MIA QUEENIE MARADONA 梅雅", "MUHAMMAD AFNAN BIN ERWAN 周艾南", "MUHAMMAD AISY AZKA BIN ABDUL HAADI 艾习", "MUHAMMAD ARFAN BIN ERWAN 周艾凡", "MUHAMMAD ISKANDAR BIN KAMISIN 伊卡达", "NOVA GRACE JANUARIUS 诺娃", "NUR AINN BINTI RAINOH 安拉诺", "NURUL ZARA ZULIKAH BINTI JEFFREY 朱莉卡", "OLIVER OUSTEN SIAU 萧力威", "OSWIN KING KHIN RONG 金庆荣", "RAQEF HAZREEL BIN MOHD HAFIZI 哈哲立", "SITI FAIQAH ZIHNI BINTI AHMAD FADZIL 娣菲卡", "THAI YUNG XUAN 戴雍轩", "WAFIYATUL AAISHAH BINTI SUFRIH ISAMUDIN 华菲雅"],
+        "TAHUN 4": ["ADAM LUTHFI SHAH BIN ABDULLAH 亚当", "ADRIELL DARELL AJINE 达立儿", "AIEDANN ARRSYHAD 艾尔dan", "ALEXIS CHIN WEI XIAN 陈伟显", "ALLAN KING WEN JIE 金文杰", "AMBERLY HAYVEN 安贝莉", "ANGELY RUTH BINTI ABDULLAH 安琪丽", "ANNA MICHELLE DOMINIC 安娜", "AWANGKU AEMAN ALVEE BIN AWANGKU AZWAN 艾曼", "BENIDICT ANAK MAC KELLAR 贝尼迪", "BRANDON AIDEN JOHNNY 谭官君", "CARSON CHIN ZHI HANG 陈子航", "CAYDEN EZEKIEL CAMILUS 凯登", "CHING JIE QI 詹杰錡", "DAYANG RYAMIEZA ALYA BINTI RAMZI 妲央", "DRAYOOENCHIA EDSON 戴永佳", "EMASHA ESTHER REMSLONE 艾美莎", "ESTER ELIVIANA BINTI FREDDLEY 艾丝德", "IVAN VOO JIA MING 邬家民", "JANIELLE JACKSPENCE 洁妮丽", "KEVIN SHEN CHIN PIN 冼志平", "MANDY WONG YI WEN 黄怡文", "NIKA REHAZIEL NIKA DAVEY 尼卡", "NUR ADREANA QASEH BINTI JEFFRY 艾丽娜", "NUR FAIQAH KHALEEDA BINTI MUHAMMAD KHAIRY 奴菲卡", "NURRAIHANAH MIKAYLA BINTI RAHMAT JUWANTO 雷哈娜", "PUTRI MAGFIRAH BINTI MOHD ARIFFIN 麦菲拉", "RYVEAL LEE RODRIGO GUMBEH @ GUMBIH 李维恩", "SCARLET ELEANOR ALDAWIN 丝卡乐", "SHANEVERON WONG 黄雪玟", "SHERMELLY JUDE JAIBIN 雪茗丽", "STEVE WONG JI HONG 王济泓", "ZHEE YON 志勇"],
+        "TAHUN 5": ["ABDUL HABIB HARITH BIN ABDUL SAHIDI 哈比", "ALVARO GAVRIEL WELFRED 亚伟乐", "AMANDA SHEA CYRILL YAP 叶美美", "AMYLIA BINTI KAMISIN 艾美拉", "ARFAN MIKHAIL KANG 江艾凡", "CAYLEB CHRIST MOULI 凯乐", "CLAIRE DANNYSEUS 可丽儿", "DEAN MIFZAL LIEW BIN ABDULLAH 刘迪恩", "EDRY ISAAC CHIA 谢艾德", "ELSA VIANNEY MARY SYLVESTER 艾莎", "FAHYM QUSHAIRY BIN FRANCIS 法杏", "FLORENCE MAXIMILLIAN 符洛仁", "IRFAN ARFAKSYADZ BIN MOHD JAPRI 伊凡", "JACYLEN CHEN 陈美芯", "JAYDEN NELCENT LIEW 刘杰德", "JESVENELLY ASOK 韦妮丽", "MONIE QUEENDY RUDY 莫妮", "MUHAMAD HAFEEZ RAHIM 哈菲兹", "NUR AINDREA NADIYA BINTI JOSAMIN@JASIMIN 安得拉", "NUR QHALLESHA ANAMI BINTI SAHARUL AZRIN 卡俐莎", "NUR SHAINE SEIAN BINTI ABDULLAH 郑雪莉", "NURSYAZWINA SALI BINTI ABDULLAH 莎薇娜", "RYANZACQUELL ALRICH XAVIER 莱恩", "TEY XIN YEE 郑忻颐", "YAP JI CHENG 叶济承"],
+        "TAHUN 6": ["AARON KING WEN SHENG 金文圣", "ADIB ARYAN 叶艾狄", "ALEXSSA MARADONA 艾莉莎", "AMBER ROSE 安蓓儿", "AMNI NURADRIANA HUSNA YAP 叶玉娜", "ANNABELLE MERCO 安贝拉", "ANNAMARIE SOPHIA JIMY 安娜美", "CALVIN LEE YI BIN 李毅彬", "CASSANDRA CHLOE CHRISTOPER 柯珊荙", "CHARLENE MIEA JIMMY 巧琳", "DAVIN LO KETT FUNG 罗国峰", "DEANIELL DEEANN DISIUS 德尼尔", "EALJOY ALBERT 尔齐", "EALVIANIE EVERDIN 尔妮", "ELYN HO SZE XUAN 何芝琁", "FIONNY ARVINA JOHNNY 谭芷霓", "HYERIN NIECHELL YOLEK 何灵", "IMANUEL LIONEL HIMBULAN 李诺尔", "JAYDEN CHIN TZE FENG INT_FA 陈子峰", "JAYVRYAN JUNIOR 杰莱恩", "JAZLYN ONG QIAO XUN 翁巧洵", "MAVERICK CHESTER MARK 马富利", "NEOLITTA SHAYNE SIMPLISIUS 施娴", "NOUFAL ARFAKSYADZ 诺法", "NUR AZZAHRA SOFIEA 苏菲亚", "RYNDLEE RODRIGO 仁迪", "SHARONITTA WONG 黄雪柔", "SHERYLYNIEKA DILLESEN 施尼卡", "VICKLY DEEXLEE HARWANDRI 伟特利", "WYINCHAELL AUDREY ALEXIUS 玟萱"]
+    };
+    
+    let dynamicStudentData = JSON.parse(localStorage.getItem('sistemMarkahStudentData'));
+    if (!dynamicStudentData || Object.keys(dynamicStudentData).length === 0) {
+        dynamicStudentData = JSON.parse(JSON.stringify(studentData));
+        localStorage.setItem('sistemMarkahStudentData', JSON.stringify(dynamicStudentData));
+    }
+
+    const guruKelasMap = {
+        "TAHUN 1": "LIAW SHIAU WEI",
+        "TAHUN 2": "EVYLIN YUTIS",
+        "TAHUN 3": "FONG XUE LI",
+        "TAHUN 4": "BITA EDWIN",
+        "TAHUN 5": "LO NYUK YEE",
+        "TAHUN 6": "TOW ERN LI"
+    };
+    
+    let db = {};
+    const muslimStudents = [
+        "ARYAND ARRIQINN BIN OCTOVYIANDYI 艾彦", "GRIXTON LEE BIN ABDUL HAYY 李关隼", 
+        "MIQAILA AAIRA BINTI MAC ANDEON 艾菈", "MOHAMAD AZIZI BIN AHMAD FADZIL 阿齐治", 
+        "MUHAMMAD ISAAC ISKANDAR BIN KAMISIN 艾泽", "NAAILA ADRIAANA FO WEI YI 贺薇怡", 
+        "NUR FALISHA KHAYLA BINTI MUHAMMAD KHAIRY 法丽莎", "NURUL ZARA ZAHARA BINTI JEFFREY 扎哈拉", 
+        "RAISYA HAZIYAH BINTI MOHAMAD RASYID 拉依莎", "AMNI ANDHIKA YAP 叶迪卡", 
+        "DEVONE LEE BINTI ABDUL HAYY 李可欣", "IZZRAF ARFAKSYADZ 伊志拉", 
+        "MUHAMMAD ARIF PUTRA 阿利夫", "MUHAMMAD FAREED QARIZH 柯利式", 
+        "MUHAMMAD FAZLEESYAH 华利士", "NORMA JANE BINTI ADAM GINDA 罗美娟", 
+        "NUR NAYYARA ASSYIFA 娜雅拉", "NUR SHELIENA BINTI ABDUL ALIY 沈丽娜", 
+        "AARON LIM FUNG BIN ABDULLAH 林枫", "AFEEF IQHWAN BIN ABDULLAH 艾非宜", 
+        "AIEZZANN AZZRYIEL BIN OCTOVYIANDYI 艾沾", "ARSHAN MIKHAIL KANG 江艾善", 
+        "HAWA EYRDEENA BINTI HODHORI HA娃", "MUHAMMAD AFNAN BIN ERWAN 周艾南", 
+        "MUHAMMAD AISY AZKA BIN ABDUL HAADI 艾习", "MUHAMMAD ARFAN BIN ERWAN 周艾凡", 
+        "MUHAMMAD ISKANDAR BIN KAMISIN 伊卡达", "NUR AINN BINTI RAINOH 安拉诺", 
+        "NURUL ZARA ZULIKAH BINTI JEFFREY 朱莉卡", "RAQEF HAZREEL BIN MOHD HAFIZI 哈哲立", 
+        "SITI FAIQAH ZIHNI BINTI AHMAD FADZIL 娣菲卡", "WAFIYATUL AAISHAH BINTI SUFRIH ISAMUDIN 华菲雅", 
+        "ADAM LUTHFI SHAH BIN ABDULLAH 亚当", "AIEDANN ARRSYHAD 艾尔dan", 
+        "ANGELY RUTH BINTI ABDULLAH 安琪丽", "AWANGKU AEMAN ALVEE BIN AWANGKU AZWAN 艾曼", 
+        "BENIDICT ANAK MAC KELLAR 贝尼迪", "BRANDON AIDEN JOHNNY 谭官君", 
+        "CARSON CHIN ZHI HANG 陈子航", "CAYDEN EZEKIEL CAMILUS 凯登", 
+        "CHING JIE QI 詹杰錡", "DAYANG RYAMIEZA ALYA BINTI RAMZI 妲央", 
+        "DRAYOOENCHIA EDSON 戴永佳", "EMASHA ESTHER REMSLONE 艾美莎", 
+        "ESTER ELIVIANA BINTI FREDDLEY 艾丝德", "IVAN VOO JIA MING 邬家民", 
+        "JANIELLE JACKSPENCE 洁妮丽", "KEVIN SHEN CHIN PIN 冼志平", 
+        "MANDY WONG YI WEN 黄怡文", "NIKA REHAZIEL NIKA DAVEY 尼卡", 
+        "NUR ADREANA QASEH BINTI JEFFRY 艾丽娜", "NUR FAIQAH KHALEEDA BINTI MUHAMMAD KHAIRY 奴菲卡", 
+        "NURRAIHANAH MIKAYLA BINTI RAHMAT JUWANTO 雷哈娜", "PUTRI MAGFIRAH BINTI MOHD ARIFFIN 麦菲拉", 
+        "RYVEAL LEE RODRIGO GUMBEH @ GUMBIH 李维恩", "SCARLET ELEANOR ALDAWIN 丝卡乐", 
+        "SHANEVERON WONG 黄雪玟", "SHERMELLY JUDE JAIBIN 雪茗丽", 
+        "STEVE WONG JI HONG 王济泓", "ZHEE YON 志勇",
+        "ABDUL HABIB HARITH BIN ABDUL SAHIDI 哈比", "AMYLIA BINTI KAMISIN 艾美拉",
+        "DEAN MIFZAL LIEW BIN ABDULLAH 刘迪恩", "FAHYM QUSHAIRY BIN FRANCIS 法杏",
+        "IRFAN ARFAKSYADZ BIN MOHD JAPRI 伊凡", "MUHAMAD HAFEEZ RAHIM 哈菲兹",
+        "NUR AINDREA NADIYA BINTI JOSAMIN@JASIMIN 安得拉", "NUR QHALLESHA ANAMI BINTI SAHARUL AZRIN 卡俐莎",
+        "NUR SHAINE SEIAN BINTI ABDULLAH 郑雪莉", "NURSYAZWINA SALI BINTI ABDULLAH 莎薇娜",
+        "ADIB ARYAN 叶艾狄", "AMNI NURADRIANA HUSNA YAP 叶玉娜",
+        "NOUFAL ARFAKSYADZ 诺法", "NUR AZZAHRA SOFIEA 苏菲亚"
+    ];
+
+    let statusSession = "PERTANDINGAN AKADEMIK 1 2026"; 
+
+    // FUNGSI ANIMASI LOADING OVERLAY
+    function showLoader(message = "Sila tunggu sebentar...") {
+        const loader = document.getElementById('globalLoader');
+        document.getElementById('loaderMessage').innerText = message;
+        loader.classList.remove('hidden');
+        loader.style.display = 'flex';
+    }
+    function hideLoader() {
+        const loader = document.getElementById('globalLoader');
+        loader.classList.add('hidden');
+        loader.style.display = 'none';
+    }
+
+    // SEMAK STATUS KUNCI MENGIKUT DUA SESI KHAS
+    function isMarkEntryLocked(sess, cls, sub) {
+        if (sess === "PERTANDINGAN AKADEMIK 1 2026" || sess === "TOV" || sess === "OTI 1") {
+            return localStorage.getItem('lockPA1') === 'true';
+        }
+        if (sess === "PERTANDINGAN AKADEMIK 2 2026" || sess === "OTI 2" || sess === "ETR") {
+            return localStorage.getItem('lockPA2') === 'true';
+        }
+        return false;
+    }
+
+    function getSubjectsForClass(className) {
+        if (["TAHUN 1", "TAHUN 2", "TAHUN 3"].includes(className)) { return subjects.filter(s => s !== "SEJARAH" && s !== "REKA BENTUK TEKNOLOGI"); }
+        return subjects;
+    }
+
+    function updateHcSubjects() {
+        const c = document.getElementById('hcClassSelect').value || "TAHUN 1";
+        const s = document.getElementById('hcSubjectSelect');
+        const currentSub = s.value;
+        s.innerHTML = '';
+        getSubjectsForClass(c).forEach(sub => {
+            let o = document.createElement('option'); o.value = sub; o.innerText = sub;
+            if (sub === currentSub) o.selected = true;
+            s.appendChild(o);
+        });
+        document.getElementById('headcountMatrixResult').classList.add('hidden');
+        document.getElementById('btnSaveHeadcount').disabled = true;
+    }
+
+    window.onload = function() {
+        if(sessionStorage.getItem('isLoggedIn') === 'true') {
+            document.getElementById('loginOverlay').style.display = 'none';
+            document.getElementById('mainApp').style.display = 'block';
+        }
+        
+        // Paparkan status kunci lokal
+        updateGlobalLockUI();
+
+        // Paparkan pengumuman semasa
+        showLoginAnnouncement();
+
+        updateHcSubjects();
+        const popSub = (id) => {
+            const el = document.getElementById(id);
+            if(el) { el.innerHTML = ''; subjects.forEach(s => { let o = document.createElement('option'); o.value=s; o.innerText=s; el.appendChild(o); }); }
+        };
+        popSub('subjectSelect');
+        popSub('pmSubjectSelect'); 
+
+        Promise.all([
+            fetch(URL_EXAM).then(r => r.json()).catch(e => ({})),
+            fetch(URL_EXAM_2).then(r => r.json()).catch(e => ({})),
+            fetch(URL_HEADCOUNT).then(r => r.json()).catch(e => ({}))
+        ]).then(([examData, examData2, headcountData]) => {
+            db = { ...examData, ...examData2, ...headcountData }; 
+            localStorage.setItem('sistemMarkahDB', JSON.stringify(db));
+            
+            let count = 0; Object.keys(dynamicStudentData).forEach(k => count += dynamicStudentData[k].length);
+            document.getElementById('totalStudents').innerText = count;
+            
+            loadFillStatus();
+            
+            // Mengekalkan halaman admin jika di-reload
+            if (sessionStorage.getItem('isAdminLoggedIn') === 'true') {
+                showSection('adminPanel');
+            }
+        }).catch(e => {
+            const savedData = localStorage.getItem('sistemMarkahDB');
+            if (savedData) db = JSON.parse(savedData);
+            loadFillStatus();
+        });
+
+        document.getElementById('sessionSelect').value = "PERTANDINGAN AKADEMIK 1 2026";
+        loadData();
+    };
+
+    function performLogin() {
+        if(document.getElementById('usernameInput').value === CRED_USER && document.getElementById('passwordInput').value === CRED_PASS) {
+            sessionStorage.setItem('isLoggedIn', 'true');
+            document.getElementById('loginOverlay').style.display = 'none';
+            document.getElementById('mainApp').style.display = 'block';
+        } else { document.getElementById('loginError').classList.remove('hidden'); }
+    }
+    function logout() { sessionStorage.removeItem('isLoggedIn'); location.reload(); }
+
+    function showSection(id) {
+        showLoader("Memuatkan halaman...");
+        setTimeout(() => {
+            document.querySelectorAll('.content-section').forEach(sec => sec.classList.add('hidden'));
+            document.querySelectorAll('.nav-link').forEach(nav => nav.classList.remove('active'));
+            document.getElementById(id).classList.remove('hidden');
+            
+            const links = document.querySelectorAll('.sidebar .nav-link');
+            links.forEach(link => {
+                if (link.getAttribute('onclick') && link.getAttribute('onclick').includes(id)) {
+                    link.classList.add('active');
+                }
+            });
+
+            if(id === 'dashboard') { loadFillStatus(); }
+            
+            if(id === 'adminPanel') {
+                updateGlobalLockUI();
+                
+                // Paparkan teks pengumuman sedia ada di textarea admin
+                let curAnn = localStorage.getItem('adminAnnouncement') || "";
+                document.getElementById('adminAnnouncementText').value = curAnn;
+            }
+
+            hideLoader();
+        }, 300);
+    }
+    
+    function getCurrentSession() { return document.getElementById('sessionSelect').value; }
+    
+    function loadData() { 
+        const s = getCurrentSession();
+        let displaySess = s;
+        if (s === "PERTANDINGAN AKADEMIK 1 2026") displaySess = "PERTANDINGAN AKADEMIK 1 2026 <br><span class='d-inline-block mt-1 fw-bold text-dark' style='font-size:1.3rem;'>2026年学术比赛（一）</span>";
+        if (s === "PERTANDINGAN AKADEMIK 2 2026") displaySess = "PERTANDINGAN AKADEMIK 2 2026 <br><span class='d-inline-block mt-1 fw-bold text-dark' style='font-size:1.3rem;'>2026年学术比赛（二）</span>";
+        
+        document.getElementById('currentSessionDisplay').innerHTML = displaySess;
+        document.getElementById('inputSessionDisplay').innerHTML = displaySess;
+
+        if (s === "PERTANDINGAN AKADEMIK 1 2026" || s === "PERTANDINGAN AKADEMIK 2 2026") {
+            statusSession = s;
+        }
+
+        loadFillStatus();
+        
+        if(!document.getElementById('overallMarks').classList.contains('hidden')) {
+            generateOverallMarks();
+        }
+    }
+
+    function loadDashboardAnalytics() {
+        const sess1 = "PERTANDINGAN AKADEMIK 1 2026";
+        const sess2 = "PERTANDINGAN AKADEMIK 2 2026";
+        
+        let classLabels = ["TAHUN 1", "TAHUN 2", "TAHUN 3", "TAHUN 4", "TAHUN 5", "TAHUN 6"];
+        let pa1Data = []; let pa2Data = []; let improvementList = []; let classTableHTML = '';
+        
+        classLabels.forEach(cls => {
+            let classSum1 = 0, classCount1 = 0; let classSum2 = 0, classCount2 = 0;
+            
+            if (dynamicStudentData[cls]) {
+                dynamicStudentData[cls].forEach(stu => {
+                    let stuSum1 = 0, stuSum2 = 0; let hasPA1 = false, hasPA2 = false;
+                    
+                    if(db[sess1] && db[sess1][cls] && db[sess1][cls][stu]) {
+                        Object.entries(db[sess1][cls][stu]).forEach(([sub, data]) => {
+                            if(sub !== 'attendance' && data.mark !== 'TH' && !isNaN(data.mark) && data.mark !== '') {
+                                let m = parseFloat(data.mark); stuSum1 += m; classSum1 += m; classCount1++; hasPA1 = true;
+                            }
+                        });
+                    }
+                    
+                    if(db[sess2] && db[sess2][cls] && db[sess2][cls][stu]) {
+                        Object.entries(db[sess2][cls][stu]).forEach(([sub, data]) => {
+                            if(sub !== 'attendance' && data.mark !== 'TH' && !isNaN(data.mark) && data.mark !== '') {
+                                let m = parseFloat(data.mark); stuSum2 += m; classSum2 += m; classCount2++; hasPA2 = true;
+                            }
+                        });
+                    }
+                    
+                    if(hasPA1 && hasPA2 && stuSum2 > stuSum1) {
+                        improvementList.push({ name: stu, cls: cls, diff: stuSum2 - stuSum1, pa1: stuSum1, pa2: stuSum2 });
+                    }
+                });
+            }
+            
+            let avg1 = classCount1 > 0 ? (classSum1 / classCount1) : 0;
+            let avg2 = classCount2 > 0 ? (classSum2 / classCount2) : 0;
+            pa1Data.push(avg1.toFixed(2)); pa2Data.push(avg2.toFixed(2));
+            
+            let diffClass = avg2 - avg1; let diffBadge = '';
+            if (avg1 === 0 && avg2 === 0) { diffBadge = `<span class="badge bg-secondary rounded-pill shadow-sm">Tiada Data</span>`; } 
+            else if (diffClass > 0) { diffBadge = `<span class="badge bg-success rounded-pill shadow-sm">+${diffClass.toFixed(2)}</span>`; } 
+            else if (diffClass < 0) { diffBadge = `<span class="badge bg-danger rounded-pill shadow-sm">${diffClass.toFixed(2)}</span>`; } 
+            else { diffBadge = `<span class="badge bg-secondary rounded-pill shadow-sm">0.00</span>`; }
+            
+            classTableHTML += `<tr><td class="fw-bold text-start ps-4">${cls}</td><td>${avg1 > 0 ? avg1.toFixed(2) : '-'}</td><td>${avg2 > 0 ? avg2.toFixed(2) : '-'}</td><td>${diffBadge}</td></tr>`;
+        });
+        
+        const canvasEl = document.getElementById('comparisonChart');
+        if (canvasEl) {
+            const ctx = canvasEl.getContext('2d');
+            if(myCompareChart) { myCompareChart.destroy(); }
+            myCompareChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: classLabels,
+                    datasets: [
+                        { label: 'Purata PA 1', data: pa1Data, backgroundColor: 'rgba(54, 162, 235, 0.8)', borderColor: 'rgba(54, 162, 235, 1)', borderWidth: 0, borderRadius: 6 },
+                        { label: 'Purata PA 2', data: pa2Data, backgroundColor: 'rgba(46, 204, 113, 0.8)', borderColor: 'rgba(46, 204, 113, 1)', borderWidth: 0, borderRadius: 6 }
+                    ]
+                },
+                options: { responsive: true, maintainAspectRatio: false, scales: { y: { beginAtZero: true, max: 100 } }, plugins: { legend: { position: 'top' } } }
+            });
+        }
+        
+        const tb = document.getElementById('classPerformanceTable');
+        if(tb) tb.innerHTML = classTableHTML;
+        
+        const listDiv = document.getElementById('improvementList');
+        if(listDiv) {
+            improvementList.sort((a, b) => b.diff - a.diff);
+            let impHTML = '<ul class="list-group list-group-flush">';
+            if(improvementList.length === 0) {
+                impHTML += `<div class="text-center text-muted mt-4"><i class="fas fa-info-circle mb-3 text-success" style="font-size:3em; opacity:0.5;"></i><br>Belum ada data peningkatan direkodkan.</div>`;
+            } else {
+                improvementList.slice(0, 20).forEach((item, index) => {
+                    let isTop = index < 3;
+                    let badgeClass = isTop ? 'bg-warning text-dark border border-warning' : 'bg-success';
+                    let icon = isTop ? '<i class="fas fa-trophy text-warning me-2 fs-5"></i>' : `<span class="badge bg-secondary me-2 rounded-circle">${index+1}</span>`;
+                    let nameDisplay = item.name;
+                    if(nameDisplay.length > 22) nameDisplay = nameDisplay.substring(0, 22) + '...';
+                    
+                    impHTML += `<li class="list-group-item d-flex justify-content-between align-items-center px-2 py-3 border-bottom border-light">
+                        <div class="text-truncate" style="max-width: 75%;" title="${item.name}">${icon}<strong class="text-dark">${nameDisplay}</strong> <br><small class="text-muted ms-4">${item.cls} (PA1: ${item.pa1} <i class="fas fa-arrow-right mx-1 text-black-50" style="font-size:0.8em"></i> PA2: ${item.pa2})</small></div>
+                        <span class="badge ${badgeClass} rounded-pill shadow-sm py-2 px-3 fs-6">+${item.diff}</span>
+                    </li>`;
+                });
+            }
+            impHTML += '</ul>';
+            listDiv.innerHTML = impHTML;
+        }
+    }
+    
+    async function saveHeadcountMatrix() {
+        let emptyRows = new Set();
+        const hcInputs = document.querySelectorAll('#headcountMatrixResult input[type="text"]');
+        hcInputs.forEach(inp => {
+            inp.classList.remove('input-error');
+            if(inp.value.trim() === '') { emptyRows.add(inp.getAttribute('data-row')); inp.classList.add('input-error'); }
+        });
+
+        if(emptyRows.size > 0) {
+            let rowArray = Array.from(emptyRows).sort((a, b) => a - b);
+            document.getElementById('emptyRowNumbers').innerText = rowArray.join(', ');
+            var myModal = new bootstrap.Modal(document.getElementById('emptyWarningModal')); myModal.show();
+            return;
+        }
+
+        const cls = document.getElementById('hcClassSelect').value;
+        const sub = document.getElementById('hcSubjectSelect').value;
+        
+        const sessions = [ { id: 'TOV', isHC: true }, { id: 'PERTANDINGAN AKADEMIK 1 2026', isHC: false }, { id: 'OTI 1', isHC: true }, { id: 'PERTANDINGAN AKADEMIK 2 2026', isHC: false }, { id: 'OTI 2', isHC: true }, { id: 'ETR', isHC: true } ];
+
+        const btn = document.getElementById('btnSaveHeadcount');
+        const originalText = btn.innerHTML;
+        btn.innerHTML = '<i class="fas fa-spinner fa-spin mt-1 mb-1" style="font-size:1.5rem"></i><span style="font-size:0.8em">Menyimpan...</span>';
+        btn.disabled = true;
+
+        let hasError = false;
+
+        for (let sessInfo of sessions) {
+            let targetURL;
+            if (sessInfo.isHC) {
+                targetURL = URL_HEADCOUNT;
+            } else if (sessInfo.id === "PERTANDINGAN AKADEMIK 2 2026") {
+                targetURL = URL_EXAM_2;
+            } else {
+                targetURL = URL_EXAM; 
+            }
+
+            let marksArray = [];
+            
+            let inputs = document.querySelectorAll(`.hc-input-${sessInfo.id.replace(/\s+/g, '-')}`);
+            inputs.forEach(inp => {
+                let n = inp.getAttribute('data-name');
+                let v = inp.value.toUpperCase();
+                if(v !== '') marksArray.push({ name: n, mark: v });
+            });
+
+            let payload = { session: sessInfo.id, className: cls, subject: sub, marks: marksArray };
+            
+            try {
+                let response = await fetch(targetURL, { method: 'POST', body: JSON.stringify(payload) });
+                let resData = await response.json();
+                if(resData.result !== 'success') hasError = true;
+            } catch(e) { hasError = true; }
+        }
+
+        btn.innerHTML = originalText; btn.disabled = false;
+        if(hasError) { alert("Terdapat ralat pada sesetengah sesi. Pastikan sambungan internet stabil dan cuba lagi."); } 
+        else { alert("Berjaya! Kesemua markah 6 sesi (Headcount + Peperiksaan) telah disimpan ke pangkalan data."); }
+        loadFillStatus();
+    }
+    
+    function updateHcRowSilent(session, cls, name, sub, value, gid) {
+        let g = calculateGrade(value);
+        let el = document.getElementById(gid);
+        if (el) {
+            el.innerText = g || '';
+            el.className = 'grade-box ' + (g ? 'g-'+g : '');
+        }
+        if(!db[session]) db[session]={};
+        if(!db[session][cls]) db[session][cls]={};
+        if(!db[session][cls][name]) db[session][cls][name]={};
+        
+        if(value !== '') {
+            db[session][cls][name][sub] = { mark: value, grade: g };
+        } else {
+            if(db[session][cls][name][sub]) delete db[session][cls][name][sub];
+        }
+        localStorage.setItem('sistemMarkahDB', JSON.stringify(db));
+    }
+
+    function updateHcRow(inp, session, cls, name, sub, gid, displayCount) {
+        inp.classList.remove('input-error'); 
+        
+        let v = inp.value.toUpperCase();
+        if(v !== 'T' && v !== 'TH' && isNaN(v) && v !== '') { inp.value=''; return; }
+        if(v > 100) { inp.value = 100; v = 100; }
+        
+        let g = calculateGrade(v);
+        let el = document.getElementById(gid); 
+        if (el) {
+            el.innerText = g || ''; el.className = 'grade-box ' + (g ? 'g-'+g : '');
+        }
+        
+        if(!db[session]) db[session]={}; if(!db[session][cls]) db[session][cls]={}; if(!db[session][cls][name]) db[session][cls][name]={};
+        
+        if(v !== '') { db[session][cls][name][sub] = { mark: v, grade: g }; } 
+        else { if(db[session][cls][name][sub]) delete db[session][cls][name][sub]; }
+        localStorage.setItem('sistemMarkahDB', JSON.stringify(db));
+
+        if (session === 'TOV' || session === 'ETR') {
+            let tovVal = document.getElementById(`hc-input-${displayCount}-TOV`).value;
+            let etrVal = document.getElementById(`hc-input-${displayCount}-ETR`).value;
+            
+            let tovNum = parseFloat(tovVal);
+            let etrNum = parseFloat(etrVal);
+            
+            let oti1Input = document.getElementById(`hc-input-${displayCount}-OTI-1`);
+            let oti2Input = document.getElementById(`hc-input-${displayCount}-OTI-2`);
+
+            if (!isNaN(tovNum) && !isNaN(etrNum)) {
+                let oti1Num = tovNum + (etrNum - tovNum) * 0.5;
+                let oti1Str = Number(oti1Num.toFixed(1)).toString();
+                
+                let oti2Num = tovNum + (etrNum - tovNum) * 0.75;
+                let oti2Str = Number(oti2Num.toFixed(1)).toString();
+                
+                if (oti1Input) {
+                    oti1Input.value = oti1Str;
+                    updateHcRowSilent('OTI 1', cls, name, sub, oti1Str, `hc-g-${displayCount}-2`);
+                }
+                if (oti2Input) {
+                    oti2Input.value = oti2Str;
+                    updateHcRowSilent('OTI 2', cls, name, sub, oti2Str, `hc-g-${displayCount}-4`);
+                }
+            } else {
+                if (oti1Input) {
+                    oti1Input.value = '';
+                    updateHcRowSilent('OTI 1', cls, name, sub, '', `hc-g-${displayCount}-2`);
+                }
+                if (oti2Input) {
+                    oti2Input.value = '';
+                    updateHcRowSilent('OTI 2', cls, name, sub, '', `hc-g-${displayCount}-4`);
+                }
+            }
+        }
+    }
+    
+    function generateHeadcountMatrix() {
+        const cls = document.getElementById('hcClassSelect').value;
+        const sub = document.getElementById('hcSubjectSelect').value;
+        const div = document.getElementById('headcountMatrixResult');
+        const btnSave = document.getElementById('btnSaveHeadcount');
+        
+        const cols = [
+            {id:'TOV', short:'TOV', c:'hc-tov'}, {id:'PERTANDINGAN AKADEMIK 1 2026', short:'UJIAN 1', c:'hc-u1'},
+            {id:'OTI 1', short:'OTI 1', c:'hc-oti1'}, {id:'PERTANDINGAN AKADEMIK 2 2026', short:'UJIAN 2', c:'hc-u2'},
+            {id:'OTI 2', short:'OTI 2', c:'hc-oti2'}, {id:'ETR', short:'ETR', c:'hc-etr'}
+        ];
+        
+        div.classList.remove('hidden'); 
+        
+        let isLocked = isMarkEntryLocked('TOV', cls, sub); 
+        if (isLocked) {
+            btnSave.disabled = true;
+            btnSave.innerHTML = `<span class="fw-bold"><i class="fas fa-lock me-1"></i> DIKUNCI</span>`;
+        } else {
+            btnSave.disabled = false;
+            btnSave.innerHTML = `<span class="fw-bold"><i class="fas fa-save me-1"></i> SIMPAN</span><span class="cn-text text-white-50 mt-1" style="font-size: 0.8em;">保存成绩</span>`;
+        }
+        
+        let h = `
+        <div class="d-none d-print-flex justify-content-between align-items-center mb-4 pb-3" style="border-bottom: 2px solid black;">
+            <div class="text-start">
+                <h4 class="fw-bold m-0 text-uppercase">SEKOLAH : SJKC CHENG MING KENINGAU</h4>
+                <h4 class="fw-bold m-0 text-uppercase">ANALISIS DAN TARGET MATA PELAJARAN</h4>
+                <div class="mt-4"><h6 class="m-0 text-uppercase">MATA PELAJARAN : ${sub}</h6><h6 class="m-0 text-uppercase">KELAS : ${cls}</h6></div>
+            </div>
+            <div><img src="https://i.postimg.cc/63gD9WdB/LOGO-BARU.jpg" alt="Logo" style="width: 100px !important; max-width: 100px !important; height: auto;"></div>
+        </div>
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h5 class="mb-0 fw-bold d-print-none text-uppercase text-primary"><i class="fas fa-edit me-2"></i> Pengisian: ${sub} (${cls})</h5>
+            ${isLocked ? `<span class="badge bg-danger px-3 py-2 fs-6"><i class="fas fa-lock me-1"></i> DIKUNCI</span>` : `<span class="badge bg-success px-3 py-2 fs-6"><i class="fas fa-unlock me-1"></i> BOLEH DIEDIT</span>`}
+        </div>
+        <div class="table-responsive table-custom-border"><table class="table table-bordered table-sm text-center align-middle mb-0" style="font-size:0.85rem; border-color:#dee2e6;">
+        <thead class="table-dark"><tr><th rowspan="2" style="width: 4%">BIL</th><th rowspan="2" class="text-start" style="width: 30%">NAMA</th>${cols.map(c=>`<th colspan="2" class="${c.c} text-dark bg-opacity-75">${c.short}</th>`).join('')}</tr>
+        <tr>${cols.map(c=>`<th style="width: 5%" class="${c.c} text-dark bg-opacity-50">M</th><th style="width: 6%" class="${c.c} text-dark bg-opacity-50">G</th>`).join('')}</tr></thead><tbody class="bg-white">`;
+        
+        let displayCount = 0;
+        dynamicStudentData[cls].forEach((n) => {
+            let isMuslim = muslimStudents.includes(n);
+            if (sub === 'PENDIDIKAN AGAMA ISLAM' && !isMuslim) return;
+            if (sub === 'PENDIDIKAN MORAL' && isMuslim) return;
+            
+            displayCount++;
+            h += `<tr><td class="fw-bold text-muted">${displayCount}</td><td class="text-start text-uppercase fw-bold text-dark" style="font-size:0.8rem">${n}</td>`;
+            cols.forEach((c, cIndex) => {
+                let m = '', g = '';
+                if(db[c.id] && db[c.id][cls] && db[c.id][cls][n] && db[c.id][cls][n][sub]) { m = db[c.id][cls][n][sub].mark; g = db[c.id][cls][n][sub].grade; }
+                let safeSessionId = c.id.replace(/\s+/g, '-');
+                let inputId = `hc-input-${displayCount}-${safeSessionId}`;
+                let gradeSpanId = `hc-g-${displayCount}-${cIndex}`;
+                
+                let inputStyle = '';
+                if (safeSessionId === 'OTI-1' || safeSessionId === 'OTI-2') {
+                    inputStyle = 'readonly style="width:100%; height:32px; font-size:0.95rem; border:none; border-radius:0; background-color:rgba(220, 224, 230, 0.4); pointer-events:none;"';
+                } else if (isLocked) {
+                    inputStyle = 'disabled style="width:100%; height:32px; font-size:0.95rem; border:none; border-radius:0; background-color:#e9ecef; cursor:not-allowed;"';
+                } else {
+                    inputStyle = 'style="width:100%; height:32px; font-size:0.95rem; border:none; border-radius:0; background:transparent;"';
+                }
+                
+                h += `<td class="${c.c} bg-opacity-25" style="padding:0;">
+                        <input type="text" id="${inputId}" class="form-control text-center mx-auto px-1 py-0 hc-input-${safeSessionId} fw-bold text-primary" ${inputStyle} value="${m}" data-name="${n}" data-row="${displayCount}" oninput="updateHcRow(this, '${c.id}', '${cls}', '${n}', '${sub}', '${gradeSpanId}', ${displayCount})">
+                      </td>
+                      <td class="${c.c} bg-opacity-25"><span id="${gradeSpanId}" class="grade-box ${g!==''?'g-'+g:''}">${g}</span></td>`;
+            });
+            h += `</tr>`;
+        });
+        div.innerHTML = h + `</tbody></table></div>`;
+    }
+
+    function printHeadcountPDF() { 
+        if(document.getElementById('headcountMatrixResult').classList.contains('hidden')) { alert('Sila jana paparan headcount terlebih dahulu.\n请先生成成绩预算表。'); return; }
+        window.print(); 
+    }
+
+    function saveDraftMarks() {
+        const sess = getCurrentSession();
+        const cls = document.getElementById('classSelect').value;
+        const sub = document.getElementById('subjectSelect').value;
+        if (!cls || !sub) { alert("Sila pilih kelas dan subjek terlebih dahulu."); return; }
+        
+        if (isMarkEntryLocked(sess, cls, sub)) {
+            alert("Ralat: Bahagian pengisian markah bagi subjek ini telah dikunci oleh Admin.");
+            return;
+        }
+
+        showLoader("Menyimpan draft markah guru...");
+        
+        const inputs = document.querySelectorAll('#studentTableBody input');
+        if(!db[sess]) db[sess]={}; if(!db[sess][cls]) db[sess][cls]={};
+        
+        inputs.forEach(inp => {
+            let n = inp.getAttribute('data-name');
+            let v = inp.value.toUpperCase();
+            if(!db[sess][cls][n]) db[sess][cls][n] = {};
+            if(v!=='') { db[sess][cls][n][sub] = { mark: v, grade: calculateGrade(v) }; } 
+            else { if(db[sess][cls][n][sub]) delete db[sess][cls][n][sub]; }
+        });
+        localStorage.setItem('sistemMarkahDB', JSON.stringify(db));
+        
+        setTimeout(() => {
+            hideLoader();
+            alert("Berjaya! Draft markah disimpan lokal secara selamat.");
+            loadFillStatus();
+        }, 500);
+    }
+
+    function submitFinalMarks() {
+        const sess = getCurrentSession();
+        const cls = document.getElementById('classSelect').value;
+        const sub = document.getElementById('subjectSelect').value;
+        if (!cls || !sub) { alert("Sila pilih kelas dan subjek."); return; }
+
+        if (isMarkEntryLocked(sess, cls, sub)) {
+            alert("Ralat: Bahagian pengisian markah telah dikunci oleh Admin.");
+            return;
+        }
+
+        let emptyRows = new Set();
+        const inputs = document.querySelectorAll('#studentTableBody input');
+        inputs.forEach(inp => {
+            inp.classList.remove('input-error');
+            if(inp.value.trim() === '') { emptyRows.add(inp.getAttribute('data-row')); inp.classList.add('input-error'); }
+        });
+
+        if(emptyRows.size > 0) {
+            let rowArray = Array.from(emptyRows).sort((a, b) => a - b);
+            document.getElementById('emptyRowNumbers').innerText = rowArray.join(', ');
+            var myModal = new bootstrap.Modal(document.getElementById('emptyWarningModal')); myModal.show(); return; 
+        }
+
+        if (!confirm("Adakah anda pasti mahu menghantar markah? Rekod akan dihantar ke Google Sheets secara terus.")) return;
+
+        showLoader("Menghantar muktamad ke pangkalan data...");
+
+        let marksArray = [];
+        inputs.forEach(inp => {
+            let n = inp.getAttribute('data-name');
+            let v = inp.value.toUpperCase();
+            if(!db[sess][cls][n]) db[sess][cls][n] = {};
+            if(v!=='') { 
+                db[sess][cls][n][sub] = { mark: v, grade: calculateGrade(v) }; 
+                marksArray.push({ name: n, mark: v }); 
+            }
+        });
+        localStorage.setItem('sistemMarkahDB', JSON.stringify(db));
+
+        let targetURL = URL_EXAM;
+        if (["TOV", "OTI 1", "OTI 2", "ETR"].includes(sess)) {
+            targetURL = URL_HEADCOUNT;
+        } else if (sess === "PERTANDINGAN AKADEMIK 2 2026") {
+            targetURL = URL_EXAM_2;
+        }
+
+        const payload = { session: sess, className: cls, subject: sub, marks: marksArray };
+        fetch(targetURL, { method: 'POST', body: JSON.stringify(payload) })
+        .then(res => res.json())
+        .then(data => {
+            hideLoader();
+            if(data.result === 'success') {
+                alert('Tahniah! Markah berjaya dihantar ke fail pangkalan data Google Sheets.');
+                renderMarkSheet();
+                loadFillStatus();
+            } else {
+                alert('Ralat semasa menghantar: ' + data.error);
+            }
+        }).catch(err => {
+            hideLoader();
+            alert('TIADA INTERNET. Sila periksa sambungan wifi / talian internet bagi menghantar data.');
+        });
+    }
+
+    function saveMarks() {
+        saveDraftMarks();
+    }
+
+    function loadStudentList() {
+        const c = document.getElementById('classSelect').value;
+        const s = document.getElementById('subjectSelect');
+        if(c) { 
+            showLoader("Memuatkan subjek...");
+            setTimeout(() => {
+                s.disabled = false; 
+                const currentSub = s.value; 
+                s.innerHTML = '';
+                getSubjectsForClass(c).forEach(sub => { 
+                    let o = document.createElement('option'); 
+                    o.value = sub; 
+                    o.innerText = sub; 
+                    if (sub === currentSub) o.selected = true; 
+                    s.appendChild(o); 
+                });
+                renderMarkSheet();
+                hideLoader();
+            }, 250);
+        } else { 
+            s.disabled = true; 
+            s.innerHTML = ''; 
+            document.getElementById('markSheetArea').classList.add('hidden'); 
+        }
+    }
+
+    function renderMarkSheet() {
+        const sess = getCurrentSession(), cls = document.getElementById('classSelect').value, sub = document.getElementById('subjectSelect').value;
+        document.getElementById('markSheetArea').classList.remove('hidden');
+        document.getElementById('sheetTitle').innerText = `${cls} - ${sub}`;
+        
+        const isLocked = isMarkEntryLocked(sess, cls, sub);
+        const statusInd = document.getElementById('markSheetStatusIndicator');
+        if (isLocked) {
+            statusInd.innerHTML = `<span class="badge bg-danger fs-6 px-3 py-2"><i class="fas fa-lock me-1"></i> DIKUNCI</span>`;
+        } else {
+            statusInd.innerHTML = `<span class="badge bg-success fs-6 px-3 py-2"><i class="fas fa-unlock me-1"></i> BOLEH KEY IN</span>`;
+        }
+
+        const tb = document.getElementById('studentTableBody'); tb.innerHTML = '';
+        if(!db[sess]) db[sess]={}; if(!db[sess][cls]) db[sess][cls]={};
+        
+        let displayCount = 0;
+        dynamicStudentData[cls].forEach((n) => {
+            let isMuslim = muslimStudents.some(ms => ms === n || n.includes(ms));
+            if (sub === 'PENDIDIKAN AGAMA ISLAM' && !isMuslim) return; 
+            if (sub === 'PENDIDIKAN MORAL' && isMuslim) return; 
+
+            displayCount++; let m = '', g = '';
+            if(!db[sess][cls][n]) db[sess][cls][n] = {};
+            if(db[sess][cls][n][sub]) { m = db[sess][cls][n][sub].mark; g = db[sess][cls][n][sub].grade; }
+            let safeID = displayCount;
+            
+            let disabledAttr = isLocked ? 'disabled style="background-color: #e9ecef; cursor: not-allowed;"' : '';
+            
+            tb.innerHTML += `<tr><td class="fw-bold text-muted">${displayCount}</td><td class="text-start fw-bold text-dark">${n}</td>
+            <td><input type="text" class="form-control table-input mx-auto border text-primary fw-bold" value="${m}" ${disabledAttr} oninput="updateRow(this,'grade-${safeID}')" placeholder="Mk" data-name="${n}" data-row="${displayCount}"></td>
+            <td><div id="grade-${safeID}" class="grade-box ${g?'g-'+g:''}">${g}</div></td></tr>`;
+        });
+    }
+
+    function updateRow(inp, gid) {
+        inp.classList.remove('input-error'); 
+        let v = inp.value.toUpperCase();
+        if(v !== 'T' && v !== 'TH' && isNaN(v) && v !== '') { inp.value=''; return; }
+        if(v > 100) { inp.value = 100; v = 100; }
+        let g = calculateGrade(v);
+        let el = document.getElementById(gid); el.innerText=g; el.className='grade-box ' + (g?'g-'+g:'');
+    }
+
+    function calculateGrade(mark) {
+        if (mark === 'TH' || mark === 'th') return 'TH'; let m = parseFloat(mark); if (isNaN(m)) return '';
+        return m >= 80 ? 'A' : m >= 65 ? 'B' : m >= 50 ? 'C' : m >= 40 ? 'D' : 'E';
+    }
+
+    function exportData() {
+        const exportPayload = {
+            db: db,
+            studentData: dynamicStudentData,
+            lockPA1: localStorage.getItem('lockPA1') === 'true',
+            lockPA2: localStorage.getItem('lockPA2') === 'true',
+            adminAnnouncement: localStorage.getItem('adminAnnouncement') || ''
+        };
+        const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(exportPayload));
+        const a = document.createElement('a'); a.href = dataStr; a.download = "SJKC_Backup.json";
+        document.body.appendChild(a); a.click(); a.remove();
+    }
+
+    function importData(input) {
+        const file = input.files[0]; if(!file) return; const reader = new FileReader();
+        reader.onload = function(e) { 
+            try { 
+                const imported = JSON.parse(e.target.result); 
+                if (imported.db && imported.studentData) {
+                    db = imported.db;
+                    dynamicStudentData = imported.studentData;
+                    localStorage.setItem('sistemMarkahDB', JSON.stringify(db));
+                    localStorage.setItem('sistemMarkahStudentData', JSON.stringify(dynamicStudentData));
+                    if (imported.lockPA1 !== undefined) localStorage.setItem('lockPA1', imported.lockPA1 ? 'true' : 'false');
+                    if (imported.lockPA2 !== undefined) localStorage.setItem('lockPA2', imported.lockPA2 ? 'true' : 'false');
+                    if (imported.adminAnnouncement !== undefined) localStorage.setItem('adminAnnouncement', imported.adminAnnouncement);
+                } else {
+                    db = imported;
+                    localStorage.setItem('sistemMarkahDB', JSON.stringify(db));
+                }
+                alert("Sistem Berjaya Diimport!"); 
+                location.reload(); 
+            } catch(err) { 
+                alert("Ralat semasa membaca fail JSON!"); 
+            } 
+        };
+        reader.readAsText(file);
+    }
+
+    function loadFillStatus() {
+        const sess = statusSession, c = document.getElementById('fillStatusList');
+        if(!db[sess]) { c.innerHTML='<div class="text-center text-muted py-4"><i class="fas fa-folder-open fs-2 mb-2 text-info opacity-50"></i><br>Tiada data direkodkan.</div>'; loadDashboardAnalytics(); return; }
+        let h = '<ul class="list-group list-group-flush">';
+        Object.keys(dynamicStudentData).forEach(cls => {
+            let cnt = 0; 
+            if(db[sess][cls]) { let allSubjs = new Set(); Object.values(db[sess][cls]).forEach(stu => { Object.keys(stu).forEach(k => { if(k !== 'attendance') allSubjs.add(k); }); }); cnt = allSubjs.size; }
+            h += `<li class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 pb-3 mb-1 border-bottom border-light">
+                <span class="fw-bold text-dark" style="font-size:0.95em;">${cls}</span> 
+                <span class="badge ${cnt > 0 ? 'bg-success' : 'bg-secondary'} rounded-pill shadow-sm py-2 px-3">${cnt} Subjek Diisi</span>
+            </li>`;
+        });
+        c.innerHTML = h+'</ul>';
+        loadDashboardAnalytics();
+    }
+
+    function generateOverallMarks() {
+        const cls = document.getElementById('overallClassSelect').value;
+        const sess = getCurrentSession();
+        const div = document.getElementById('overallMarksResult');
+
+        if (!cls) { div.classList.add('hidden'); return; }
+        div.classList.remove('hidden');
+
+        let displaySess = sess;
+        if (sess === "PERTANDINGAN AKADEMIK 1 2026") displaySess = "PERTANDINGAN AKADEMIK 1 2026 (2026年学术比赛（一）)";
+        if (sess === "PERTANDINGAN AKADEMIK 2 2026") displaySess = "PERTANDINGAN AKADEMIK 2 2026 (2026年学术比赛（二）)";
+
+        const validSubjects = getSubjectsForClass(cls);
+
+        let h = `
+        <div id="printOverallTarget">
+            <div class="d-none d-print-flex justify-content-between align-items-center mb-4 pb-3" style="border-bottom: 2px solid black;">
+                <div class="text-start">
+                    <h4 class="fw-bold m-0 text-uppercase text-dark">SEKOLAH : SJKC CHENG MING KENINGAU</h4>
+                    <h5 class="fw-bold m-0 text-uppercase text-dark">MARKAH KESELURUHAN KELAS</h5>
+                    <div class="mt-2">
+                        <h6 class="m-0 text-uppercase text-dark">SESI : ${displaySess}</h6>
+                        <h6 class="m-0 text-uppercase text-dark">KELAS : ${cls}</h6>
+                    </div>
+                </div>
+                <div><img src="https://i.postimg.cc/63gD9WdB/LOGO-BARU.jpg" alt="Logo" style="width: 100px !important; max-width: 100px !important; height: auto;"></div>
+            </div>
+            <h5 class="mb-3 fw-bold d-print-none text-uppercase text-primary"><i class="fas fa-list me-2"></i> Rekod: ${cls} - ${displaySess}</h5>
+            <div class="table-responsive table-custom-border">
+                <table class="table table-bordered table-striped table-hover table-sm text-center align-middle mb-0" style="font-size:0.85rem; border-color:#dee2e6; white-space:nowrap;">
+                    <thead class="table-dark">
+                        <tr>
+                            <th rowspan="2" style="width: 3%" class="py-2">BIL</th>
+                            <th rowspan="2" class="text-start py-2" style="width: 25%">NAMA MURID</th>
+                            <th colspan="${validSubjects.length}" class="py-2">SUBJEK / KEPUTUSAN</th>
+                            <th rowspan="2" style="width: 6%" class="py-2">JUMLAH</th>
+                            <th rowspan="2" style="width: 6%" class="py-2">PURATA</th>
+                        </tr>
+                        <tr>`;
+                        
+        validSubjects.forEach(sub => { h += `<th class="bg-primary text-white border-primary">${subShort[sub]}</th>`; });
+        h += `</tr></thead><tbody class="bg-white">`;
+
+        dynamicStudentData[cls].forEach((n, idx) => {
+            h += `<tr><td class="fw-bold text-muted">${idx + 1}</td><td class="text-start text-truncate fw-bold text-dark" style="max-width: 200px;" title="${n}">${n}</td>`;
+            let total = 0, count = 0;
+            
+            validSubjects.forEach(sub => {
+                let isMuslim = muslimStudents.some(ms => ms === n || n.includes(ms));
+                if (sub === 'PENDIDIKAN AGAMA ISLAM' && !isMuslim) { h += `<td class="bg-light text-muted">-</td>`; return; }
+                if (sub === 'PENDIDIKAN MORAL' && isMuslim) { h += `<td class="bg-light text-muted">-</td>`; return; }
+
+                let m = '', g = '';
+                if(db[sess] && db[sess][cls] && db[sess][cls][n] && db[sess][cls][n][sub]) {
+                    m = db[sess][cls][n][sub].mark; g = db[sess][cls][n][sub].grade;
+                    if(m !== 'TH' && !isNaN(m) && m !== '') { total += parseFloat(m); count++; }
+                }
+                
+                let isFail = (g === 'E' || g === 'TH') ? 'text-danger fw-bold' : 'text-dark fw-bold';
+                let displayTxt = m !== '' ? `${m} <span class="small text-muted opacity-75">(${g})</span>` : '-';
+                h += `<td class="${isFail}">${displayTxt}</td>`;
+            });
+
+            let avg = count > 0 ? (total / count).toFixed(2) : '0.00';
+            h += `<td class="fw-bold fs-6 text-dark">${total > 0 ? total : '-'}</td><td class="fw-bold fs-6 text-dark">${avg !== '0.00' ? avg : '-'}</td></tr>`;
+        });
+
+        h += `</tbody></table></div></div>`;
+        div.innerHTML = h;
+    }
+
+    function printOverallMarksPDF() {
+        if(document.getElementById('overallMarksResult').classList.contains('hidden')) { alert('Sila pilih kelas terlebih dahulu untuk dipapar and dicetak.'); return; }
+        window.print();
+    }
+
+    function loadRCStudentList() {
+        const cls = document.getElementById('rcClassSelect').value;
+        const stuSel = document.getElementById('rcStudentSelect');
+        stuSel.innerHTML = '<option value="">-- Pilih Murid --</option>';
+        if(cls) { stuSel.disabled = false; dynamicStudentData[cls].forEach(n => { let opt = document.createElement('option'); opt.value = n; opt.innerText = n; stuSel.appendChild(opt); }); }
+        else { stuSel.disabled = true; }
+        document.getElementById('attPresent').value = ''; document.getElementById('attTotal').value = '';
+    }
+
+    function loadAttendanceFromDB() {
+        const sess = getCurrentSession(), cls = document.getElementById('rcClassSelect').value, name = document.getElementById('rcStudentSelect').value;
+        if (db[sess] && db[sess][cls] && db[sess][cls][name] && db[sess][cls][name].attendance) { document.getElementById('attPresent').value = db[sess][cls][name].attendance.present; document.getElementById('attTotal').value = db[sess][cls][name].attendance.total; } 
+        else { document.getElementById('attPresent').value = ''; document.getElementById('attTotal').value = ''; }
+    }
+
+    function getStudentRank(session, cls, name) {
+        if(!db[session] || !db[session][cls]) return '-';
+        let rankList = [];
+        dynamicStudentData[cls].forEach(n => {
+            let total = 0;
+            if(db[session][cls][n]) { Object.entries(db[session][cls][n]).forEach(([key, sub]) => { if(key !== 'attendance' && sub.mark && sub.mark !== 'TH' && !isNaN(sub.mark)) total += parseFloat(sub.mark); }); }
+            rankList.push({ name: n, total: total });
+        });
+        rankList.sort((a,b) => b.total - a.total); let rank = rankList.findIndex(x => x.name === name); return (rank !== -1) ? (rank + 1) + ' / ' + rankList.length : '-';
+    }
+
+    function generateReportCard() {
+        const session = getCurrentSession(), cls = document.getElementById('rcClassSelect').value, name = document.getElementById('rcStudentSelect').value;
+        if(!cls || !name) { alert("Sila pilih kelas dan nama murid."); return; }
+        if(!db[session]) db[session]={}; if(!db[session][cls]) db[session][cls]={}; if(!db[session][cls][name]) db[session][cls][name]={};
+        let p = document.getElementById('attPresent').value || 0, t = document.getElementById('attTotal').value || 0;
+        db[session][cls][name].attendance = { present: p, total: t }; localStorage.setItem('sistemMarkahDB', JSON.stringify(db));
+
+        document.getElementById('reportCardPreview').classList.remove('hidden');
+        let displaySess = session;
+        if (session === "PERTANDINGAN AKADEMIK 1 2026") displaySess = "PERTANDINGAN AKADEMIK 1 2026 <br><span class='d-inline-block mt-1 fw-bold text-dark' style='font-size:1.3rem;'>2026年学术比赛（一）</span>";
+        if (session === "PERTANDINGAN AKADEMIK 2 2026") displaySess = "PERTANDINGAN AKADEMIK 2 2026 <br><span class='d-inline-block mt-1 fw-bold text-dark' style='font-size:1.3rem;'>2026年学术比赛（二）</span>";
+        document.getElementById('rcSessionTitle').innerHTML = displaySess;
+        
+        document.getElementById('rcName').innerText = name; 
+        document.getElementById('rcClass').innerText = cls;
+        
+        document.getElementById('rcGuruKelasName').innerText = guruKelasMap[cls] || "";
+
+        const tbody = document.getElementById('rcTableBody'); tbody.innerHTML = '';
+        let totalMarks = 0, subjectCount = 0, rowNum = 0; 
+        const validSubjects = getSubjectsForClass(cls);
+        
+        validSubjects.forEach((sub, idx) => {
+            let isMuslim = muslimStudents.some(ms => ms === name || name.includes(ms));
+            if (sub === 'PENDIDIKAN AGAMA ISLAM' && !isMuslim) return; if (sub === 'PENDIDIKAN MORAL' && isMuslim) return;
+            
+            rowNum++;
+            let m = '-', g = '-';
+            if(db[session] && db[session][cls] && db[session][cls][name] && db[session][cls][name][sub]) { 
+                m = db[session][cls][name][sub].mark; g = db[session][cls][name][sub].grade; 
+                if(m !== 'TH' && !isNaN(m) && m !== '') { totalMarks += parseFloat(m); subjectCount++; } 
+            }
+            tbody.innerHTML += `<tr><td class="fw-bold text-muted">${rowNum}</td><td class="text-start fw-bold text-dark">${sub}</td><td class="fw-bold text-dark">${m}</td><td><span class="grade-box ${g!=='-'?'g-'+g:''}">${g}</span></td></tr>`;
+        });
+        document.getElementById('rcTotalMarks').innerText = totalMarks.toFixed(0); 
+        document.getElementById('rcAverage').innerText = subjectCount > 0 ? (totalMarks/subjectCount).toFixed(2) : '0';
+        document.getElementById('rcRank').innerText = getStudentRank(session, cls, name); 
+        document.getElementById('rcAttPresent').innerText = p; 
+        document.getElementById('rcAttTotal').innerText = t; 
+        document.getElementById('rcAttPercent').innerText = t > 0 ? ((p/t)*100).toFixed(0) + '%' : '0%';
+    }
+
+    function generateGrouping() {
+        const session = getCurrentSession(), className = document.getElementById('groupClassSelect').value;
+        const container = document.getElementById('groupingResult'), students = dynamicStudentData[className];
+        container.classList.remove('hidden');
+        let groups = { 'A': [], 'B': [], 'C': [], 'D': [], 'E': [], 'F': [] };
+        students.forEach(name => {
+            let passedCount = 0, subResults = {};
+            coreSubjects.forEach(sub => {
+                let m = '-', g = '-';
+                if(db[session] && db[session][className] && db[session][className][name] && db[session][className][name][sub]) { m = db[session][className][name][sub].mark; g = db[session][className][name][sub].grade; if (g !== 'E' && g !== 'TH' && g !== '-' && g !== '') passedCount++; }
+                subResults[sub] = { m: m, g: g };
+            });
+            let groupChar = 'F';
+            if (passedCount === 5) groupChar = 'A'; else if (passedCount === 4) groupChar = 'B'; else if (passedCount === 3) groupChar = 'C'; else if (passedCount === 2) groupChar = 'D'; else if (passedCount === 1) groupChar = 'E';
+            groups[groupChar].push({ name: name, res: subResults, count: passedCount });
+        });
+
+        const guruKelasName = guruKelasMap[className] || "";
+        const pkKurikulumName = "YONG OI CHOU";
+        const guruBesarName = "CHEE SUI FUNG";
+
+        let html = `<div id="printTarget"><div class="text-center mb-4"><h4 class="fw-bold">LAPORAN PENGELOMPOKAN MURID (5 SUBJEK TERAS) <br><span class="cn-text text-dark mt-2" style="font-size:1.2em;">学生分组报告</span></h4><h5>Sesi: ${session} | Kelas: ${className}</h5></div><div class="table-custom-border"><table class="table table-bordered table-sm text-center align-middle mb-0" style="font-size:0.9rem; border-color:#dee2e6;"><thead class="table-dark"><tr><th style="width:5%" class="py-2">No</th><th style="text-align:left;" class="py-2">Nama Murid</th><th class="py-2">BC</th><th class="py-2">BM</th><th class="py-2">BI</th><th class="py-2">MT</th><th class="py-2">SN</th><th class="py-2">Lulus</th></tr></thead><tbody class="bg-white">`;
+        ['A', 'B', 'C', 'D', 'E', 'F'].forEach(grp => {
+            if(groups[grp].length > 0) {
+                html += `<tr class="table-secondary"><td colspan="8" class="text-start fw-bold ps-3 py-2 text-dark">KELOMPOK ${grp} (Lulus ${groups[grp][0].count} Subjek)</td></tr>`;
+                groups[grp].forEach((stu, idx) => {
+                    html += `<tr><td class="text-muted fw-bold">${idx + 1}</td><td style="text-align:left;" class="fw-bold text-dark">${stu.name}</td>`;
+                    coreSubjects.forEach(sub => { let data = stu.res[sub]; let isFail = (data.g === 'E' || data.g === 'TH' || data.g === '-'); html += `<td class="${isFail ? 'text-danger' : 'text-dark fw-bold'}">${data.m}</td>`; });
+                    html += `<td class="fw-bold text-dark">${stu.count}/5</td></tr>`;
+                });
+            }
+        });
+        
+        container.innerHTML = html + `</tbody></table></div><div class="signature-box"><div class="row text-center"><div class="col-4"><p>Disediakan Oleh:</p><div class="sig-line"></div><p><span class="fw-bold d-block text-uppercase" style="font-size: 0.82rem; margin-bottom: 2px;">${guruKelasName}</span><strong>(GURU KELAS)</strong><br><span class="cn-text text-dark">班主任</span></p></div><div class="col-4"><p>Disemak Oleh:</p><div class="sig-line"></div><p><span class="fw-bold d-block text-uppercase" style="font-size: 0.82rem; margin-bottom: 2px;">${pkKurikulumName}</span><strong>(PK KURIKULUM)</strong><br><span class="cn-text text-dark">课程副校长</span></p></div><div class="col-4"><p>Disahkan Oleh:</p><div class="sig-line"></div><p><span class="fw-bold d-block text-uppercase" style="font-size: 0.82rem; margin-bottom: 2px;">${guruBesarName}</span><strong>(GURU BESAR)</strong><br><span class="cn-text text-dark">校长</span></p></div></div></div></div>`;
+    }
+
+    function printGroupingPDF() { if(document.getElementById('groupingResult').classList.contains('hidden')) return; window.print(); }
+
+    function generatePostMortem() {
+        const sub = document.getElementById('pmSubjectSelect').value;
+        const session = getCurrentSession();
+        const div = document.getElementById('postMortemResult');
+        
+        if(!sub) { alert("Sila pilih subjek."); return; }
+        div.classList.remove('hidden');
+
+        let sessionTitle = session;
+        if(session === "PERTANDINGAN AKADEMIK 1 2026") sessionTitle = "PERTANDINGAN AKADEMIK KALI PERTAMA";
+        else if(session === "PERTANDINGAN AKADEMIK 2 2026") sessionTitle = "PERTANDINGAN AKADEMIK KALI KEDUA";
+        else if(session === "TOV") sessionTitle = "TAKE OFF VALUE (TOV)";
+        else if(session === "OTI 1") sessionTitle = "TARGET OTI 1";
+        else if(session === "OTI 2") sessionTitle = "TARGET OTI 2";
+        else if(session === "ETR") sessionTitle = "SASARAN AKHIR (ETR)";
+
+        let html = `
+        <div id="printPostMortemTarget" style="color: black; font-family: Arial, sans-serif;">
+            <div class="d-flex justify-content-between align-items-center mb-4 pb-3" style="border-bottom: 2px solid black;">
+                <div class="text-start" style="color: black;">
+                    <h3 class="fw-bold m-0 text-uppercase" style="font-size: 1.4rem;">SJK(C) CHENG MING</h3>
+                    <h5 class="fw-bold mt-2 mb-1 text-uppercase text-dark" style="font-size: 1.1rem; letter-spacing: 0.5px;">LAPORAN POST MORTEM / PENAMBAHBAIKAN</h5>
+                    <h5 class="fw-bold m-0 text-uppercase text-dark" style="font-size: 1rem;">PANITIA MATA PELAJARAN ${sub} TAHUN 2026</h5>
+                    <h6 class="fw-bold mt-2 mb-0 text-uppercase text-secondary" style="font-size: 0.9rem;">SESI: ${sessionTitle}</h6>
+                </div>
+                <div>
+                    <img src="https://i.postimg.cc/63gD9WdB/LOGO-BARU.jpg" alt="Logo" style="width: 90px !important; max-width: 90px !important; height: auto; border-radius: 8px;">
+                </div>
+            </div>
+            
+            <div class="table-responsive table-custom-border mt-4">
+                <table class="table table-bordered table-striped table-hover text-center align-middle mb-0" style="font-size:1.05rem; border-color:#dee2e6;">
+                    <thead class="table-dark">
+                        <tr>
+                            <th rowspan="2" style="width: 8%" class="py-3">BIL</th>
+                            <th rowspan="2" class="py-3" style="width: 25%">KELAS</th>
+                            <th colspan="6" class="py-2">BILANGAN PENCAPAIAN</th>
+                        </tr>
+                        <tr>
+                            <th style="width: 11%">A</th>
+                            <th style="width: 11%">B</th>
+                            <th style="width: 11%">C</th>
+                            <th style="width: 11%">D</th>
+                            <th style="width: 11%">E</th>
+                            <th style="width: 11%">TH</th>
+                        </tr>
+                    </thead>
+                    <tbody class="bg-white">
+        `;
+
+        const classes = ["TAHUN 1", "TAHUN 2", "TAHUN 3", "TAHUN 4", "TAHUN 5", "TAHUN 6"];
+        const formatCount = (val, isF) => {
+            if (val === 0) return isF ? '-' : '0';
+            return val;
+        };
+
+        classes.forEach((cls, idx) => {
+            let counts = { 'A': 0, 'B': 0, 'C': 0, 'D': 0, 'E': 0, 'TH': 0 };
+            
+            if (dynamicStudentData[cls]) {
+                dynamicStudentData[cls].forEach(stu => {
+                    let isMuslim = muslimStudents.includes(stu);
+                    if (sub === 'PENDIDIKAN AGAMA ISLAM' && !isMuslim) return;
+                    if (sub === 'PENDIDIKAN MORAL' && isMuslim) return;
+
+                    let g = '';
+                    if (db[session] && db[session][cls] && db[session][cls][stu] && db[session][cls][stu][sub]) {
+                        g = db[session][cls][stu][sub].grade;
+                    }
+                    
+                    let gNorm = g ? g.toUpperCase() : '';
+                    if (gNorm && counts[gNorm] !== undefined) {
+                        counts[gNorm]++;
+                    }
+                });
+            }
+
+            html += `
+                <tr>
+                    <td class="fw-bold text-muted">${idx + 1}</td>
+                    <td class="fw-bold text-start ps-4 text-dark">${cls}</td>
+                    <td class="fw-bold">${formatCount(counts['A'], false)}</td>
+                    <td class="fw-bold">${formatCount(counts['B'], false)}</td>
+                    <td class="fw-bold">${formatCount(counts['C'], false)}</td>
+                    <td class="fw-bold">${formatCount(counts['D'], false)}</td>
+                    <td class="fw-bold">${formatCount(counts['E'], false)}</td>
+                    <td class="fw-bold">${formatCount(counts['TH'], true)}</td>
+                </tr>
+            `;
+        });
+
+        html += `
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        `;
+
+        div.innerHTML = html;
+    }
+
+    function printPostMortemPDF() {
+        if(document.getElementById('postMortemResult').classList.contains('hidden')) { alert('Sila jana laporan post mortem terlebih dahulu.'); return; }
+        window.print();
+    }
+
+    function generateRanking() {
+        const sess = getCurrentSession(), cls = document.getElementById('rankClassSelect').value, div = document.getElementById('rankingResult');
+        if(!db[sess] || !db[sess][cls]) { div.innerHTML='<div class="alert alert-warning border-0 shadow-sm"><i class="fas fa-exclamation-circle me-2"></i>Tiada data untuk sesi ini.</div>'; return; }
+        let arr = [];
+        dynamicStudentData[cls].forEach(n => {
+            let tot=0, c=0;
+            if(db[sess][cls][n]) { Object.entries(db[sess][cls][n]).forEach(([k,v])=>{ if(k!=='attendance' && v.mark && v.mark !== 'TH' && !isNaN(v.mark)) { tot+=parseFloat(v.mark); c++; } }); }
+            arr.push({n:n, t:tot, a:c>0?(tot/c).toFixed(2):0});
+        });
+        arr.sort((a,b)=>b.t-a.t);
+        let h=`<div class="card p-4"><h5 class="mb-4 fw-bold text-dark"><i class="fas fa-trophy text-warning me-2"></i> Ranking ${cls} - ${sess} <br><span class="cn-text text-muted d-inline-block mt-1" style="font-size:1.1em; margin-left:32px;">班级排名</span></h5><div class="table-responsive table-custom-border"><table class="table table-sm table-hover align-middle mb-0"><thead class="table-dark"><tr><th class="py-3 text-center">Kedudukan</th><th class="py-3 text-start">Nama</th><th class="py-3 text-center">Jumlah Markah</th><th class="py-3 text-center">Purata</th></tr></thead><tbody class="bg-white">`;
+        arr.forEach((x,i)=>{
+            let rankBadge = i === 0 ? 'bg-warning text-dark' : i === 1 ? 'bg-secondary text-white' : i === 2 ? 'bg-danger text-white' : 'bg-primary text-white';
+            let rankIcon = i < 3 ? '<i class="fas fa-medal me-1"></i>' : '';
+            h+=`<tr><td class="text-center"><span class="badge ${rankBadge} rounded-pill px-3 py-2 shadow-sm">${rankIcon} ${i+1}</span></td><td class="fw-bold text-dark text-start">${x.n}</td><td class="text-center fs-5 fw-bold text-dark">${x.t}</td><td class="text-center fs-5 fw-bold text-dark">${x.a}</td></tr>`
+        });
+        div.innerHTML=h+`</tbody></table></div></div>`;
+    }
+
+    function searchStudent() {
+        const k = document.getElementById('searchInput').value.toUpperCase(), div = document.getElementById('searchResult');
+        if(k.length<3){alert('Sila masukkan sekurang-kurangnya 3 huruf.');return;} let h='';
+        Object.keys(dynamicStudentData).forEach(c=>{
+            dynamicStudentData[c].forEach(n=>{
+                if(n.includes(k)){
+                    h+=`<div class="card p-4 mb-3 shadow-sm border-start border-4 border-primary"><div class="d-flex align-items-center mb-3"><i class="fas fa-user-graduate fs-3 text-primary me-3"></i><div><strong class="fs-5 text-dark">${n}</strong><br><span class="badge bg-secondary rounded-pill mt-1">${c}</span></div></div><hr class="my-2 border-light">`;
+                    let foundData = false;
+                    Object.keys(db).forEach(s=>{
+                        if(db[s][c] && db[s][c][n]) {
+                            foundData = true; h+=`<div class="mb-3 bg-light p-3 rounded"><span class="badge bg-primary mb-2 py-1 px-2 shadow-sm">${s}</span><br><div class="d-flex flex-wrap gap-2">`;
+                            Object.keys(db[s][c][n]).forEach(sb=>{ 
+                                if(sb!=='attendance') {
+                                    let gColor = ['A','B'].includes(db[s][c][n][sb].grade) ? 'text-success' : ['C','D'].includes(db[s][c][n][sb].grade) ? 'text-warning' : 'text-danger';
+                                    h+=`<span class="border rounded px-2 py-1 bg-white small shadow-sm">${subShort[sb]||sb}: <b class="${gColor} fs-6">${db[s][c][n][sb].grade}</b></span>`; 
+                                }
+                            });
+                            h+= `</div></div>`;
+                        }
+                    });
+                    if(!foundData) h+=`<div class="alert alert-light border-0 small text-muted"><i class="fas fa-info-circle me-1"></i> Tiada rekod markah ditemui.</div>`; h+=`</div>`;
+                }
+            });
+        });
+        div.innerHTML = h||'<div class="alert alert-warning border-0 shadow-sm"><i class="fas fa-search me-2"></i> Tiada rekod nama murid ditemui.</div>';
+    }
+
+    // --- LOGIK PORTAL ADMIN ---
+    function openAdminLogin() {
+        document.getElementById('adminUsername').value = '';
+        document.getElementById('adminPassword').value = '';
+        document.getElementById('adminLoginError').classList.add('hidden');
+        var modal = new bootstrap.Modal(document.getElementById('adminLoginModal'));
+        modal.show();
+    }
+    
+    function checkAdminLogin() {
+        const user = document.getElementById('adminUsername').value;
+        const pass = document.getElementById('adminPassword').value;
+        const err = document.getElementById('adminLoginError');
+        
+        if (user === "ICTCM" && pass === "XBC@1012") {
+            err.classList.add('hidden');
+            var modalEl = document.getElementById('adminLoginModal');
+            var modal = bootstrap.Modal.getInstance(modalEl);
+            modal.hide();
+            
+            sessionStorage.setItem('isAdminLoggedIn', 'true');
+            showSection('adminPanel');
+        } else {
+            err.classList.remove('hidden');
+        }
+    }
+    
+    function logoutAdmin() {
+        sessionStorage.removeItem('isAdminLoggedIn');
+        showSection('dashboard');
+    }
+
+    // --- KAWALAN DUA KUNCI BARU ---
+    function toggleLockPA1() {
+        let current = localStorage.getItem('lockPA1') === 'true';
+        localStorage.setItem('lockPA1', (!current).toString());
+        updateGlobalLockUI();
+        alert("Status kunci Sesi Pertandingan 1 telah dikemas kini!");
+    }
+
+    function toggleLockPA2() {
+        let current = localStorage.getItem('lockPA2') === 'true';
+        localStorage.setItem('lockPA2', (!current).toString());
+        updateGlobalLockUI();
+        alert("Status kunci Sesi Pertandingan 2 telah dikemas kini!");
+    }
+
+    function updateGlobalLockUI() {
+        let lock1 = localStorage.getItem('lockPA1') === 'true';
+        let lock2 = localStorage.getItem('lockPA2') === 'true';
+        
+        const status1 = document.getElementById('lockPA1Status');
+        const btn1 = document.getElementById('btnToggleLockPA1');
+        const status2 = document.getElementById('lockPA2Status');
+        const btn2 = document.getElementById('btnToggleLockPA2');
+        
+        if (status1 && btn1) {
+            if (lock1) {
+                status1.innerHTML = `<i class="fas fa-lock me-1"></i> DIKUNCI`;
+                status1.className = "alert alert-danger py-2 px-3 fw-bold text-center mb-2";
+                btn1.innerHTML = `<i class="fas fa-unlock me-1"></i> Buka Kunci Sesi 1`;
+                btn1.className = "btn btn-sm btn-success w-100 fw-bold shadow-sm";
+            } else {
+                status1.innerHTML = `<i class="fas fa-unlock me-1"></i> DIBUKA`;
+                status1.className = "alert alert-success py-2 px-3 fw-bold text-center mb-2";
+                btn1.innerHTML = `<i class="fas fa-lock me-1"></i> Kunci Sesi 1`;
+                btn1.className = "btn btn-sm btn-danger w-100 fw-bold shadow-sm";
+            }
+        }
+        
+        if (status2 && btn2) {
+            if (lock2) {
+                status2.innerHTML = `<i class="fas fa-lock me-1"></i> DIKUNCI`;
+                status2.className = "alert alert-danger py-2 px-3 fw-bold text-center mb-2";
+                btn2.innerHTML = `<i class="fas fa-unlock me-1"></i> Buka Kunci Sesi 2`;
+                btn2.className = "btn btn-sm btn-success w-100 fw-bold shadow-sm";
+            } else {
+                status2.innerHTML = `<i class="fas fa-unlock me-1"></i> DIBUKA`;
+                status2.className = "alert alert-success py-2 px-3 fw-bold text-center mb-2";
+                btn2.innerHTML = `<i class="fas fa-lock me-1"></i> Kunci Sesi 2`;
+                btn2.className = "btn btn-sm btn-danger w-100 fw-bold shadow-sm";
+            }
+        }
+    }
+
+    function saveAdminAnnouncement() {
+        const text = document.getElementById('adminAnnouncementText').value.trim();
+        localStorage.setItem('adminAnnouncement', text);
+        
+        if (URL_ANNOUNCEMENT === "SILA_TAMPAL_URL_WEB_APP_PENGUMUMAN_DI_SINI" || URL_ANNOUNCEMENT === "") {
+            alert("Sila tampalkan pautan Web App Pengumuman anda pada pemboleh ubah URL_ANNOUNCEMENT di dalam kod HTML terlebih dahulu.");
+            return;
+        }
+
+        const payload = { announcement: text };
+        showLoader("Menyiarkan pengumuman ke pelayan Google Sheets...");
+        
+        fetch(URL_ANNOUNCEMENT, { method: 'POST', body: JSON.stringify(payload) })
+        .then(res => res.json())
+        .then(data => {
+            hideLoader();
+            if(data.result === 'success') {
+                alert('Pengumuman berjaya disiarkan ke semua peranti guru!');
+                showLoginAnnouncement();
+            } else {
+                alert('Ralat menyiarkan pengumuman: ' + data.error);
+            }
+        }).catch(err => {
+            hideLoader();
+            alert('Tiada sambungan internet atau ralat CORS. Pengumuman disimpan secara lokal sahaja.');
+        });
+    }
+
+    function showLoginAnnouncement() {
+        let text = localStorage.getItem('adminAnnouncement') || "";
+        updateAnnouncementUI(text);
+
+        if (URL_ANNOUNCEMENT !== "SILA_TAMPAL_URL_WEB_APP_PENGUMUMAN_DI_SINI" && URL_ANNOUNCEMENT !== "") {
+            fetch(URL_ANNOUNCEMENT)
+            .then(res => res.json())
+            .then(data => {
+                if (data && data.announcement !== undefined) {
+                    localStorage.setItem('adminAnnouncement', data.announcement);
+                    updateAnnouncementUI(data.announcement);
+                }
+            })
+            .catch(err => console.log("Gagal menarik pengumuman:", err));
+        }
+    }
+
+    function updateAnnouncementUI(text) {
+        const box = document.getElementById('loginAnnouncementBox');
+        const textEl = document.getElementById('loginAnnouncementText');
+        if (box && textEl) {
+            if (text && text.trim() !== '') {
+                textEl.innerText = text;
+                box.classList.remove('hidden');
+            } else {
+                box.box.classList.add('hidden');
+            }
+        }
+    }
+
+    // --- URUSAN EDIT / PADAM / TAMBAH MURID ---
+    function loadAdminStudentList() {
+        const cls = document.getElementById('adminClassSelect').value;
+        const tb = document.getElementById('adminStudentTableBody');
+        const btnAdd = document.getElementById('btnAddStudentBtn');
+        
+        if (!cls) {
+            tb.innerHTML = `<tr><td colspan="3" class="text-muted py-4">Sila pilih kelas terlebih dahulu.</td></tr>`;
+            btnAdd.disabled = true;
+            return;
+        }
+        
+        btnAdd.disabled = false;
+        tb.innerHTML = '';
+        
+        if (!dynamicStudentData[cls] || dynamicStudentData[cls].length === 0) {
+            tb.innerHTML = `<tr><td colspan="3" class="text-muted py-4">Tiada murid dijumpai dalam kelas ini.</td></tr>`;
+            return;
+        }
+        
+        dynamicStudentData[cls].forEach((name, idx) => {
+            let isMuslim = muslimStudents.includes(name);
+            let muslimBadge = isMuslim ? `<span class="badge bg-info ms-2">ISLAM</span>` : '';
+            tb.innerHTML += `
+                <tr>
+                    <td class="fw-bold text-muted">${idx + 1}</td>
+                    <td class="text-start fw-bold text-dark text-uppercase">${name} ${muslimBadge}</td>
+                    <td>
+                        <button class="btn btn-sm btn-primary px-3 me-1" onclick="openEditStudentModal('${cls}', '${name}', ${isMuslim})">
+                            <i class="fas fa-edit me-1"></i> Edit
+                        </button>
+                        <button class="btn btn-sm btn-danger px-3" onclick="deleteStudent('${cls}', '${name}')">
+                            <i class="fas fa-trash-alt me-1"></i> Padam
+                        </button>
+                    </td>
+                </tr>
+            `;
+        });
+    }
+
+    function openAddStudentModal() {
+        const cls = document.getElementById('adminClassSelect').value;
+        document.getElementById('studentModalTitle').innerHTML = `<i class="fas fa-user-plus me-2"></i> Tambah Murid Baru (${cls})`;
+        document.getElementById('studentActionType').value = 'add';
+        document.getElementById('studentInputName').value = '';
+        document.getElementById('studentIsMuslim').checked = false;
+        
+        var modal = new bootstrap.Modal(document.getElementById('studentActionModal'));
+        modal.show();
+    }
+
+    function openEditStudentModal(cls, name, isMuslim) {
+        document.getElementById('studentModalTitle').innerHTML = `<i class="fas fa-user-edit me-2"></i> Edit Murid (${cls})`;
+        document.getElementById('studentActionType').value = 'edit';
+        document.getElementById('oldStudentName').value = name;
+        document.getElementById('studentInputName').value = name;
+        document.getElementById('studentIsMuslim').checked = isMuslim;
+        
+        var modal = new bootstrap.Modal(document.getElementById('studentActionModal'));
+        modal.show();
+    }
+
+    function saveStudentAction() {
+        const cls = document.getElementById('adminClassSelect').value;
+        const type = document.getElementById('studentActionType').value;
+        const newName = document.getElementById('studentInputName').value.trim().toUpperCase();
+        const isMuslim = document.getElementById('studentIsMuslim').checked;
+        
+        if (newName === "") { alert("Sila masukkan nama murid."); return; }
+        
+        if (type === 'add') {
+            if (dynamicStudentData[cls].includes(newName)) { alert("Murid dengan nama ini sudah wujud."); return; }
+            dynamicStudentData[cls].push(newName);
+            if (isMuslim) {
+                if (!muslimStudents.includes(newName)) muslimStudents.push(newName);
+            }
+        } else {
+            const oldName = document.getElementById('oldStudentName').value;
+            const index = dynamicStudentData[cls].indexOf(oldName);
+            if (index !== -1) {
+                dynamicStudentData[cls][index] = newName;
+                
+                Object.keys(db).forEach(sess => {
+                    if (db[sess] && db[sess][cls] && db[sess][cls][oldName]) {
+                        db[sess][cls][newName] = db[sess][cls][oldName];
+                        delete db[sess][cls][oldName];
+                    }
+                });
+                localStorage.setItem('sistemMarkahDB', JSON.stringify(db));
+                
+                let mIndex = muslimStudents.indexOf(oldName);
+                if (mIndex !== -1) {
+                    if (isMuslim) {
+                        muslimStudents[mIndex] = newName;
+                    } else {
+                        muslimStudents.splice(mIndex, 1);
+                    }
+                } else if (isMuslim) {
+                    muslimStudents.push(newName);
+                }
+            }
+        }
+        
+        localStorage.setItem('sistemMarkahStudentData', JSON.stringify(dynamicStudentData));
+        
+        var modalEl = document.getElementById('studentActionModal');
+        var modal = bootstrap.Modal.getInstance(modalEl);
+        modal.hide();
+        
+        loadAdminStudentList();
+        alert("Senarai murid berjaya dikemas kini!");
+    }
+
+    function deleteStudent(cls, name) {
+        if (!confirm("Adakah anda pasti mahu memadam murid " + name + "? Markah murid ini akan dikeluarkan daripada simpanan sistem.")) return;
+        
+        const index = dynamicStudentData[cls].indexOf(name);
+        if (index !== -1) {
+            dynamicStudentData[cls].splice(index, 1);
+            
+            Object.keys(db).forEach(sess => {
+                if (db[sess] && db[sess][cls] && db[sess][cls][name]) {
+                    delete db[sess][cls][name];
+                }
+            });
+            localStorage.setItem('sistemMarkahDB', JSON.stringify(db));
+            
+            let mIndex = muslimStudents.indexOf(name);
+            if (mIndex !== -1) muslimStudents.splice(mIndex, 1);
+            
+            localStorage.setItem('sistemMarkahStudentData', JSON.stringify(dynamicStudentData));
+            loadAdminStudentList();
+            alert("Murid berjaya dipadam!");
+        }
+    }
+</script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
