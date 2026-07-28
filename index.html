@@ -1090,7 +1090,7 @@
     function logout() { sessionStorage.removeItem('isLoggedIn'); location.reload(); }
 
     function showSection(id) {
-        showLoader("SABAR");
+        showLoader("Memuatkan halaman...");
         setTimeout(() => {
             document.querySelectorAll('.content-section').forEach(sec => sec.classList.add('hidden'));
             document.querySelectorAll('.nav-link').forEach(nav => nav.classList.remove('active'));
@@ -1508,7 +1508,7 @@
             var myModal = new bootstrap.Modal(document.getElementById('emptyWarningModal')); myModal.show(); return; 
         }
 
-        if (!confirm("Adakah anda pasti mahu menghantar markah? Rekod akan dihantar ke Google Sheets secara terus.")) return;
+        if (!confirm("Konfom ka sudah? double check please.")) return;
 
         showLoader("Menghantar muktamad ke pangkalan data...");
 
@@ -1537,7 +1537,7 @@
         .then(data => {
             hideLoader();
             if(data.result === 'success') {
-                alert('Tahniah! Markah berjaya dihantar ke fail pangkalan data Google Sheets.');
+                alert('Tahniah! Markah berjaya dihantar.');
                 renderMarkSheet();
                 loadFillStatus();
             } else {
