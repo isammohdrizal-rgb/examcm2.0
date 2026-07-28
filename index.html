@@ -55,7 +55,7 @@
         /* -- REKAAN DALAMAN (DASHBOARD & APP) -- */
         #mainApp { display: none; } 
         
-        /* Sidebar Baru (Gelap Sikit & Ada Animasi) */
+        /* Sidebar Baru */
         .sidebar { background: linear-gradient(180deg, #0c2646 0%, #1b4b8a 100%); min-height: 100vh; color: white; box-shadow: 4px 0 25px rgba(0,0,0,0.15); z-index: 10; padding-top: 20px; position: relative; overflow: hidden; }
         .sidebar-shapes { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none; }
         .sidebar-shapes i { position: absolute; color: rgba(255, 255, 255, 0.06); font-size: 1.5rem; animation: floatEdu linear infinite; bottom: -50px; }
@@ -109,12 +109,10 @@
         .input-error { border: 2px solid #dc3545 !important; background-color: #f8d7da !important; animation: shakeAnimation 0.4s ease-in-out; }
         
         .sig-spacer { height: 60px; }
-        
-        /* GARISAN TANDATANGAN BARU */
         .sig-line { border-top: 1px solid black; width: 150px; margin: 40px auto 5px auto; }
 
         @media print {
-            @page { margin: 10mm; } /* FORCE MINIMAL MARGIN ON A4 */
+            @page { margin: 10mm; }
             .no-print { display: none !important; } .sidebar { display: none !important; }
             .main-content { width: 100% !important; margin: 0 !important; padding: 0 !important; }
             #loginOverlay { display: none !important; } #mainApp { display: block !important; }
@@ -131,7 +129,6 @@
             .hc-tov { background-color: #e2e3e5 !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; } .hc-u1 { background-color: #d1e7dd !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; } .hc-oti1 { background-color: #f8d7da !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; } .hc-u2 { background-color: #cff4fc !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; } .hc-oti2 { background-color: #fff3cd !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; } .hc-etr { background-color: #cfe2ff !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
             .grade-box { -webkit-print-color-adjust: exact; print-color-adjust: exact; box-shadow: none; }
             
-            /* -- TETAPAN KHAS UNTUK FIT 1 PAGE MASA PRINT (REPORT CARD) -- */
             #printTarget .table td, #printTarget .table th { padding: 2px 4px !important; font-size: 0.85rem !important; }
             #printTarget .rc-header { padding-bottom: 5px !important; margin-bottom: 5px !important; }
             #printTarget .rc-header h3 { font-size: 1.2rem !important; margin-bottom: 0 !important; }
@@ -141,21 +138,17 @@
             #printTarget .mt-4 { margin-top: 10px !important; }
             #printTarget .col-6 .table td { padding: 1px 4px !important; font-size: 0.85rem !important; }
             
-            /* PEMBESARAN KHAS */
             #printTarget .rc-header h5 span { font-size: 1.35rem !important; font-weight: bold !important; color: #000000 !important; }
             
-            /* PENGELASAN DI BAWAH */
             #printTarget .rc-signature { margin-top: 60px !important; padding-top: 0 !important; }
             #printTarget .sig-spacer { height: 55px !important; } 
             #printTarget .cn-text { font-size: 0.75em !important; margin-top: 1px !important; }
             
-            /* -- TETAPAN KHAS UNTUK FIT 1 PAGE BAGI LAPORAN PENGELOMPOKAN -- */
             #groupingResult .table td, #groupingResult .table th { padding: 1px 4px !important; font-size: 0.72rem !important; line-height: 1.1 !important; }
             #groupingResult .table-secondary td { padding: 2px 4px !important; font-size: 0.75rem !important; font-weight: bold !important; }
             #groupingResult h4 { font-size: 1.1rem !important; margin-bottom: 2px !important; }
             #groupingResult h5 { font-size: 0.8rem !important; margin-top: 0px !important; margin-bottom: 8px !important; }
             
-            /* NILAI DIKEMASKINI */
             #groupingResult .signature-box { margin-top: 40px !important; page-break-inside: avoid; break-inside: avoid; }
             #groupingResult .signature-box p { margin-bottom: 2px !important; font-size: 0.72rem !important; line-height: 1.2 !important; }
             #groupingResult .sig-line { border-top: 1px solid black; width: 130px; margin: 45px auto 3px auto !important; }
@@ -176,7 +169,6 @@
         <li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li>
     </ul>
     <div class="login-card-split shadow-lg">
-        <!-- BAHAGIAN KIRI (BIRU) -->
         <div class="login-left">
             <div class="shape shape-1"></div><div class="shape shape-2"></div><div class="shape shape-3"></div>
             <div style="z-index: 2; position: relative;">
@@ -187,7 +179,6 @@
                 <h6 class="mb-0 fw-bold text-white lh-base">SISTEM PENGURUSAN<br>PEPERIKSAAN</h6>
                 <span class="cn-text text-white-50 mt-1 d-block" style="font-size: 0.85em;">考试 management system</span>
                 
-                <!-- KOTAK PENGUMUMAN DI BAHAGIAN KIRI (BIRU) -->
                 <div id="loginAnnouncementBox" class="mt-4 p-3 hidden" style="background: rgba(255, 255, 255, 0.15); border-radius: 12px; border: 1px solid rgba(255, 255, 255, 0.25); text-align: left; max-width: 320px; margin: 20px auto 0 auto; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
                     <div class="d-flex align-items-center mb-1">
                         <i class="fas fa-bullhorn text-warning fs-5 me-2 animate-bounce"></i>
@@ -197,7 +188,6 @@
                 </div>
             </div>
         </div>
-        <!-- BAHAGIAN KANAN (PUTIH) -->
         <div class="login-right">
             <div class="mb-4 text-center text-md-start">
                 <h2 class="fw-bold mb-1 text-dark">Sila Log Masuk</h2>
@@ -644,11 +634,10 @@
                     </button>
                 </div>
 
-                <div class="row g-3">
-                    <!-- PANEL KIRI (KAWALAN KUNCI & PAPAN PENGUMUMAN) -->
-                    <div class="col-md-4 d-flex flex-column gap-3">
-                        
-                        <div class="card p-4 border-top border-4 border-danger shadow-sm">
+                <div class="row g-4">
+                    <!-- KAWALAN KUNCI MARKAH -->
+                    <div class="col-md-6">
+                        <div class="card p-4 border-top border-4 border-danger shadow-sm h-100">
                             <h5 class="fw-bold text-dark mb-3"><i class="fas fa-lock me-2 text-danger"></i> Kawalan Kunci Markah <br><span class="cn-text text-muted fs-6 mt-1">成绩输入锁</span></h5>
                             <p class="text-muted small">Kunci atau buka fungsi pengisian markah guru mengikut sesi pertandingan akademik spesifik.</p>
                             
@@ -676,61 +665,19 @@
                                 </button>
                             </div>
                         </div>
+                    </div>
 
-                        <!-- PAPAN PENGUMUMAN ADMIN -->
-                        <div class="card p-4 border-top border-4 border-warning shadow-sm">
+                    <!-- PAPAN PENGUMUMAN ADMIN -->
+                    <div class="col-md-6">
+                        <div class="card p-4 border-top border-4 border-warning shadow-sm h-100">
                             <h5 class="fw-bold text-dark mb-2"><i class="fas fa-bullhorn me-2 text-warning"></i> Papan Pengumuman <br><span class="cn-text text-muted fs-6 mt-1">公告栏</span></h5>
                             <p class="text-muted small mb-3">Tulis pengumuman di bawah untuk dipaparkan secara langsung pada skrin log masuk utama semua peranti guru.</p>
                             <div class="mb-3">
-                                <textarea id="adminAnnouncementText" class="form-control bg-light" rows="4" placeholder="Tulis pengumuman atau peringatan tarikh tutup di sini..."></textarea>
+                                <textarea id="adminAnnouncementText" class="form-control bg-light" rows="5" placeholder="Tulis pengumuman atau peringatan tarikh tutup di sini..."></textarea>
                             </div>
-                            <button class="btn btn-warning text-white w-100 fw-bold shadow-sm" onclick="saveAdminAnnouncement()">
+                            <button class="btn btn-warning text-white w-100 fw-bold shadow-sm mt-auto" onclick="saveAdminAnnouncement()">
                                 <i class="fas fa-paper-plane me-1"></i> Paparkan Pengumuman
                             </button>
-                        </div>
-                    </div>
-
-                    <!-- PANEL EDIT, TAMBAH & BUANG NAMA MURID -->
-                    <div class="col-md-8">
-                        <div class="card p-4 h-100 border-top border-4 border-primary shadow-sm">
-                            <h5 class="fw-bold text-dark mb-3"><i class="fas fa-users-cog me-2 text-primary"></i> Pengurusan Senarai Nama Murid <br><span class="cn-text text-muted fs-6 mt-1">学生名单管理</span></h5>
-                            
-                            <div class="row g-2 mb-3">
-                                <div class="col-md-6">
-                                    <label class="small fw-bold text-muted mb-1">Pilih Kelas</label>
-                                    <select id="adminClassSelect" class="form-select bg-light border-0" onchange="loadAdminStudentList()">
-                                        <option value="">-- Pilih Kelas --</option>
-                                        <option value="TAHUN 1">TAHUN 1</option>
-                                        <option value="TAHUN 2">TAHUN 2</option>
-                                        <option value="TAHUN 3">TAHUN 3</option>
-                                        <option value="TAHUN 4">TAHUN 4</option>
-                                        <option value="TAHUN 5">TAHUN 5</option>
-                                        <option value="TAHUN 6">TAHUN 6</option>
-                                    </select>
-                                </div>
-                                <div class="col-md-6 d-flex align-items-end">
-                                    <button class="btn btn-success w-100 py-2 fw-bold" onclick="openAddStudentModal()" id="btnAddStudentBtn" disabled>
-                                        <i class="fas fa-plus-circle me-1"></i> Tambah Murid Baru
-                                    </button>
-                                </div>
-                            </div>
-
-                            <div class="table-responsive table-custom-border">
-                                <table class="table table-bordered table-striped table-hover mb-0 text-center align-middle">
-                                    <thead class="table-dark">
-                                        <tr>
-                                            <th style="width: 10%">No</th>
-                                            <th class="text-start">Nama Murid</th>
-                                            <th style="width: 30%">Tindakan</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody id="adminStudentTableBody" class="bg-white">
-                                        <tr>
-                                            <td colspan="3" class="text-muted py-4">Sila pilih kelas terlebih dahulu.</td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
                         </div>
                     </div>
                 </div>
@@ -790,34 +737,6 @@
     </div>
 </div>
 
-<!-- Modal Tambah / Edit Murid -->
-<div class="modal fade" id="studentActionModal" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content border-0 shadow-lg" style="border-radius: 20px;">
-            <div class="modal-header bg-primary text-white border-0" style="border-radius: 20px 20px 0 0;">
-                <h5 class="modal-title fw-bold" id="studentModalTitle"><i class="fas fa-user-plus me-2"></i> Tambah Murid</h5>
-                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body p-4">
-                <input type="hidden" id="studentActionType">
-                <input type="hidden" id="oldStudentName">
-                <div class="mb-3">
-                    <label class="form-label fw-bold text-dark small">Nama Murid (Huruf Besar & Bahasa Cina)</label>
-                    <input type="text" id="studentInputName" class="form-control bg-light text-uppercase" placeholder="CONTOH: ABIGAIL HOGAN 艾比佳">
-                </div>
-                <div class="form-check form-switch mb-3">
-                    <input class="form-check-input" type="checkbox" id="studentIsMuslim">
-                    <label class="form-check-label fw-bold text-dark small" for="studentIsMuslim">Murid Beragama Islam (Pendidikan Agama Islam)</label>
-                </div>
-            </div>
-            <div class="modal-footer justify-content-center border-0 pb-4">
-                <button type="button" class="btn btn-secondary px-4 py-2 fw-bold rounded-pill" data-bs-dismiss="modal">Batal</button>
-                <button type="button" class="btn btn-primary px-4 py-2 fw-bold rounded-pill" onclick="saveStudentAction()">Simpan <i class="fas fa-check ms-1"></i></button>
-            </div>
-        </div>
-    </div>
-</div>
-
 <script>
     // PAUTAN WEB APP GOOGLE APPS SCRIPT ANDA
     const URL_EXAM = "https://script.google.com/macros/s/AKfycbyQ-boHdDuzLZiwUy96_QsDx1YmdzzgvdJw-ejNq-Otwk60b97zZCd4PJ6ZZ3JoIDYa9g/exec"; 
@@ -850,12 +769,6 @@
         "TAHUN 5": ["ABDUL HABIB HARITH BIN ABDUL SAHIDI 哈比", "ALVARO GAVRIEL WELFRED 亚伟乐", "AMANDA SHEA CYRILL YAP 叶美美", "AMYLIA BINTI KAMISIN 艾美拉", "ARFAN MIKHAIL KANG 江艾凡", "CAYLEB CHRIST MOULI 凯乐", "CLAIRE DANNYSEUS 可丽儿", "DEAN MIFZAL LIEW BIN ABDULLAH 刘迪恩", "EDRY ISAAC CHIA 谢艾德", "ELSA VIANNEY MARY SYLVESTER 艾莎", "FAHYM QUSHAIRY BIN FRANCIS 法杏", "FLORENCE MAXIMILLIAN 符洛仁", "IRFAN ARFAKSYADZ BIN MOHD JAPRI 伊凡", "JACYLEN CHEN 陈美芯", "JAYDEN NELCENT LIEW 刘杰德", "JESVENELLY ASOK 韦妮丽", "MONIE QUEENDY RUDY 莫妮", "MUHAMAD HAFEEZ RAHIM 哈菲兹", "NUR AINDREA NADIYA BINTI JOSAMIN@JASIMIN 安得拉", "NUR QHALLESHA ANAMI BINTI SAHARUL AZRIN 卡俐莎", "NUR SHAINE SEIAN BINTI ABDULLAH 郑雪莉", "NURSYAZWINA SALI BINTI ABDULLAH 莎薇娜", "RYANZACQUELL ALRICH XAVIER 莱恩", "TEY XIN YEE 郑忻颐", "YAP JI CHENG 叶济承"],
         "TAHUN 6": ["AARON KING WEN SHENG 金文圣", "ADIB ARYAN 叶艾狄", "ALEXSSA MARADONA 艾莉莎", "AMBER ROSE 安蓓儿", "AMNI NURADRIANA HUSNA YAP 叶玉娜", "ANNABELLE MERCO 安贝拉", "ANNAMARIE SOPHIA JIMY 安娜美", "CALVIN LEE YI BIN 李毅彬", "CASSANDRA CHLOE CHRISTOPER 柯珊荙", "CHARLENE MIEA JIMMY 巧琳", "DAVIN LO KETT FUNG 罗国峰", "DEANIELL DEEANN DISIUS 德尼尔", "EALJOY ALBERT 尔齐", "EALVIANIE EVERDIN 尔妮", "ELYN HO SZE XUAN 何芝琁", "FIONNY ARVINA JOHNNY 谭芷霓", "HYERIN NIECHELL YOLEK 何灵", "IMANUEL LIONEL HIMBULAN 李诺尔", "JAYDEN CHIN TZE FENG INT_FA 陈子峰", "JAYVRYAN JUNIOR 杰莱恩", "JAZLYN ONG QIAO XUN 翁巧洵", "MAVERICK CHESTER MARK 马富利", "NEOLITTA SHAYNE SIMPLISIUS 施娴", "NOUFAL ARFAKSYADZ 诺法", "NUR AZZAHRA SOFIEA 苏菲亚", "RYNDLEE RODRIGO 仁迪", "SHARONITTA WONG 黄雪柔", "SHERYLYNIEKA DILLESEN 施尼卡", "VICKLY DEEXLEE HARWANDRI 伟特利", "WYINCHAELL AUDREY ALEXIUS 玟萱"]
     };
-    
-    let dynamicStudentData = JSON.parse(localStorage.getItem('sistemMarkahStudentData'));
-    if (!dynamicStudentData || Object.keys(dynamicStudentData).length === 0) {
-        dynamicStudentData = JSON.parse(JSON.stringify(studentData));
-        localStorage.setItem('sistemMarkahStudentData', JSON.stringify(dynamicStudentData));
-    }
 
     const guruKelasMap = {
         "TAHUN 1": "LIAW SHIAU WEI",
@@ -948,14 +861,11 @@
         
         let classRecords = db[sess][cls];
         
-        // 1. Cuba cari padanan tepat (exact match)
         if (classRecords[clientName]) {
             return clientName;
         }
         
-        // 2. Jika tiada padanan tepat, lakukan padanan rumi (fuzzy match)
         let cleanRumi = (name) => {
-            // Buang aksara Cina, buang semua simbol/jarak, ambil 12 karakter rumi pertama sahaja
             return name.replace(/[\u4e00-\u9fa5]/g, "").replace(/[^A-Z0-9]/g, "").substring(0, 12).toUpperCase();
         };
         
@@ -963,7 +873,7 @@
         if (clientRumi.length === 0) return null;
         
         for (let sheetName of Object.keys(classRecords)) {
-            if (cleanRumi(sheetName) === clientRumi) {
+            if (cleanRumi(sheetName) === cleanRumi) {
                 return sheetName;
             }
         }
@@ -980,18 +890,15 @@
         
         let studentRecord = db[sess][cls][studentKey];
         
-        // 1. Cuba guna nama penuh subjek (contoh: "BAHASA CINA")
         if (studentRecord[sub]) {
             return studentRecord[sub];
         }
         
-        // 2. Cuba guna singkatan subShort (contoh: "BC", "BI", dsb.)
         let shortKey = subShort[sub];
         if (shortKey && studentRecord[shortKey]) {
             return studentRecord[shortKey];
         }
         
-        // 3. Kes khas jika ejaan kepala lajur di sheet adalah "PJK" atau "PMZ"
         if (sub === "PENDIDIKAN JASMANI DAN KESIHATAN" && studentRecord["PJK"]) {
             return studentRecord["PJK"];
         }
@@ -1003,18 +910,18 @@
     }
 
     window.onload = function() {
+        // PADAMKAN CACHE BEKAS SUNTINGAN NAMA UNTUK MEMAKSA SISTEM BACA DARI HTML
+        localStorage.removeItem('sistemMarkahStudentData');
+
         if(sessionStorage.getItem('isLoggedIn') === 'true') {
             document.getElementById('loginOverlay').style.display = 'none';
             document.getElementById('mainApp').style.display = 'block';
         }
         
-        // Paparkan status kunci lokal
         updateGlobalLockUI();
-
-        // Paparkan pengumuman semasa
         showLoginAnnouncement();
-
         updateHcSubjects();
+
         const popSub = (id) => {
             const el = document.getElementById(id);
             if(el) { el.innerHTML = ''; subjects.forEach(s => { let o = document.createElement('option'); o.value=s; o.innerText=s; el.appendChild(o); }); }
@@ -1022,7 +929,6 @@
         popSub('subjectSelect');
         popSub('pmSubjectSelect'); 
 
-        // --- PRE-LOAD DARI LOCALSTORAGE UNTUK MENGELAKKAN MARKAH HILANG ---
         const savedData = localStorage.getItem('sistemMarkahDB');
         if (savedData) {
             try {
@@ -1035,13 +941,11 @@
             db = {};
         }
 
-        let count = 0; Object.keys(dynamicStudentData).forEach(k => count += dynamicStudentData[k].length);
+        let count = 0; Object.keys(studentData).forEach(k => count += studentData[k].length);
         document.getElementById('totalStudents').innerText = count;
 
-        // Tunjukkan status pengisian dari DB lokal dahulu sementara menunggu fetch
         loadFillStatus();
 
-        // TARIK DATA FRESH DI LATAR BELAKANG (SAFE MERGE)
         Promise.all([
             fetch(URL_EXAM).then(r => r.json()).catch(e => { console.error("URL_EXAM fetch error:", e); return null; }),
             fetch(URL_EXAM_2).then(r => r.json()).catch(e => { console.error("URL_EXAM_2 fetch error:", e); return null; }),
@@ -1049,7 +953,6 @@
         ]).then(([examData, examData2, headcountData]) => {
             let dataUpdated = false;
 
-            // Gabungkan hanya sekiranya fetch berjaya mengembalikan data (bukan null atau {})
             if (examData && Object.keys(examData).length > 0) {
                 db = { ...db, ...examData };
                 dataUpdated = true;
@@ -1068,7 +971,6 @@
                 loadFillStatus();
             }
             
-            // Mengekalkan halaman admin jika di-reload
             if (sessionStorage.getItem('isAdminLoggedIn') === 'true') {
                 showSection('adminPanel');
             }
@@ -1107,8 +1009,6 @@
             
             if(id === 'adminPanel') {
                 updateGlobalLockUI();
-                
-                // Paparkan teks pengumuman sedia ada di textarea admin
                 let curAnn = localStorage.getItem('adminAnnouncement') || "";
                 document.getElementById('adminAnnouncementText').value = curAnn;
             }
@@ -1149,8 +1049,8 @@
         classLabels.forEach(cls => {
             let classSum1 = 0, classCount1 = 0; let classSum2 = 0, classCount2 = 0;
             
-            if (dynamicStudentData[cls]) {
-                dynamicStudentData[cls].forEach(stu => {
+            if (studentData[cls]) {
+                studentData[cls].forEach(stu => {
                     let stuSum1 = 0, stuSum2 = 0; let hasPA1 = false, hasPA2 = false;
                     
                     let key1 = findStudentKey(sess1, cls, stu);
@@ -1413,7 +1313,7 @@
         <tr>${cols.map(c=>`<th style="width: 5%" class="${c.c} text-dark bg-opacity-50">M</th><th style="width: 6%" class="${c.c} text-dark bg-opacity-50">G</th>`).join('')}</tr></thead><tbody class="bg-white">`;
         
         let displayCount = 0;
-        dynamicStudentData[cls].forEach((n) => {
+        studentData[cls].forEach((n) => {
             let isMuslim = muslimStudents.includes(n);
             if (sub === 'PENDIDIKAN AGAMA ISLAM' && !isMuslim) return;
             if (sub === 'PENDIDIKAN MORAL' && isMuslim) return;
@@ -1596,7 +1496,7 @@
         if(!db[sess]) db[sess]={}; if(!db[sess][cls]) db[sess][cls]={};
         
         let displayCount = 0;
-        dynamicStudentData[cls].forEach((n) => {
+        studentData[cls].forEach((n) => {
             let isMuslim = muslimStudents.some(ms => ms === n || n.includes(ms));
             if (sub === 'PENDIDIKAN AGAMA ISLAM' && !isMuslim) return; 
             if (sub === 'PENDIDIKAN MORAL' && isMuslim) return; 
@@ -1631,7 +1531,6 @@
     function exportData() {
         const exportPayload = {
             db: db,
-            studentData: dynamicStudentData,
             lockPA1: localStorage.getItem('lockPA1') === 'true',
             lockPA2: localStorage.getItem('lockPA2') === 'true',
             adminAnnouncement: localStorage.getItem('adminAnnouncement') || ''
@@ -1646,11 +1545,9 @@
         reader.onload = function(e) { 
             try { 
                 const imported = JSON.parse(e.target.result); 
-                if (imported.db && imported.studentData) {
+                if (imported.db) {
                     db = imported.db;
-                    dynamicStudentData = imported.studentData;
                     localStorage.setItem('sistemMarkahDB', JSON.stringify(db));
-                    localStorage.setItem('sistemMarkahStudentData', JSON.stringify(dynamicStudentData));
                     if (imported.lockPA1 !== undefined) localStorage.setItem('lockPA1', imported.lockPA1 ? 'true' : 'false');
                     if (imported.lockPA2 !== undefined) localStorage.setItem('lockPA2', imported.lockPA2 ? 'true' : 'false');
                     if (imported.adminAnnouncement !== undefined) localStorage.setItem('adminAnnouncement', imported.adminAnnouncement);
@@ -1671,7 +1568,7 @@
         const sess = statusSession, c = document.getElementById('fillStatusList');
         if(!db[sess]) { c.innerHTML='<div class="text-center text-muted py-4"><i class="fas fa-folder-open fs-2 mb-2 text-info opacity-50"></i><br>Tiada data direkodkan.</div>'; loadDashboardAnalytics(); return; }
         let h = '<ul class="list-group list-group-flush">';
-        Object.keys(dynamicStudentData).forEach(cls => {
+        Object.keys(studentData).forEach(cls => {
             let cnt = 0; 
             if(db[sess][cls]) { let allSubjs = new Set(); Object.values(db[sess][cls]).forEach(stu => { Object.keys(stu).forEach(k => { if(k !== 'attendance') allSubjs.add(k); }); }); cnt = allSubjs.size; }
             h += `<li class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 pb-3 mb-1 border-bottom border-light">
@@ -1726,7 +1623,7 @@
         validSubjects.forEach(sub => { h += `<th class="bg-primary text-white border-primary">${subShort[sub]}</th>`; });
         h += `</tr></thead><tbody class="bg-white">`;
 
-        dynamicStudentData[cls].forEach((n, idx) => {
+        studentData[cls].forEach((n, idx) => {
             h += `<tr><td class="fw-bold text-muted">${idx + 1}</td><td class="text-start text-truncate fw-bold text-dark" style="max-width: 200px;" title="${n}">${n}</td>`;
             let total = 0, count = 0;
             
@@ -1764,7 +1661,7 @@
         const cls = document.getElementById('rcClassSelect').value;
         const stuSel = document.getElementById('rcStudentSelect');
         stuSel.innerHTML = '<option value="">-- Pilih Murid --</option>';
-        if(cls) { stuSel.disabled = false; dynamicStudentData[cls].forEach(n => { let opt = document.createElement('option'); opt.value = n; opt.innerText = n; stuSel.appendChild(opt); }); }
+        if(cls) { stuSel.disabled = false; studentData[cls].forEach(n => { let opt = document.createElement('option'); opt.value = n; opt.innerText = n; stuSel.appendChild(opt); }); }
         else { stuSel.disabled = true; }
         document.getElementById('attPresent').value = ''; document.getElementById('attTotal').value = '';
     }
@@ -1778,7 +1675,7 @@
     function getStudentRank(session, cls, name) {
         if(!db[session] || !db[session][cls]) return '-';
         let rankList = [];
-        dynamicStudentData[cls].forEach(n => {
+        studentData[cls].forEach(n => {
             let total = 0;
             let studentKey = findStudentKey(session, cls, n);
             if (studentKey && db[session][cls][studentKey]) {
@@ -1840,7 +1737,7 @@
 
     function generateGrouping() {
         const session = getCurrentSession(), className = document.getElementById('groupClassSelect').value;
-        const container = document.getElementById('groupingResult'), students = dynamicStudentData[className];
+        const container = document.getElementById('groupingResult'), students = studentData[className];
         container.classList.remove('hidden');
         let groups = { 'A': [], 'B': [], 'C': [], 'D': [], 'E': [], 'F': [] };
         students.forEach(name => {
@@ -1939,8 +1836,8 @@
         classes.forEach((cls, idx) => {
             let counts = { 'A': 0, 'B': 0, 'C': 0, 'D': 0, 'E': 0, 'TH': 0 };
             
-            if (dynamicStudentData[cls]) {
-                dynamicStudentData[cls].forEach(stu => {
+            if (studentData[cls]) {
+                studentData[cls].forEach(stu => {
                     let isMuslim = muslimStudents.includes(stu);
                     if (sub === 'PENDIDIKAN AGAMA ISLAM' && !isMuslim) return;
                     if (sub === 'PENDIDIKAN MORAL' && isMuslim) return;
@@ -1991,7 +1888,7 @@
         const sess = getCurrentSession(), cls = document.getElementById('rankClassSelect').value, div = document.getElementById('rankingResult');
         if(!db[sess] || !db[sess][cls]) { div.innerHTML='<div class="alert alert-warning border-0 shadow-sm"><i class="fas fa-exclamation-circle me-2"></i>Tiada data untuk sesi ini.</div>'; return; }
         let arr = [];
-        dynamicStudentData[cls].forEach(n => {
+        studentData[cls].forEach(n => {
             let tot=0, c=0;
             let studentKey = findStudentKey(sess, cls, n);
             if(studentKey && db[sess][cls][studentKey]) { 
@@ -2016,8 +1913,8 @@
     function searchStudent() {
         const k = document.getElementById('searchInput').value.toUpperCase(), div = document.getElementById('searchResult');
         if(k.length<3){alert('Sila masukkan sekurang-kurangnya 3 huruf.');return;} let h='';
-        Object.keys(dynamicStudentData).forEach(c=>{
-            dynamicStudentData[c].forEach(n=>{
+        Object.keys(studentData).forEach(c=>{
+            studentData[c].forEach(n=>{
                 if(n.includes(k)){
                     h+=`<div class="card p-4 mb-3 shadow-sm border-start border-4 border-primary"><div class="d-flex align-items-center mb-3"><i class="fas fa-user-graduate fs-3 text-primary me-3"></i><div><strong class="fs-5 text-dark">${n}</strong><br><span class="badge bg-secondary rounded-pill mt-1">${c}</span></div></div><hr class="my-2 border-light">`;
                     let foundData = false;
@@ -2073,7 +1970,7 @@
         showSection('dashboard');
     }
 
-    // --- KAWALAN DUA KUNCI BARU ---
+    // --- KAWALAN DUA KUNCI ---
     function toggleLockPA1() {
         let current = localStorage.getItem('lockPA1') === 'true';
         localStorage.setItem('lockPA1', (!current).toString());
@@ -2181,142 +2078,6 @@
             } else {
                 box.classList.add('hidden');
             }
-        }
-    }
-
-    // --- URUSAN EDIT / PADAM / TAMBAH MURID ---
-    function loadAdminStudentList() {
-        const cls = document.getElementById('adminClassSelect').value;
-        const tb = document.getElementById('adminStudentTableBody');
-        const btnAdd = document.getElementById('btnAddStudentBtn');
-        
-        if (!cls) {
-            tb.innerHTML = `<tr><td colspan="3" class="text-muted py-4">Sila pilih kelas terlebih dahulu.</td></tr>`;
-            btnAdd.disabled = true;
-            return;
-        }
-        
-        btnAdd.disabled = false;
-        tb.innerHTML = '';
-        
-        if (!dynamicStudentData[cls] || dynamicStudentData[cls].length === 0) {
-            tb.innerHTML = `<tr><td colspan="3" class="text-muted py-4">Tiada murid dijumpai dalam kelas ini.</td></tr>`;
-            return;
-        }
-        
-        dynamicStudentData[cls].forEach((name, idx) => {
-            let isMuslim = muslimStudents.includes(name);
-            let muslimBadge = isMuslim ? `<span class="badge bg-info ms-2">ISLAM</span>` : '';
-            tb.innerHTML += `
-                <tr>
-                    <td class="fw-bold text-muted">${idx + 1}</td>
-                    <td class="text-start fw-bold text-dark text-uppercase">${name} ${muslimBadge}</td>
-                    <td>
-                        <button class="btn btn-sm btn-primary px-3 me-1" onclick="openEditStudentModal('${cls}', '${name}', ${isMuslim})">
-                            <i class="fas fa-edit me-1"></i> Edit
-                        </button>
-                        <button class="btn btn-sm btn-danger px-3" onclick="deleteStudent('${cls}', '${name}')">
-                            <i class="fas fa-trash-alt me-1"></i> Padam
-                        </button>
-                    </td>
-                </tr>
-            `;
-        });
-    }
-
-    function openAddStudentModal() {
-        const cls = document.getElementById('adminClassSelect').value;
-        document.getElementById('studentModalTitle').innerHTML = `<i class="fas fa-user-plus me-2"></i> Tambah Murid Baru (${cls})`;
-        document.getElementById('studentActionType').value = 'add';
-        document.getElementById('studentInputName').value = '';
-        document.getElementById('studentIsMuslim').checked = false;
-        
-        var modal = new bootstrap.Modal(document.getElementById('studentActionModal'));
-        modal.show();
-    }
-
-    function openEditStudentModal(cls, name, isMuslim) {
-        document.getElementById('studentModalTitle').innerHTML = `<i class="fas fa-user-edit me-2"></i> Edit Murid (${cls})`;
-        document.getElementById('studentActionType').value = 'edit';
-        document.getElementById('oldStudentName').value = name;
-        document.getElementById('studentInputName').value = name;
-        document.getElementById('studentIsMuslim').checked = isMuslim;
-        
-        var modal = new bootstrap.Modal(document.getElementById('studentActionModal'));
-        modal.show();
-    }
-
-    function saveStudentAction() {
-        const cls = document.getElementById('adminClassSelect').value;
-        const type = document.getElementById('studentActionType').value;
-        const newName = document.getElementById('studentInputName').value.trim().toUpperCase();
-        const isMuslim = document.getElementById('studentIsMuslim').checked;
-        
-        if (newName === "") { alert("Sila masukkan nama murid."); return; }
-        
-        if (type === 'add') {
-            if (dynamicStudentData[cls].includes(newName)) { alert("Murid dengan nama ini sudah wujud."); return; }
-            dynamicStudentData[cls].push(newName);
-            if (isMuslim) {
-                if (!muslimStudents.includes(newName)) muslimStudents.push(newName);
-            }
-        } else {
-            const oldName = document.getElementById('oldStudentName').value;
-            const index = dynamicStudentData[cls].indexOf(oldName);
-            if (index !== -1) {
-                dynamicStudentData[cls][index] = newName;
-                
-                Object.keys(db).forEach(sess => {
-                    if (db[sess] && db[sess][cls] && db[sess][cls][oldName]) {
-                        db[sess][cls][newName] = db[sess][cls][oldName];
-                        delete db[sess][cls][oldName];
-                    }
-                });
-                localStorage.setItem('sistemMarkahDB', JSON.stringify(db));
-                
-                let mIndex = muslimStudents.indexOf(oldName);
-                if (mIndex !== -1) {
-                    if (isMuslim) {
-                        muslimStudents[mIndex] = newName;
-                    } else {
-                        muslimStudents.splice(mIndex, 1);
-                    }
-                } else if (isMuslim) {
-                    muslimStudents.push(newName);
-                }
-            }
-        }
-        
-        localStorage.setItem('sistemMarkahStudentData', JSON.stringify(dynamicStudentData));
-        
-        var modalEl = document.getElementById('studentActionModal');
-        var modal = bootstrap.Modal.getInstance(modalEl);
-        modal.hide();
-        
-        loadAdminStudentList();
-        alert("Senarai murid berjaya dikemas kini!");
-    }
-
-    function deleteStudent(cls, name) {
-        if (!confirm("Adakah anda pasti mahu memadam murid " + name + "? Markah murid ini akan dikeluarkan daripada simpanan sistem.")) return;
-        
-        const index = dynamicStudentData[cls].indexOf(name);
-        if (index !== -1) {
-            dynamicStudentData[cls].splice(index, 1);
-            
-            Object.keys(db).forEach(sess => {
-                if (db[sess] && db[sess][cls] && db[sess][cls][name]) {
-                    delete db[sess][cls][name];
-                }
-            });
-            localStorage.setItem('sistemMarkahDB', JSON.stringify(db));
-            
-            let mIndex = muslimStudents.indexOf(name);
-            if (mIndex !== -1) muslimStudents.splice(mIndex, 1);
-            
-            localStorage.setItem('sistemMarkahStudentData', JSON.stringify(dynamicStudentData));
-            loadAdminStudentList();
-            alert("Murid berjaya dipadam!");
         }
     }
 </script>
